@@ -34,10 +34,30 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
+class Pair
+{
+  private double _x;
+  private double _y;
+  Pair(double x, double y )
+  {
+    _x = x;
+    _y = y;
+  }
+
+  public double getX()
+  {
+    return _x;
+  }
+  public double getY()
+  {
+    return _y;
+  }
+
+}
 class Pannello extends JPanel implements ActionListener
 {
 
-  private Timer time = new Timer(17,this);
+  private Timer time = new Timer(500,this);
   private int _counter = 0;
   private int _focus = 0;
   private Nave _ships[];
@@ -62,7 +82,7 @@ class Pannello extends JPanel implements ActionListener
   public Pannello()
   {
     txt.setFont(new Font("Verdana", Font.BOLD,14));
-    txt.setValue(new Integer(0));
+    txt.setValue(new Double(0));
     txt.setOpaque(false);
     txt.setForeground(new Color(250,250,250));
     txt.setPreferredSize(new Dimension(100,20));
@@ -86,7 +106,7 @@ class Pannello extends JPanel implements ActionListener
     {
       dist = Math.sqrt(Math.pow(_ships[0].getX() - _ships[1].getX(),2)+Math.pow(_ships[0].getY() - _ships[1].getY(),2));
       _ships[1] = new Nave(_hwidth*2, _hheigth*2);
-    } while ((float)dist < 100f);
+    } while ((double)dist < 100f);
     for (int i = 0; i < 5 ; i++)
     {
 
@@ -96,75 +116,6 @@ class Pannello extends JPanel implements ActionListener
       } while((ball[i].getX() + ball[i].getR() < _ships[0].getX() &&   ball[i].getX()-ball[i].getR()>_ships[0].getX())||(ball[i].getY() + ball[i].getR() <_ships[0].getY() && ball[i].getY() - ball[i].getR()>_ships[0].getY()));
 
     }
-
-
-
-    // addMouseMotionListener(new MouseAdapter()
-    // {
-    //   public void mouseDragged(MouseEvent evento)
-    //   {   //Da Togliere
-
-    //     // int distx = evento.getX() - _ships[_focus].getX()+10;
-    //     // int disty = evento.getY() - _ships[_focus].getY()+10;
-    //     // int a = Math.abs(distx);
-    //     // int b = Math.abs(disty);
-    //     // double tan =(float)disty/(float)distx;
-    //     // double theta = Math.atan(tan);
-    //     // if (distx*disty < 0)
-    //     // {
-    //     //   theta = Math.PI + theta;
-    //     // }
-    //     // if ( disty < 0)
-    //     // {
-    //     //   theta = Math.PI + theta;
-    //     // }
-    //     //
-    //     // System.out.println("Angolo "+ Math.toDegrees(theta));
-    //
-    //       //-Fine
-    //     freccia(evento.getX(),evento.getY());
-    //   }
-    // });
-
-    // addMouseListener(new MouseAdapter()
-    // {
-    //   public void mouseReleased(MouseEvent evento)
-    //   {
-    //
-    //     int distx = evento.getX() - _ships[_focus].getX()+10;
-    //     int disty = evento.getY() - _ships[_focus].getY()+10;
-    //     int a = Math.abs(distx);
-    //     int b = Math.abs(disty);
-    //     double tan =(float)disty/(float)distx;
-    //     double theta = Math.atan(tan);
-    //
-    //
-    //     if (distx*disty < 0)
-    //     {
-    //       theta = Math.PI + theta;
-    //     }
-    //     if ( disty < 0)
-    //     {
-          // theta = Math.PI + theta;
-    //     }
-    //
-    //     int pewX = _ships[_focus].getX() + 10 - (int)((Math.cos(theta))*50);
-    //     int pewY = _ships[_focus].getY() + 10 - (int)((Math.sin(theta))*50);
-    //
-    //
-    //
-    //     System.out.println("Sin " + (Math.sin(theta)));
-    //     System.out.println("Cos " + (Math.cos(theta)));
-    //
-    //
-    //     pew = new Proiettile(pewX,pewY);
-    //     pew.Shoot(-distx,-disty);
-    //     System.out.println("ANGOLO: " + Math.toDegrees(theta));
-    //     System.out.println("Mouse Rilasciato " + evento.getX() + " " + evento.getY());
-    //     _counter++;
-    //     _focus = _counter%2;
-    //   }
-    // });
   }
 
   public Dimension getPreferredSize()
@@ -186,11 +137,11 @@ class Pannello extends JPanel implements ActionListener
   {
     if (evento.getSource() instanceof JButton) {
       //System.out.println(txt2.getValue());
-      int angle = (Integer)txt.getValue();
-      int pewX = _ships[_focus].getX() + 10 + (int)((Math.cos(angle))*50);
-      int pewY = _ships[_focus].getY() + 10 + (int)((Math.sin(angle))*50);
+      double angle = (double)txt.getValue();
+      double pewX = _ships[_focus].getX() + 10 + ((Math.cos(Math.toRadians(angle)))*20);
+      double pewY = _ships[_focus].getY() + 10 + ((Math.sin(Math.toRadians(angle)))*20);
       pew = new Proiettile(pewX,pewY);
-      pew.Shoot(angle,(Double)txt2.getValue());
+      pew.Shoot(angle,(double)txt2.getValue());
       _counter++;
       _focus=_counter%2;
     }
@@ -199,27 +150,81 @@ class Pannello extends JPanel implements ActionListener
     {
       if ((pew.Hit(_ships[0]))||(pew.Hit(_ships[1])))
       {
+        double minx,miny,maxx,maxy;
+        //repaint(pew.getX(),pew.getY(),pew.getPX(),pew.getPY());
+        if (pew.getX() < pew.getPX())
+        {
+          minx = pew.getX();
+          maxx = pew.getPX();
+        } else
+        {
+          minx = pew.getPX();
+          maxx = pew.getX();
+        }
+        if (pew.getY() < pew.getPY())
+        {
+          miny = pew.getY();
+          maxy = pew.getPY();
+        } else
+        {
+          miny = pew.getPY();
+          maxy = pew.getY();
+        }
+        repaint((int)minx,(int)miny,(int)maxx,(int)maxy);
         System.out.println("YEEEEEEEET");
         pew = null;
       }else if ( pew.Hit(ball)) // si può mettere la condizione nell'if di sopra C:
       {
+        double minx,miny,maxx,maxy;
+        //repaint(pew.getX(),pew.getY(),pew.getPX(),pew.getPY());
+        if (pew.getX() < pew.getPX())
+        {
+          minx = pew.getX();
+          maxx = pew.getPX();
+        } else
+        {
+          minx = pew.getPX();
+          maxx = pew.getX();
+        }
+        if (pew.getY() < pew.getPY())
+        {
+          miny = pew.getY();
+          maxy = pew.getPY();
+        } else
+        {
+          miny = pew.getPY();
+          maxy = pew.getY();
+        }
+        repaint((int)minx,(int)miny,(int)maxx,(int)maxy);
         pew = null;
       }else {
         //pew.Forze(ball);
-        pew.Update();
+        //pew.Update();
+        pew.Update(Forze(pew.getX(),pew.getY(),ball));
+        double minx,miny,maxx,maxy;
         //repaint(pew.getX(),pew.getY(),pew.getPX(),pew.getPY());
-        repaint(pew.getX(),pew.getY(),pew.getPX(),pew.getPY());
+        if (pew.getX() < pew.getPX())
+        {
+          minx = pew.getX();
+          maxx = pew.getPX();
+        } else
+        {
+          minx = pew.getPX();
+          maxx = pew.getX();
+        }
+        if (pew.getY() < pew.getPY())
+        {
+          miny = pew.getY();
+          maxy = pew.getPY();
+        } else
+        {
+          miny = pew.getPY();
+          maxy = pew.getY();
+        }
+        repaint((int)minx,(int)miny,(int)maxx,(int)maxy);
         //repaint();
       }
     }
-
-    if ("new".equals(evento.getActionCommand())) { //new
-        System.out.println("new");
-    }
-    if ("quit".equals(evento.getActionCommand())) { //new
-        System.out.println("quit");
-    }
-
   }
 
   protected void paintComponent(Graphics g)
@@ -232,10 +237,10 @@ class Pannello extends JPanel implements ActionListener
     hord = (_x - _ships[_focus].getX() )/3;
 
     g2d.drawImage(bg,0,0,null);
-    Line2D lin = new Line2D.Float(_x, _y, 200, 200);
-    // Line2D h = new Line2D.Float(200, 0, 200, 400);
-    // Line2D v = new Line2D.Float(0, 200, 400, 200);
-    Line2D lin2 = new Line2D.Float(_ships[_focus].getX()+10,_ships[_focus].getY()+10, _ships[_focus].getX()-hord, _ships[_focus].getY()-vertd);
+    Line2D lin = new Line2D.Double(_x, _y, 200, 200);
+    // Line2D h = new Line2D.Double(200, 0, 200, 400);
+    // Line2D v = new Line2D.Double(0, 200, 400, 200);
+    Line2D lin2 = new Line2D.Double(_ships[_focus].getX()+10,_ships[_focus].getY()+10, _ships[_focus].getX()-hord, _ships[_focus].getY()-vertd);
     g2d.draw(lin2);
     //g2d.draw(h);
     //g2d.draw(v);
@@ -256,40 +261,26 @@ class Pannello extends JPanel implements ActionListener
     time.start();
   }
 
-  protected JMenuBar createMenuBar() { //funzione che crea una menuBar
-        JMenuBar menuBar = new JMenuBar();
-
-        //Crea il primo menu.
-        JMenu menu = new JMenu("Document");
-        menu.setMnemonic(KeyEvent.VK_D);
-        menuBar.add(menu);
-
-        	//Crea il primo elemento del menu.
-        	JMenuItem menuItem = new JMenuItem("New Game");
-        	menuItem.setMnemonic(KeyEvent.VK_N);
-        	menuItem.setAccelerator(KeyStroke.getKeyStroke(
-        			KeyEvent.VK_N, ActionEvent.ALT_MASK));
-        	menuItem.setActionCommand("new");
-        	menuItem.addActionListener(this);
-        	menu.add(menuItem);
-
-        	//Crea il secondo elemento del menu.
-        	menuItem = new JMenuItem("Quit");
-        	menuItem.setMnemonic(KeyEvent.VK_Q);
-        	menuItem.setAccelerator(KeyStroke.getKeyStroke(
-        			KeyEvent.VK_Q, ActionEvent.ALT_MASK));
-        	menuItem.setActionCommand("quit");
-        	menuItem.addActionListener(this);
-        	menu.add(menuItem);
-
-        //Crea il secondo menu.
-        JMenu menu2 = new JMenu("Document 2");
-        menu2.setMnemonic(KeyEvent.VK_D);
-        menuBar.add(menu2);
-
-        return menuBar;
+  public Pair Forze(int x, int y, Sfera[] palle)
+  {
+    double distx;
+    double disty;
+    double dist;
+    double f;
+    double fx = 0;
+    double fy = 0;
+    for (Sfera i : palle)
+    {
+      distx = x - i.getX();
+      disty = y - i.getY();
+      dist = Math.sqrt(distx*distx + disty*disty);
+      f = -pew.getM()*i.getM()/Math.pow(dist,2);
+      fx += f * distx/dist;
+      fy += f * disty/dist;
     }
-
-
-
+    double ax = (fx);
+    double ay = (fy);
+    System.out.println(ax+", "+ay);
+    return new Pair(ax,ay);
+  }
 }
