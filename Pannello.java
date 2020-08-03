@@ -51,7 +51,6 @@ class Pannello extends JPanel implements ActionListener
   private Nave _sheep;
   private int _conteggio=0;
 
-  private ImageIcon _icon = new ImageIcon("gw/starship.png");
   private Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
 
   JFormattedTextField txt = new JFormattedTextField();
