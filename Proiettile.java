@@ -21,6 +21,7 @@ public class Proiettile extends Abs
 
   Proiettile(double x, double y)
   {
+    super();
     _x=x;
     _y=y;
     is = true;
