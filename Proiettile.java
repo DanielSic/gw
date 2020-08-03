@@ -29,10 +29,15 @@ public class Proiettile extends JComponent
     is = true;
   }
 
-  public void Shoot(int vx, int vy)
+  // public void Shoot(int vx, int vy)
+  // {
+  //   _vx = vx/10;
+  //   _vy = vy/10;
+  // }
+  public void Shoot(int angle, double str)
   {
-    _vx = vx/10;
-    _vy = vy/10;
+    _vx = (int)str*(int)Math.cos(Math.toRadians(angle));
+    _vy = (int)str*(int)Math.sin(Math.toRadians(angle));
   }
   public void Forze(Sfera[] palle)
   {

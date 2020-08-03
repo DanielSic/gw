@@ -28,7 +28,7 @@ class Nave extends JComponent
   private int _y;
   Nave(int w, int h)
   {
-    _icon = new ImageIcon("starship.png");
+    _icon = new ImageIcon("gw/starship.png");
     _x = (int)(Math.random() * (w-60))+30;
     _y = (int)(Math.random() * (h-60))+30;
   }

@@ -19,6 +19,12 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Font;
+
+import javax.swing.JTextField;
+import javax.swing.JFormattedTextField;
+
+import javax.swing.JButton;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -30,7 +36,7 @@ import javax.swing.Timer;
 
 class Pannello extends JPanel implements ActionListener
 {
-  
+
   private Timer time = new Timer(17,this);
   private int _counter = 0;
   private int _focus = 0;
@@ -45,12 +51,32 @@ class Pannello extends JPanel implements ActionListener
   private Nave _sheep;
   private int _conteggio=0;
 
-  private ImageIcon _icon = new ImageIcon("starship.png");
-  private Image bg = new ImageIcon("sfondo.jpg").getImage();
-  
-  
+  private ImageIcon _icon = new ImageIcon("gw/starship.png");
+  private Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
+
+  JFormattedTextField txt = new JFormattedTextField();
+
+  JFormattedTextField txt2 = new JFormattedTextField();
+  JButton butt = new JButton("Enter");
+
   public Pannello()
   {
+    txt.setFont(new Font("Verdana", Font.BOLD,14));
+    txt.setValue(new Integer(0));
+    txt.setOpaque(false);
+    txt.setForeground(new Color(250,250,250));
+    txt.setPreferredSize(new Dimension(100,20));
+    add(txt);
+
+    txt2.setFont(new Font("Verdana", Font.BOLD,14));
+    txt2.setValue(new Double(0));
+    txt2.setPreferredSize(new Dimension(100,20));
+    txt2.setOpaque(false);
+    txt2.setForeground(new Color(250,250,250));
+    add(txt2);
+
+    butt.addActionListener(this);
+    add(butt);
     double dist;
     _ships = new Nave[2];
 
@@ -70,75 +96,75 @@ class Pannello extends JPanel implements ActionListener
       } while((ball[i].getX() + ball[i].getR() < _ships[0].getX() &&   ball[i].getX()-ball[i].getR()>_ships[0].getX())||(ball[i].getY() + ball[i].getR() <_ships[0].getY() && ball[i].getY() - ball[i].getR()>_ships[0].getY()));
 
     }
-    
-    
-    
-    addMouseMotionListener(new MouseAdapter()
-    {
-      public void mouseDragged(MouseEvent evento)
-      {   //Da Togliere
-
-        // int distx = evento.getX() - _ships[_focus].getX()+10;
-        // int disty = evento.getY() - _ships[_focus].getY()+10;
-        // int a = Math.abs(distx);
-        // int b = Math.abs(disty);
-        // double tan =(float)disty/(float)distx;
-        // double theta = Math.atan(tan);
-        // if (distx*disty < 0)
-        // {
-        //   theta = Math.PI + theta;
-        // }
-        // if ( disty < 0)
-        // {
-        //   theta = Math.PI + theta;
-        // }
-        //
-        // System.out.println("Angolo "+ Math.toDegrees(theta));
-
-          //-Fine
-        freccia(evento.getX(),evento.getY());
-      }
-    });
-
-    addMouseListener(new MouseAdapter()
-    {
-      public void mouseReleased(MouseEvent evento)
-      {
-
-        int distx = evento.getX() - _ships[_focus].getX()+10;
-        int disty = evento.getY() - _ships[_focus].getY()+10;
-        int a = Math.abs(distx);
-        int b = Math.abs(disty);
-        double tan =(float)disty/(float)distx;
-        double theta = Math.atan(tan);
-
-
-        if (distx*disty < 0)
-        {
-          theta = Math.PI + theta;
-        }
-        if ( disty < 0)
-        {
-          theta = Math.PI + theta;
-        }
-
-        int pewX = _ships[_focus].getX() + 10 - (int)((Math.cos(theta))*50);
-        int pewY = _ships[_focus].getY() + 10 - (int)((Math.sin(theta))*50);
 
 
 
-        System.out.println("Sin " + (Math.sin(theta)));
-        System.out.println("Cos " + (Math.cos(theta)));
+    // addMouseMotionListener(new MouseAdapter()
+    // {
+    //   public void mouseDragged(MouseEvent evento)
+    //   {   //Da Togliere
 
+    //     // int distx = evento.getX() - _ships[_focus].getX()+10;
+    //     // int disty = evento.getY() - _ships[_focus].getY()+10;
+    //     // int a = Math.abs(distx);
+    //     // int b = Math.abs(disty);
+    //     // double tan =(float)disty/(float)distx;
+    //     // double theta = Math.atan(tan);
+    //     // if (distx*disty < 0)
+    //     // {
+    //     //   theta = Math.PI + theta;
+    //     // }
+    //     // if ( disty < 0)
+    //     // {
+    //     //   theta = Math.PI + theta;
+    //     // }
+    //     //
+    //     // System.out.println("Angolo "+ Math.toDegrees(theta));
+    //
+    //       //-Fine
+    //     freccia(evento.getX(),evento.getY());
+    //   }
+    // });
 
-        pew = new Proiettile(pewX,pewY);
-        pew.Shoot(-distx,-disty);
-        System.out.println("ANGOLO: " + Math.toDegrees(theta));
-        System.out.println("Mouse Rilasciato " + evento.getX() + " " + evento.getY());
-        _counter++;
-        _focus = _counter%2;
-      }
-    });
+    // addMouseListener(new MouseAdapter()
+    // {
+    //   public void mouseReleased(MouseEvent evento)
+    //   {
+    //
+    //     int distx = evento.getX() - _ships[_focus].getX()+10;
+    //     int disty = evento.getY() - _ships[_focus].getY()+10;
+    //     int a = Math.abs(distx);
+    //     int b = Math.abs(disty);
+    //     double tan =(float)disty/(float)distx;
+    //     double theta = Math.atan(tan);
+    //
+    //
+    //     if (distx*disty < 0)
+    //     {
+    //       theta = Math.PI + theta;
+    //     }
+    //     if ( disty < 0)
+    //     {
+          // theta = Math.PI + theta;
+    //     }
+    //
+    //     int pewX = _ships[_focus].getX() + 10 - (int)((Math.cos(theta))*50);
+    //     int pewY = _ships[_focus].getY() + 10 - (int)((Math.sin(theta))*50);
+    //
+    //
+    //
+    //     System.out.println("Sin " + (Math.sin(theta)));
+    //     System.out.println("Cos " + (Math.cos(theta)));
+    //
+    //
+    //     pew = new Proiettile(pewX,pewY);
+    //     pew.Shoot(-distx,-disty);
+    //     System.out.println("ANGOLO: " + Math.toDegrees(theta));
+    //     System.out.println("Mouse Rilasciato " + evento.getX() + " " + evento.getY());
+    //     _counter++;
+    //     _focus = _counter%2;
+    //   }
+    // });
   }
 
   public Dimension getPreferredSize()
@@ -158,6 +184,16 @@ class Pannello extends JPanel implements ActionListener
   }
   public void actionPerformed(ActionEvent evento)
   {
+    if (evento.getSource() instanceof JButton) {
+      //System.out.println(txt2.getValue());
+      int angle = (Integer)txt.getValue();
+      int pewX = _ships[_focus].getX() + 10 + (int)((Math.cos(angle))*50);
+      int pewY = _ships[_focus].getY() + 10 + (int)((Math.sin(angle))*50);
+      pew = new Proiettile(pewX,pewY);
+      pew.Shoot(angle,(Double)txt2.getValue());
+      _counter++;
+      _focus=_counter%2;
+    }
     if (pew != null)
     //	if(true)
     {
@@ -169,21 +205,21 @@ class Pannello extends JPanel implements ActionListener
       {
         pew = null;
       }else {
-        pew.Forze(ball);
+        //pew.Forze(ball);
         pew.Update();
         //repaint(pew.getX(),pew.getY(),pew.getPX(),pew.getPY());
         repaint(pew.getX(),pew.getY(),pew.getPX(),pew.getPY());
         //repaint();
       }
     }
-    
+
     if ("new".equals(evento.getActionCommand())) { //new
         System.out.println("new");
     }
     if ("quit".equals(evento.getActionCommand())) { //new
         System.out.println("quit");
     }
-    
+
   }
 
   protected void paintComponent(Graphics g)
@@ -219,7 +255,7 @@ class Pannello extends JPanel implements ActionListener
     }
     time.start();
   }
-  
+
   protected JMenuBar createMenuBar() { //funzione che crea una menuBar
         JMenuBar menuBar = new JMenuBar();
 
@@ -245,7 +281,7 @@ class Pannello extends JPanel implements ActionListener
         	menuItem.setActionCommand("quit");
         	menuItem.addActionListener(this);
         	menu.add(menuItem);
-        	
+
         //Crea il secondo menu.
         JMenu menu2 = new JMenu("Document 2");
         menu2.setMnemonic(KeyEvent.VK_D);
@@ -254,6 +290,6 @@ class Pannello extends JPanel implements ActionListener
         return menuBar;
     }
 
-  
+
 
 }
