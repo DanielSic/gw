@@ -27,15 +27,16 @@ class Nave extends Abs
 
   Nave(int w, int h)
   {
-	super();
+	   super();
     _icon = new ImageIcon("gw/starship.png");
     _x = (Math.random() * (w-60))+30;
     _y = (Math.random() * (h-60))+30;
+    System.out.println(_x);
   }
 
   Nave(int w, int h,String img)
   {
-	super();
+	  super();
     _icon = new ImageIcon(img);
     _x = (Math.random() * (w-60))+30;
     _y = (Math.random() * (h-60))+30;
@@ -67,7 +68,9 @@ class Nave extends Abs
   public Dimension getPreferredSize()
   {
     if (focus)
-    return new Dimension((int)Math.abs(_x - _mx), (int)Math.abs(_y-_my));
+    {
+      return new Dimension((int)Math.abs(_x - _mx), (int)Math.abs(_y-_my));
+    }
     return new Dimension(20,20);
   }
 }

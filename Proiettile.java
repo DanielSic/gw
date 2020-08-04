@@ -10,7 +10,7 @@ import java.awt.Dimension;
 public class Proiettile extends Abs
 {
   private static double G = 1e12f;
-  private static double _m= 100;
+  //private static double _m= 100;
   private double  _px=0;
   private double  _py=0;
   private double  _vx=0;
@@ -24,6 +24,7 @@ public class Proiettile extends Abs
     super();
     _x=x;
     _y=y;
+    _m = 100;
     is = true;
   }
 
@@ -45,8 +46,8 @@ public class Proiettile extends Abs
     // _vy = (_vy > 5)? 5: _vy;
     _px = _x;
     _py = _y;
-    _vx += forze.getX()*1;
-    _vy += forze.getY()*1;
+    _vx += forze.getx()*1;
+    _vy += forze.gety()*1;
     _x  += _vx;
     _y  += _vy;
   }
@@ -83,7 +84,7 @@ public class Proiettile extends Abs
   }
   public boolean Hit(Nave nave)
   {
-    if ((_x < nave.getX() + 10 && _x > nave.getX() -10)&&(_y < nave.getY() + 10 && _y > nave.getY() -10))
+    if ((_x < nave.getx() + 10 && _x > nave.getx() -10)&&(_y < nave.gety() + 10 && _y > nave.gety() -10))
     {
       System.out.println("Bersaglio Colpito in " + _x + " "+_y+" <3");
       return true;
@@ -103,8 +104,8 @@ public class Proiettile extends Abs
   }
   private boolean Check(Sfera palla)
   {
-    double distx = (palla.getX()- _x);
-    double disty = (palla.getY()- _y);
+    double distx = (palla.getx()- _x);
+    double disty = (palla.gety()- _y);
     double dist = Math.sqrt(Math.pow(distx,2)+Math.pow(disty,2));
     if (dist <= palla.getR())
     {

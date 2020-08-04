@@ -9,7 +9,7 @@ public class Abs extends JComponent {
 
     protected double _x;
     protected double _y;
-    protected int _m;
+    protected double _m;
 
     protected int _width;
     protected int _height;
@@ -50,7 +50,7 @@ public class Abs extends JComponent {
         return _y;
     }
 
-    public int getM() {
+    public double getM() {
         return _m;
     }
 
