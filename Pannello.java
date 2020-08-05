@@ -11,6 +11,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -33,6 +34,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
+import javax.swing.JComponent;
+
+import java.util.ArrayList;
 
 class Pair
 {
@@ -54,10 +58,42 @@ class Pair
   }
 
 }
+
+class Trajectory extends JComponent
+{
+  private ArrayList<Pair> traj;
+  Trajectory()
+  {
+    traj = new ArrayList<Pair>();
+  }
+  public void push(Pair p)
+  {
+    traj.add(p);
+  }
+  @Override
+  protected void paintComponent(Graphics g)
+  {
+
+    g.setColor(new Color(0f,0.9f,0.9f,0.4f));
+    Graphics2D g2 = (Graphics2D)g;
+    double px = traj.get(0).getx();
+    double py = traj.get(0).gety();
+    for (Pair p : traj)
+    {
+      Line2D punto = new Line2D.Double(p.getx(),p.gety(),px,py);
+      px = p.getx();
+      py = p.gety();
+      g2.draw(punto);
+    }
+    //Line2D punto = new Line2D.Double(_x,_y,_x,_y);
+
+  }
+
+}
 class Pannello extends JPanel implements ActionListener
 {
 
-  private Timer time = new Timer(500,this);
+  private Timer time = new Timer(20,this);
   private int _counter = 0;
   private int _focus = 0;
   private Nave _ships[];
@@ -71,31 +107,63 @@ class Pannello extends JPanel implements ActionListener
   private Nave _sheep;
   private int _conteggio=0;
 
+  private ArrayList<Trajectory> _tr = new ArrayList<Trajectory>();
+  private Trajectory _current ;
   private Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
 
-  JFormattedTextField txt = new JFormattedTextField();
 
-  JFormattedTextField txt2 = new JFormattedTextField();
-  JButton butt = new JButton("Enter");
+  private JFormattedTextField angles[] = new JFormattedTextField[2];
+  private JFormattedTextField forces[] = new JFormattedTextField[2];
+
+  private JButton butts[] = new JButton[2];
 
   public Pannello()
   {
-    txt.setFont(new Font("Verdana", Font.BOLD,14));
-    txt.setValue(new Double(0));
-    txt.setOpaque(false);
-    txt.setForeground(new Color(250,250,250));
-    txt.setPreferredSize(new Dimension(100,20));
-    add(txt);
+    angles[0] = new JFormattedTextField();
+    angles[1] = new JFormattedTextField();
+    forces[0] = new JFormattedTextField();
+    forces[1] = new JFormattedTextField();
 
-    txt2.setFont(new Font("Verdana", Font.BOLD,14));
-    txt2.setValue(new Double(0));
-    txt2.setPreferredSize(new Dimension(100,20));
-    txt2.setOpaque(false);
-    txt2.setForeground(new Color(250,250,250));
-    add(txt2);
+    setLayout(null);
+    angles[0].setFont(new Font("Verdana", Font.BOLD,14));
+    angles[0].setValue(new Double(0));
+    angles[0].setOpaque(false);
+    angles[0].setForeground(new Color(250,250,250));
+    //one_angle.setPreferredSize(new Dimension(100,20));
+    angles[0].setBounds(100,700,100,20);
+    add(angles[0]);
 
-    butt.addActionListener(this);
-    add(butt);
+    forces[0].setFont(new Font("Verdana", Font.BOLD,14));
+    forces[0].setValue(new Double(0));
+    forces[0].setOpaque(false);
+    forces[0].setForeground(new Color(250,250,250));
+    forces[0].setBounds(100,720,100,20);
+
+    add(forces[0]);
+    butts[0] = new JButton("Shoot");
+    butts[0].addActionListener(this);
+    butts[0].setBounds(100,740,100,20);
+    add(butts[0]);
+
+    angles[1].setFont(new Font("Verdana", Font.BOLD,14));
+    angles[1].setValue(new Double(0));
+    angles[1].setOpaque(false);
+    angles[1].setForeground(new Color(250,250,250));
+    angles[1].setBounds(1040,700,100,20);
+    add(angles[1]);
+
+    forces[1].setFont(new Font("Verdana", Font.BOLD,14));
+    forces[1].setValue(new Double(0));
+    forces[1].setOpaque(false);
+    forces[1].setForeground(new Color(250,250,250));
+    forces[1].setBounds(1040,720,100,20);
+    add(forces[1]);
+    butts[1] = new JButton("Shoot");
+    butts[1].addActionListener(this);
+    butts[1].setBounds(1040,740,100,20);
+    butts[1].setEnabled(false);
+    add(butts[1]);
+
     double dist;
     _ships = new Nave[2];
 
@@ -104,7 +172,7 @@ class Pannello extends JPanel implements ActionListener
     {
       _ships[1] = new Nave(_hwidth*2, _hheigth*2);
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
-      System.out.println(_ships[0].getx());
+      // System.out.println(_ships[0].getx());
     } while (dist < 100f);
     for (int i = 0; i < 5 ; i++)
     {
@@ -114,6 +182,10 @@ class Pannello extends JPanel implements ActionListener
         ball[i] = new Sfera();
       } while((ball[i].getx() + ball[i].getR() < _ships[0].getx() &&   ball[i].getx()-ball[i].getR()>_ships[0].getx())||(ball[i].gety() + ball[i].getR() <_ships[0].gety() && ball[i].gety() - ball[i].getR()>_ships[0].gety()));
 
+    }
+    for (Sfera p : ball)
+    {
+      System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
     }
   }
 
@@ -135,14 +207,20 @@ class Pannello extends JPanel implements ActionListener
   public void actionPerformed(ActionEvent evento)
   {
     if (evento.getSource() instanceof JButton) {
-      //System.out.println(txt2.getValue());
-      double angle = (double)txt.getValue();
+      double angle = (double)angles[_focus].getValue();
       double pewX = _ships[_focus].getx() + 10 + ((Math.cos(Math.toRadians(angle)))*20);
       double pewY = _ships[_focus].gety() + 10 + ((Math.sin(Math.toRadians(angle)))*20);
       pew = new Proiettile(pewX,pewY);
-      pew.Shoot(angle,(double)txt2.getValue());
+      _current = new Trajectory();
+      _current.push(new Pair(pewX,pewY));
+
+      pew.Shoot(angle,(double)forces[_focus].getValue());
       _counter++;
+      butts[_focus].setEnabled(false);
       _focus=_counter%2;
+      butts[_focus].setEnabled(true);
+      //TODO la riga qui sopra va spostata e copiata per ogni volta in cui il proiettile sparisce
+      //per ora è qui per evitare di bloccare il gioco in caso il proiettile non colpisse nulla
     }
     if (pew != null)
     //	if(true)
@@ -169,8 +247,10 @@ class Pannello extends JPanel implements ActionListener
           miny = pew.getPY();
           maxy = pew.gety();
         }
+        _current.push(new Pair(pew.getx(),pew.gety()));
         repaint((int)minx,(int)miny,(int)maxx,(int)maxy);
-        System.out.println("YEEEEEEEET");
+        _tr.add(_current);
+
         pew = null;
       }else if ( pew.Hit(ball)) // si può mettere la condizione nell'if di sopra C:
       {
@@ -195,11 +275,14 @@ class Pannello extends JPanel implements ActionListener
           maxy = pew.gety();
         }
         repaint((int)minx,(int)miny,(int)maxx,(int)maxy);
+        _tr.add(_current);
         pew = null;
       }else {
         //pew.Forze(ball);
         //pew.Update();
         pew.Update(Forze(pew.getx(),pew.gety(),ball));
+        _current.push(new Pair(pew.getx(),pew.gety()));
+
         double minx,miny,maxx,maxy;
         //repaint(pew.getx(),pew.gety(),pew.getPX(),pew.getPY());
         if (pew.getx() < pew.getPX())
@@ -220,7 +303,7 @@ class Pannello extends JPanel implements ActionListener
           miny = pew.getPY();
           maxy = pew.gety();
         }
-        repaint((int)minx,(int)miny,(int)maxx,(int)maxy);
+        repaint();
         //repaint();
       }
     }
@@ -236,16 +319,24 @@ class Pannello extends JPanel implements ActionListener
     hord = (_x - _ships[_focus].getx() )/3;
 
     g2d.drawImage(bg,0,0,null);
-    Line2D lin = new Line2D.Double(_x, _y, 200, 200);
-    // Line2D h = new Line2D.Double(200, 0, 200, 400);
-    // Line2D v = new Line2D.Double(0, 200, 400, 200);
-    Line2D lin2 = new Line2D.Double(_ships[_focus].getx()+10,_ships[_focus].gety()+10, _ships[_focus].getx()-hord, _ships[_focus].gety()-vertd);
-    g2d.draw(lin2);
-    //g2d.draw(h);
-    //g2d.draw(v);
-    //_icon.paintIcon(this,g2d,_sheep.getx()-10,_sheep.gety()-10);
+
     _ships[0].paintComponent(g);
     _ships[1].paintComponent(g);
+    for (Trajectory raj : _tr)
+    {
+      raj.paintComponent(g);
+    }
+    if (pew != null)
+    {
+      Line2D punto;
+      for (Sfera b : ball)
+      {
+        punto = new Line2D.Double(b.getx()+(b.getR()/2),b.gety()+(b.getR()/2),pew.getx(),pew.gety());
+        g2d.draw(punto);
+      }
+      //pew.paintComponent(g);
+      //_current.paintComponent(g);
+    }
 
 
     for (Sfera balla : ball)
@@ -253,10 +344,7 @@ class Pannello extends JPanel implements ActionListener
       balla.paintComponent(g);
     }
     _conteggio++;
-    if (pew != null)
-    {
-      pew.paintComponent(g);
-    }
+
     time.start();
   }
 
@@ -270,17 +358,15 @@ class Pannello extends JPanel implements ActionListener
     double fy = 0;
     for (Sfera i : palle)
     {
-      distx = x - i.getx();
-      disty = y - i.gety();
+      distx = x - (i.getx()+(i.getR()/2));
+      disty = y - (i.gety()+(i.getR()/2));
       dist = Math.sqrt(distx*distx + disty*disty);
       f = -pew.getM()*i.getM()/Math.pow(dist,2);
       fx += f * (double)(distx/dist);
       fy += f * (double)(disty/dist);
-      System.out.println(pew.getM());
     }
-    double ax = (fx);
-    double ay = (fy);
-    System.out.println(ax+", "+ay);
+    double ax = (fx*1/8);
+    double ay = (fy*1/8);
     return new Pair(ax,ay);
   }
 }

@@ -31,7 +31,6 @@ class Nave extends Abs
     _icon = new ImageIcon("gw/starship.png");
     _x = (Math.random() * (w-60))+30;
     _y = (Math.random() * (h-60))+30;
-    System.out.println(_x);
   }
 
   Nave(int w, int h,String img)

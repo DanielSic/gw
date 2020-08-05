@@ -84,7 +84,7 @@ public class Proiettile extends Abs
   }
   public boolean Hit(Nave nave)
   {
-    if ((_x < nave.getx() + 10 && _x > nave.getx() -10)&&(_y < nave.gety() + 10 && _y > nave.gety() -10))
+    if ((_x < nave.getx() + 20 && _x > nave.getx())&&(_y < nave.gety() + 20 && _y > nave.gety()))
     {
       System.out.println("Bersaglio Colpito in " + _x + " "+_y+" <3");
       return true;
@@ -104,14 +104,17 @@ public class Proiettile extends Abs
   }
   private boolean Check(Sfera palla)
   {
-    double distx = (palla.getx()- _x);
-    double disty = (palla.gety()- _y);
-    double dist = Math.sqrt(Math.pow(distx,2)+Math.pow(disty,2));
-    if (dist <= palla.getR())
+    double distx = Math.abs((palla.getx()+(palla.getR()/2))- _x);
+    double disty = Math.abs((palla.gety()+(palla.getR()/2))- _y);
+    double distq = Math.pow(distx,2)+Math.pow(disty,2);
+    if (Math.sqrt(distq) <= palla.getR()/2)
     {
-      System.out.println("COLPITO PIANETA");
+      System.out.println("COLPITO PIANETA: "+ _x + " " + _y+" "+Math.sqrt(distq));
+      System.out.println(+ palla.getx() + " " + palla.gety()+" "+palla.getR());
+
       return true;
     }
+
     return false;
   }
 }

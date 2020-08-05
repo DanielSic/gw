@@ -74,7 +74,16 @@ public class testa extends JFrame implements ActionListener {
         	menuItem.addActionListener(this);
         	menu.add(menuItem);
 
-        	//Crea il secondo elemento del menu.
+          //Crea il secondo elemento del menu.
+          menuItem = new JMenuItem("Settings");
+          menuItem.setMnemonic(KeyEvent.VK_Q);
+          //menuItem.setAccelerator(KeyStroke.getKeyStroke(
+          //    KeyEvent.VK_Q, ActionEvent.ALT_MASK));
+          menuItem.setActionCommand("settings");
+          menuItem.addActionListener(this);
+          menu.add(menuItem);
+
+        	//Crea il terzo elemento del menu.
         	menuItem = new JMenuItem("Quit");
         	menuItem.setMnemonic(KeyEvent.VK_Q);
         	menuItem.setAccelerator(KeyStroke.getKeyStroke(
@@ -96,17 +105,26 @@ public class testa extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
         if ("new".equals(e.getActionCommand())) { //new
-            System.out.println("new");
             remove(panel);
             panel = null;
             initUI();
 
         }
+        if ("settings".equals(e.getActionCommand()))
+        {
+          Settings s  = new Settings();
+          //TODO BISOGNERÀ (QUASI DI CERTO) CREARE UNA FUNZIONE "CREATE SETTINGS IN PANNELLO E CHIAMARE QUELLA"
+          //TODO panel.creteSettings();
+          //TODO QUALCOSA DEL GENERE INSOMMA!
+
+          //TODO? Sono indeciso se possa servire avere una cosa come una struct di impostazioni per rendere più facile lo scambio tra pannello e settings
+
+        }
         if ("quit".equals(e.getActionCommand())) { //new
-            System.out.println("quit");
             dispose();
             System.exit(0);
         }
+
 
 
 
