@@ -24,6 +24,7 @@ class Nave extends Abs
 {
   private int _mx,_my;
   private boolean focus = false;
+  private int _punteggio=0;
 
   Nave(int w, int h)
   {
@@ -41,6 +42,10 @@ class Nave extends Abs
     _y = (Math.random() * (h-60))+30;
   }
 
+  public int getPunteggio()
+  {
+    return _punteggio;
+  }
   public void getMouse(int mx, int my)
   {
     _mx = mx;
@@ -71,5 +76,9 @@ class Nave extends Abs
       return new Dimension((int)Math.abs(_x - _mx), (int)Math.abs(_y-_my));
     }
     return new Dimension(20,20);
+  }
+  public void increase()
+  {
+    _punteggio++;
   }
 }

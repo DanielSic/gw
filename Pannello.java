@@ -35,6 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 import java.util.ArrayList;
 
@@ -117,7 +118,20 @@ class Pannello extends JPanel implements ActionListener
 
   private JButton butts[] = new JButton[2];
 
+  private JLabel labels[] = new JLabel[2];
+  private int _points[] = {0,0};
+
   public Pannello()
+  {
+
+    initUI();
+
+    loadGame();
+
+
+  }
+
+  private void initUI()
   {
     angles[0] = new JFormattedTextField();
     angles[1] = new JFormattedTextField();
@@ -138,8 +152,8 @@ class Pannello extends JPanel implements ActionListener
     forces[0].setOpaque(false);
     forces[0].setForeground(new Color(250,250,250));
     forces[0].setBounds(100,720,100,20);
-
     add(forces[0]);
+
     butts[0] = new JButton("Shoot");
     butts[0].addActionListener(this);
     butts[0].setBounds(100,740,100,20);
@@ -158,12 +172,25 @@ class Pannello extends JPanel implements ActionListener
     forces[1].setForeground(new Color(250,250,250));
     forces[1].setBounds(1040,720,100,20);
     add(forces[1]);
+
     butts[1] = new JButton("Shoot");
     butts[1].addActionListener(this);
     butts[1].setBounds(1040,740,100,20);
     butts[1].setEnabled(false);
     add(butts[1]);
+    labels[0] = new JLabel(Integer.toString(_points[0]));
+    labels[0].setFont(new Font("Verdana", Font.BOLD,40));
 
+    labels[0].setBounds(800,100,100,100);
+    add(labels[0]);
+    labels[1] = new JLabel(Integer.toString(_points[1]));
+    labels[1].setFont(new Font("Verdana", Font.BOLD,40));
+
+    labels[1].setBounds(950,100,100,100);
+    add(labels[1]);
+  }
+  private void loadGame()
+  {
     double dist;
     _ships = new Nave[2];
 
@@ -188,7 +215,6 @@ class Pannello extends JPanel implements ActionListener
       System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
     }
   }
-
   public Dimension getPreferredSize()
   {
     return new Dimension(_hwidth*2,_hheigth*2);
@@ -225,34 +251,33 @@ class Pannello extends JPanel implements ActionListener
     if (pew != null)
     //	if(true)
     {
-      if ((pew.Hit(_ships[0]))||(pew.Hit(_ships[1])))
+      if (pew.Hit(_ships[0]))
       {
-        double minx,miny,maxx,maxy;
-        //repaint(pew.getx(),pew.gety(),pew.getPX(),pew.getPY());
-        if (pew.getx() < pew.getPX())
-        {
-          minx = pew.getx();
-          maxx = pew.getPX();
-        } else
-        {
-          minx = pew.getPX();
-          maxx = pew.getx();
-        }
-        if (pew.gety() < pew.getPY())
-        {
-          miny = pew.gety();
-          maxy = pew.getPY();
-        } else
-        {
-          miny = pew.getPY();
-          maxy = pew.gety();
-        }
         _current.push(new Pair(pew.getx(),pew.gety()));
-        repaint((int)minx,(int)miny,(int)maxx,(int)maxy);
+        repaint();
         _tr.add(_current);
+        _ships[1].increase();
+        _points[1]++;
+        labels[1].setText(Integer.toString(_points[1]));
 
         pew = null;
-      }else if ( pew.Hit(ball)) // si può mettere la condizione nell'if di sopra C:
+        _tr = new ArrayList<Trajectory>();
+        _current= new Trajectory();
+        loadGame();
+      }else if (pew.Hit(_ships[1]))
+      {
+        _current.push(new Pair(pew.getx(),pew.gety()));
+        repaint();
+        _tr.add(_current);
+        _ships[0].increase();
+        _points[0]++;
+        labels[0].setText(Integer.toString(_points[0]));
+        pew = null;
+        _tr = new ArrayList<Trajectory>();
+        _current= new Trajectory();
+        loadGame();
+
+      }else if ( pew.Hit(ball))
       {
         double minx,miny,maxx,maxy;
         //repaint(pew.getx(),pew.gety(),pew.getPX(),pew.getPY());

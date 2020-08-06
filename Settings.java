@@ -31,6 +31,7 @@ class Settings extends JFrame //implements ActionListener
   private boolean lines = false;
   Settings()
   {
+    setPreferredSize(new Dimension(400,600));
     setLayout(new FlowLayout());
     JPanel panel = new JPanel(new GridLayout(1,2,2,2));
     panel.add(new JLabel("Quello è un bottone"));

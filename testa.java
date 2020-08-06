@@ -107,6 +107,7 @@ public class testa extends JFrame implements ActionListener {
         if ("new".equals(e.getActionCommand())) { //new
             remove(panel);
             panel = null;
+            //invece di fare così potrebbe essere più utile chiamare pannello.loadGame e pannello.initUI
             initUI();
 
         }
