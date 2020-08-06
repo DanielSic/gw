@@ -181,12 +181,12 @@ class Pannello extends JPanel implements ActionListener
     labels[0] = new JLabel(Integer.toString(_points[0]));
     labels[0].setFont(new Font("Verdana", Font.BOLD,40));
 
-    labels[0].setBounds(800,100,100,100);
+    labels[0].setBounds(1000,50,100,100);
     add(labels[0]);
     labels[1] = new JLabel(Integer.toString(_points[1]));
     labels[1].setFont(new Font("Verdana", Font.BOLD,40));
 
-    labels[1].setBounds(950,100,100,100);
+    labels[1].setBounds(1100,50,100,100);
     add(labels[1]);
   }
   private void loadGame()
@@ -305,28 +305,15 @@ class Pannello extends JPanel implements ActionListener
       }else {
         //pew.Forze(ball);
         //pew.Update();
-        pew.Update(Forze(pew.getx(),pew.gety(),ball));
-        _current.push(new Pair(pew.getx(),pew.gety()));
-
-        double minx,miny,maxx,maxy;
-        //repaint(pew.getx(),pew.gety(),pew.getPX(),pew.getPY());
-        if (pew.getx() < pew.getPX())
+        Pair forces = Forze(pew.getx(),pew.gety(),ball);
+        if (Math.abs(forces.getx()) < 1e-6 && Math.abs(forces.gety()) < 1e-6)
         {
-          minx = pew.getx();
-          maxx = pew.getPX();
-        } else
+          _tr.add(_current);
+          pew = null;
+        }else
         {
-          minx = pew.getPX();
-          maxx = pew.getx();
-        }
-        if (pew.gety() < pew.getPY())
-        {
-          miny = pew.gety();
-          maxy = pew.getPY();
-        } else
-        {
-          miny = pew.getPY();
-          maxy = pew.gety();
+          pew.Update(forces);
+          _current.push(new Pair(pew.getx(),pew.gety()));
         }
         repaint();
         //repaint();
