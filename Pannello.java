@@ -36,6 +36,8 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import java.util.ArrayList;
 
@@ -116,9 +118,10 @@ class Pannello extends JPanel implements ActionListener
   private Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
 
 
-  private JFormattedTextField angles[] ;
-  private JFormattedTextField forces[] ;
-
+  //private JFormattedTextField angles[] ;
+  //private JFormattedTextField forces[] ;
+  private JSpinner angles[];
+  private JSpinner forces[];
   private JButton butts[];
 
   private JLabel labels[] ;
@@ -135,6 +138,8 @@ class Pannello extends JPanel implements ActionListener
   }
   public void clearUI()
   {
+    _counter=0;
+    _focus = _counter%2;
     removeAll();
     revalidate();
     initUI();
@@ -142,22 +147,28 @@ class Pannello extends JPanel implements ActionListener
 
   public void initUI()
   {
-    angles = new JFormattedTextField[2];
-    forces = new JFormattedTextField[2];
+    // angles = new JFormattedTextField[2];
+    // forces = new JFormattedTextField[2];
+    angles = new JSpinner[2];
+    forces = new JSpinner[2];
     butts = new JButton[2];
     labels = new JLabel[2];
     _points = new int[2];
     _points[1] = 0;
 
     _points[0] = 0;
-    angles[0] = new JFormattedTextField();
-    angles[1] = new JFormattedTextField();
-    forces[0] = new JFormattedTextField();
-    forces[1] = new JFormattedTextField();
+    // angles[0] = new JFormattedTextField();
+    // angles[1] = new JFormattedTextField();
+    // forces[0] = new JFormattedTextField();
+    // forces[1] = new JFormattedTextField();
 
+    angles[0] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
+    angles[1] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
+    forces[0] = new JSpinner(new SpinnerNumberModel(0.0,0.0,5.0,0.01));
+    forces[1] = new JSpinner(new SpinnerNumberModel(0.0,0.0,5.0,0.01));
     setLayout(null);
     angles[0].setFont(new Font("Verdana", Font.BOLD,14));
-    angles[0].setValue(new Double(0));
+    //angles[0].setValue(new Double(0));
     angles[0].setOpaque(false);
     angles[0].setForeground(new Color(250,250,250));
     //one_angle.setPreferredSize(new Dimension(100,20));
@@ -165,7 +176,7 @@ class Pannello extends JPanel implements ActionListener
     add(angles[0]);
 
     forces[0].setFont(new Font("Verdana", Font.BOLD,14));
-    forces[0].setValue(new Double(0));
+    //forces[0].setValue(new Double(0));
     forces[0].setOpaque(false);
     forces[0].setForeground(new Color(250,250,250));
     forces[0].setBounds(100,720,100,20);

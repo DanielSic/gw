@@ -45,7 +45,7 @@ class Settings extends JFrame implements ActionListener
     setLayout(new FlowLayout());
     JPanel panel = new JPanel(new GridLayout(1,2,2,2));
     panel.add(new JLabel("Numero di pianeti"));
-    JButton bot = new JButton("Save");
+    JButton bot = new JButton("Apply and Close");
     bot.addActionListener(this);
 
     panel.setPreferredSize(new Dimension(400,100));
