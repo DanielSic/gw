@@ -30,25 +30,16 @@ public class Sfera extends Abs
 
     for (Nave ship : ships)
     {
-      if ((_x+_r/2 > ship.getx() && _x+_r/2 < ship.getx()+20)&&(_y+_r/2 > ship.gety() && _y+_r/2 < ship.gety()+20))
-      {
-        return false;
-      }else if ((Math.sqrt(Math.pow(ship.getx()-_x+_r/2,2)+Math.pow(ship.gety()-_y+_r/2,2))< _r/2))
-      {
-        return false;
-      }else if ((Math.sqrt(Math.pow(ship.getx()+20-_x+_r/2,2)+Math.pow(ship.gety()-_y+_r/2,2))< _r/2))
-      {
-        return false;
-      }else if ((Math.sqrt(Math.pow(ship.getx()-_x+_r/2,2)+Math.pow(ship.gety()+20-_y+_r/2,2))< _r/2))
-      {
-        return false;
-      }else if ((Math.sqrt(Math.pow(ship.getx()+20-_x+_r/2,2)+Math.pow(ship.gety()+20-_y+_r/2,2))< _r/2))
+      //Cerca il punto sul perimetro del quadrato più vicino al cerchio,
+      // se dista meno del raggio del cerchio allora c'è intersezione
+      double minx = (_x+_r/2 < ship.getx()+20)? _x+_r/2 : ship.getx()+20;
+      double miny = (_y+_r/2 < ship.gety()+20)? _y+_r/2 : ship.gety()+20;
+      double nearx = (ship.getx() > minx)? ship.getx() : minx;
+      double neary = (ship.gety() > miny)? ship.gety() : miny;
+      if (Math.sqrt(Math.pow(_x+_r/2-nearx,2)+Math.pow(_y+_r/2-neary,2))<= _r/2)
       {
         return false;
       }
-      //Si sarebbe potuto unire tutto in un unico enorme if ma sarebbe stato illeggibile
-      //A livello di logica si controlla che il centro di un pianeta non sia mai all'interno
-      // di una nava e che gli angoli della nave non siano mai all'interno di un pianeta
 
 
     }
