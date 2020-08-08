@@ -116,7 +116,8 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         }
         if ("settings".equals(e.getActionCommand()))
         {
-          s  = panel.getSettings();
+          //s  = panel.getSettings();
+          s = new Settings(panel.getSettings());
           s.addWindowListener(this);
 
           //TODO BISOGNERÀ (QUASI DI CERTO) CREARE UNA FUNZIONE "CREATE SETTINGS IN PANNELLO E CHIAMARE QUELLA"

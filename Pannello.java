@@ -386,14 +386,19 @@ class Pannello extends JPanel implements ActionListener
     double ay = (fy*1/8);
     return new Pair(ax,ay);
   }
-  public Settings getSettings()
+  // public Settings getSettings()
+  // {
+  //   s  = new Settings(_planetnum);
+  //   return s;
+  // }
+  public int getSettings()
   {
-    s  = new Settings(_planetnum);
-    return s;
+    return _planetnum;
   }
   public void setSettings(int number) // best name
   {
-    _planetnum = s.getNumber();
+    //_planetnum = s.getNumber();
+    _planetnum=number;
     System.out.println(number);
     loadGame();
     repaint();
