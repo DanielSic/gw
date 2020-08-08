@@ -46,13 +46,16 @@ public class Sfera extends Abs
       {
         return false;
       }
+      //Si sarebbe potuto unire tutto in un unico enorme if ma sarebbe stato illeggibile
+      //A livello di logica si controlla che il centro di un pianeta non sia mai all'interno
+      // di una nava e che gli angoli della nave non siano mai all'interno di un pianeta
 
 
     }
     for (int i = 0;i < len; i++)
     {
-      double distx = (_x + _r/2) - (pal[i].getx()-pal[i].getR()/2);
-      double disty = (_y + _r/2) - (pal[i].gety()-pal[i].getR()/2);
+      double distx = (_x + _r/2) - (pal[i].getx()+pal[i].getR()/2);
+      double disty = (_y + _r/2) - (pal[i].gety()+pal[i].getR()/2);
       double dist = Math.sqrt(distx*distx + disty*disty);
       System.out.println("ciao");
       if (dist <= ((_r/2f) + (pal[i].getR()/2f)))
