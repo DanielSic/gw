@@ -226,7 +226,7 @@ class Pannello extends JPanel implements ActionListener
       do
       {
         ball[i] = new Sfera();
-      } while((ball[i].getx() + ball[i].getR() < _ships[0].getx() &&   ball[i].getx()-ball[i].getR()>_ships[0].getx())||(ball[i].gety() + ball[i].getR() <_ships[0].gety() && ball[i].gety() - ball[i].getR()>_ships[0].gety()));
+      } while(!ball[i].isValid(_ships,ball,i));
 
     }
     for (Sfera p : ball)

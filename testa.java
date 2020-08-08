@@ -113,6 +113,9 @@ public class testa extends JFrame implements ActionListener,WindowListener{
             // //invece di fare così potrebbe essere più utile chiamare pannello.loadGame e pannello.initUI
             // initUI();
             panel.loadGame();
+            // panel.removeAll();
+            // panel.revalidate();
+            // panel.initUI();
             panel.clearUI();
             panel.repaint();
 
