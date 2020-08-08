@@ -108,10 +108,13 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 	public void actionPerformed(ActionEvent e) {
 
         if ("new".equals(e.getActionCommand())) { //new
-            remove(panel);
-            panel = null;
-            //invece di fare così potrebbe essere più utile chiamare pannello.loadGame e pannello.initUI
-            initUI();
+            // remove(panel);
+            // panel = null;
+            // //invece di fare così potrebbe essere più utile chiamare pannello.loadGame e pannello.initUI
+            // initUI();
+            panel.loadGame();
+            panel.initUI();
+            panel.repaint();
 
         }
         if ("settings".equals(e.getActionCommand()))
@@ -135,7 +138,6 @@ public class testa extends JFrame implements ActionListener,WindowListener{
     }
   public void windowClosed(WindowEvent e)
   {
-
     System.out.println("DIO");
     setEnabled(true);
     panel.setSettings(s.getNumber());

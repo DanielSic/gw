@@ -122,7 +122,7 @@ class Pannello extends JPanel implements ActionListener
   private JButton butts[] = new JButton[2];
 
   private JLabel labels[] = new JLabel[2];
-  private int _points[] = {0,0};
+  private int _points[];
 
   public Pannello()
   {
@@ -134,8 +134,11 @@ class Pannello extends JPanel implements ActionListener
 
   }
 
-  private void initUI()
+  public void initUI()
   {
+    _points = new int[2];
+    _points[0] = 0;
+    _points[1] = 0;
     angles[0] = new JFormattedTextField();
     angles[1] = new JFormattedTextField();
     forces[0] = new JFormattedTextField();
@@ -192,7 +195,7 @@ class Pannello extends JPanel implements ActionListener
     labels[1].setBounds(1100,50,100,100);
     add(labels[1]);
   }
-  private void loadGame()
+  public void loadGame()
   {
     _tr = new ArrayList<Trajectory>();
     ball = new Sfera[_planetnum];
