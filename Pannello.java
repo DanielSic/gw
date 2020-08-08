@@ -99,7 +99,8 @@ class Pannello extends JPanel implements ActionListener
   private int _focus = 0;
   private Nave _ships[];
   private Proiettile pew;
-  private Sfera ball[] = new Sfera[5];
+  private int _planetnum = 5;
+  private Sfera ball[]; ;
   private int _hheigth = 400;
   private int _hwidth = 610;
   private int _x = 50;
@@ -107,6 +108,8 @@ class Pannello extends JPanel implements ActionListener
   private int _raggio = 30;
   private Nave _sheep;
   private int _conteggio=0;
+
+  private Settings s ;
 
   private ArrayList<Trajectory> _tr = new ArrayList<Trajectory>();
   private Trajectory _current ;
@@ -191,6 +194,7 @@ class Pannello extends JPanel implements ActionListener
   }
   private void loadGame()
   {
+    ball = new Sfera[_planetnum];
     double dist;
     _ships = new Nave[2];
 
@@ -201,7 +205,7 @@ class Pannello extends JPanel implements ActionListener
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
     } while (dist < 100f);
-    for (int i = 0; i < 5 ; i++)
+    for (int i = 0; i < _planetnum ; i++)
     {
 
       do
@@ -306,7 +310,8 @@ class Pannello extends JPanel implements ActionListener
         //pew.Forze(ball);
         //pew.Update();
         Pair forces = Forze(pew.getx(),pew.gety(),ball);
-        if (Math.abs(forces.getx()) < 1e-6 && Math.abs(forces.gety()) < 1e-6)
+        System.out.println(forces.getx());
+        if (Math.abs(forces.getx()) < 1e-4 && Math.abs(forces.gety()) < 1e-4)
         {
           _tr.add(_current);
           pew = null;
@@ -381,4 +386,17 @@ class Pannello extends JPanel implements ActionListener
     double ay = (fy*1/8);
     return new Pair(ax,ay);
   }
+  public Settings getSettings()
+  {
+    s  = new Settings(_planetnum);
+    return s;
+  }
+  public void setSettings(int number) // best name
+  {
+    _planetnum = s.getNumber();
+    System.out.println(number);
+    loadGame();
+    repaint();
+  }
+
 }

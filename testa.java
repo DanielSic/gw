@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -24,8 +26,9 @@ import javax.swing.Timer;
 
 
 
-public class testa extends JFrame implements ActionListener {
+public class testa extends JFrame implements ActionListener,WindowListener{
     Pannello panel;
+    Settings s;
 
     public testa() {
 
@@ -113,7 +116,9 @@ public class testa extends JFrame implements ActionListener {
         }
         if ("settings".equals(e.getActionCommand()))
         {
-          Settings s  = new Settings();
+          s  = panel.getSettings();
+          s.addWindowListener(this);
+
           //TODO BISOGNERÀ (QUASI DI CERTO) CREARE UNA FUNZIONE "CREATE SETTINGS IN PANNELLO E CHIAMARE QUELLA"
           //TODO panel.creteSettings();
           //TODO QUALCOSA DEL GENERE INSOMMA!
@@ -125,11 +130,37 @@ public class testa extends JFrame implements ActionListener {
             dispose();
             System.exit(0);
         }
-
-
-
-
     }
+  public void windowClosed(WindowEvent e)
+  {
+
+  }
+  public void windowDeactivated(WindowEvent e)
+  {
+    System.out.println("DIO");
+
+    panel.setSettings(s.getNumber());
+  }
+  public void windowActivated(WindowEvent e)
+  {
+
+  }
+  public void windowClosing(WindowEvent e)
+  {
+
+  }
+  public void windowIconified(WindowEvent e)
+  {
+
+  }
+  public void windowDeiconified(WindowEvent e)
+  {
+
+  }
+  public void windowOpened(WindowEvent e)
+  {
+
+  }
 
 
 }
