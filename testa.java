@@ -143,7 +143,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
   {
     System.out.println("DIO");
     setEnabled(true);
-    panel.setSettings(s.getNumber());
+    panel.setSettings(s.getSad());
   }
   public void windowDeactivated(WindowEvent e)
   {

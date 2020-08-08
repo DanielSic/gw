@@ -61,6 +61,32 @@ class Pair
   }
 
 }
+class Sad
+{
+  public int _planetnum;
+  public boolean _inbetween;
+  Sad()
+  {
+    _planetnum =5;
+    _inbetween = false;
+  }
+  // public void setPlanets(int num)
+  // {
+  //   _planetnum = num;
+  // }
+  // public void setInb(boolean a)
+  // {
+  //   _inbetween = a;
+  // }
+  // public int getPlanets()
+  // {
+  //   return _planetnum;
+  // }
+  // public boolean getInb()
+  // {
+  //   return _inbetween;
+  // }
+}
 
 class Trajectory extends JComponent
 {
@@ -101,7 +127,11 @@ class Pannello extends JPanel implements ActionListener
   private int _focus = 0;
   private Nave _ships[];
   private Proiettile pew;
-  private int _planetnum = 5;
+  //private int _planetnum = 5;
+  //private boolean _inbetween  = true;
+  private Sad _set = new Sad();
+  // _set._planetnum = 5;
+  // _set._inbetween = false;
   private Sfera ball[]; ;
   private int _hheigth = 400;
   private int _hwidth = 610;
@@ -110,6 +140,7 @@ class Pannello extends JPanel implements ActionListener
   private int _raggio = 30;
   private Nave _sheep;
   private int _conteggio=0;
+
 
   private Settings s ;
 
@@ -230,7 +261,7 @@ class Pannello extends JPanel implements ActionListener
   public void loadGame()
   {
     _tr = new ArrayList<Trajectory>();
-    ball = new Sfera[_planetnum];
+    ball = new Sfera[_set._planetnum];
     double dist;
     _ships = new Nave[2];
 
@@ -241,18 +272,34 @@ class Pannello extends JPanel implements ActionListener
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
     } while (dist < 100f);
-    for (int i = 0; i < _planetnum ; i++)
-    {
+    loadPlanets();
 
+    for (Sfera p : ball)
+    {
+      System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
+    }
+  }
+  private void loadPlanets()
+  {
+    int i = 0;
+    if (_set._inbetween)
+    {
+      do
+      {
+        double x = (_ships[1].getx()>_ships[0].getx())? _ships[0].getx()+(_ships[1].getx()+10 - (_ships[0].getx()+10))/2:_ships[1].getx()+(_ships[0].getx()+10 - (_ships[1].getx()+10))/2;
+        double y = (_ships[1].gety()>_ships[0].gety())? _ships[0].gety()+(_ships[1].gety()+10 - (_ships[0].gety()+10))/2:_ships[1].gety()+(_ships[0].gety()+10 - (_ships[1].gety()+10))/2;
+
+        ball[i] = new Sfera(x,y);
+      }while(!ball[i].isValid(_ships,ball,i));
+      i++;
+
+    }
+    for (i = i; i < _set._planetnum; i++)
+    {
       do
       {
         ball[i] = new Sfera();
       } while(!ball[i].isValid(_ships,ball,i));
-
-    }
-    for (Sfera p : ball)
-    {
-      System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
     }
   }
   public Dimension getPreferredSize()
@@ -427,15 +474,15 @@ class Pannello extends JPanel implements ActionListener
   //   s  = new Settings(_planetnum);
   //   return s;
   // }
-  public int getSettings()
+  public Sad getSettings()
   {
-    return _planetnum;
+    return _set;
   }
-  public void setSettings(int number) // best name
+  public void setSettings(Sad set) // best name
   {
     //_planetnum = s.getNumber();
-    _planetnum=number;
-    System.out.println(number);
+    _set = set;
+    System.out.println(_set._planetnum);
     pew = null;
     loadGame();
     repaint();

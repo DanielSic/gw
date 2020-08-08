@@ -25,6 +25,16 @@ public class Sfera extends Abs
     double col = ((double)_m-100)/(900);
     colore = new Color((float)col,0f,(float)(1-col));
   }
+  public Sfera(double x, double y)
+  {
+    _r = (Math.random() * 140 + 10);
+    _x = x-_r/2;
+    _y = y-_r/2;
+    _m = (Math.random() * (700 - 100) + 100);
+    double col = ((double)_m-100)/(900);
+    colore = new Color((float)col,0f,(float)(1-col));
+
+  }
   public boolean isValid(Nave[] ships, Sfera[] pal,int len)
   {
 

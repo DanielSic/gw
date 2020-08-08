@@ -26,20 +26,24 @@ import javax.swing.Timer;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
+import javax.swing.JCheckBox;
 
 class Settings extends JFrame implements ActionListener
 {
   private int _planets = 0;
+  private Sad _set;
   private boolean lines = false;
   private int number;
   private JSpinner spin;
-  Settings(int planets)
+  private JCheckBox check;
+  Settings(Sad set)
   {
+    _set = set;
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setFont(new Font("Verdana",Font.BOLD,14));
 
     spin = new JSpinner();
-    number = planets;
+    number = _set._planetnum;
 
     setPreferredSize(new Dimension(400,600));
     setLayout(new FlowLayout());
@@ -58,6 +62,10 @@ class Settings extends JFrame implements ActionListener
     add(sotto);
     spin.setValue(number);
     panel.add(spin);
+    panel.add(new JLabel("Pianeta in mezzo"));
+    check = new JCheckBox();
+    check.setSelected(_set._inbetween);
+    panel.add(check);
 
     setResizable(false);
     pack();
@@ -68,9 +76,9 @@ class Settings extends JFrame implements ActionListener
     setLocationRelativeTo(null);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
-  public int getNumber()
+  public Sad getSad()
   {
-    return number;
+    return _set;
   }
   @Override
   public void actionPerformed(ActionEvent evento)
@@ -78,7 +86,8 @@ class Settings extends JFrame implements ActionListener
     if (evento.getSource() instanceof JButton)
     {
       //System.out.println(spin.getValue());
-      number = (int)spin.getValue();
+      _set._planetnum = (int)spin.getValue();
+      _set._inbetween = check.isSelected();
       dispose();
     }
   }
