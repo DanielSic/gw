@@ -167,18 +167,24 @@ class Pannello extends JPanel implements ActionListener
     forces[0] = new JSpinner(new SpinnerNumberModel(0.0,0.0,5.0,0.01));
     forces[1] = new JSpinner(new SpinnerNumberModel(0.0,0.0,5.0,0.01));
     setLayout(null);
-    angles[0].setFont(new Font("Verdana", Font.BOLD,14));
-    //angles[0].setValue(new Double(0));
+
+
     angles[0].setOpaque(false);
-    angles[0].setForeground(new Color(250,250,250));
+    angles[0].getEditor().setOpaque(false);
+    ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    //angles[0].setValue(new Double(0));
+    ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setOpaque(false);
+    ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
     //one_angle.setPreferredSize(new Dimension(100,20));
     angles[0].setBounds(100,700,100,20);
     add(angles[0]);
 
-    forces[0].setFont(new Font("Verdana", Font.BOLD,14));
-    //forces[0].setValue(new Double(0));
     forces[0].setOpaque(false);
-    forces[0].setForeground(new Color(250,250,250));
+    forces[0].getEditor().setOpaque(false);
+    ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setOpaque(false);
+    ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    //forces[0].setValue(new Double(0));
+    ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
     forces[0].setBounds(100,720,100,20);
     add(forces[0]);
 
@@ -187,17 +193,21 @@ class Pannello extends JPanel implements ActionListener
     butts[0].setBounds(100,740,100,20);
     add(butts[0]);
 
-    angles[1].setFont(new Font("Verdana", Font.BOLD,14));
-    angles[1].setValue(new Double(0));
     angles[1].setOpaque(false);
-    angles[1].setForeground(new Color(250,250,250));
+    angles[1].getEditor().setOpaque(false);
+    ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    //angles[0].setValue(new Double(0));
+    ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setOpaque(false);
+    ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setForeground(new Color(250,250,250));
     angles[1].setBounds(1040,700,100,20);
     add(angles[1]);
 
-    forces[1].setFont(new Font("Verdana", Font.BOLD,14));
-    forces[1].setValue(new Double(0));
     forces[1].setOpaque(false);
-    forces[1].setForeground(new Color(250,250,250));
+    forces[1].getEditor().setOpaque(false);
+    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setOpaque(false);
+    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    //forces[0].setValue(new Double(0));
+    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setForeground(new Color(250,250,250));
     forces[1].setBounds(1040,720,100,20);
     add(forces[1]);
 
