@@ -111,7 +111,7 @@ class Pannello extends JPanel implements ActionListener
 
   private Settings s ;
 
-  private ArrayList<Trajectory> _tr = new ArrayList<Trajectory>();
+  private ArrayList<Trajectory> _tr ;
   private Trajectory _current ;
   private Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
 
@@ -194,6 +194,7 @@ class Pannello extends JPanel implements ActionListener
   }
   private void loadGame()
   {
+    _tr = new ArrayList<Trajectory>();
     ball = new Sfera[_planetnum];
     double dist;
     _ships = new Nave[2];
@@ -400,6 +401,7 @@ class Pannello extends JPanel implements ActionListener
     //_planetnum = s.getNumber();
     _planetnum=number;
     System.out.println(number);
+    pew = null;
     loadGame();
     repaint();
   }

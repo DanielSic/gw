@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -35,6 +36,7 @@ class Settings extends JFrame implements ActionListener
   Settings(int planets)
   {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setFont(new Font("Verdana",Font.BOLD,14));
 
     spin = new JSpinner();
     number = planets;
@@ -42,17 +44,17 @@ class Settings extends JFrame implements ActionListener
     setPreferredSize(new Dimension(400,600));
     setLayout(new FlowLayout());
     JPanel panel = new JPanel(new GridLayout(1,2,2,2));
-    panel.add(new JLabel("Quello è un bottone"));
+    panel.add(new JLabel("Numero di pianeti"));
     JButton bot = new JButton("Save");
     bot.addActionListener(this);
-    panel.add(bot);
 
-    panel.setPreferredSize(new Dimension(400,400));
+    panel.setPreferredSize(new Dimension(400,100));
     add(panel);
     JPanel sotto = new JPanel();
     sotto.setPreferredSize(new Dimension(400,200));
     sotto.add(new JLabel("SONO SOTTO"));
     sotto.add(new JLabel("FTAFERA FENZA DI TE"));
+    sotto.add(bot);
     add(sotto);
     spin.setValue(number);
     panel.add(spin);

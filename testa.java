@@ -119,6 +119,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
           //s  = panel.getSettings();
           s = new Settings(panel.getSettings());
           s.addWindowListener(this);
+          setEnabled(false);
 
           //TODO BISOGNERÀ (QUASI DI CERTO) CREARE UNA FUNZIONE "CREATE SETTINGS IN PANNELLO E CHIAMARE QUELLA"
           //TODO panel.creteSettings();
@@ -135,12 +136,12 @@ public class testa extends JFrame implements ActionListener,WindowListener{
   public void windowClosed(WindowEvent e)
   {
 
+    System.out.println("DIO");
+    setEnabled(true);
+    panel.setSettings(s.getNumber());
   }
   public void windowDeactivated(WindowEvent e)
   {
-    System.out.println("DIO");
-
-    panel.setSettings(s.getNumber());
   }
   public void windowActivated(WindowEvent e)
   {
