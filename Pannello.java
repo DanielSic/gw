@@ -116,12 +116,12 @@ class Pannello extends JPanel implements ActionListener
   private Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
 
 
-  private JFormattedTextField angles[] = new JFormattedTextField[2];
-  private JFormattedTextField forces[] = new JFormattedTextField[2];
+  private JFormattedTextField angles[] ;
+  private JFormattedTextField forces[] ;
 
-  private JButton butts[] = new JButton[2];
+  private JButton butts[];
 
-  private JLabel labels[] = new JLabel[2];
+  private JLabel labels[] ;
   private int _points[];
 
   public Pannello()
@@ -133,12 +133,23 @@ class Pannello extends JPanel implements ActionListener
 
 
   }
+  public void clearUI()
+  {
+    removeAll();
+    revalidate();
+    initUI();
+  }
 
   public void initUI()
   {
+    angles = new JFormattedTextField[2];
+    forces = new JFormattedTextField[2];
+    butts = new JButton[2];
+    labels = new JLabel[2];
     _points = new int[2];
-    _points[0] = 0;
     _points[1] = 0;
+
+    _points[0] = 0;
     angles[0] = new JFormattedTextField();
     angles[1] = new JFormattedTextField();
     forces[0] = new JFormattedTextField();
