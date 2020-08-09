@@ -286,8 +286,8 @@ class Pannello extends JPanel implements ActionListener
     {
       do
       {
-        double x = (_ships[1].getx()>_ships[0].getx())? _ships[0].getx()+(_ships[1].getx()+10 - (_ships[0].getx()+10))/2:_ships[1].getx()+(_ships[0].getx()+10 - (_ships[1].getx()+10))/2;
-        double y = (_ships[1].gety()>_ships[0].gety())? _ships[0].gety()+(_ships[1].gety()+10 - (_ships[0].gety()+10))/2:_ships[1].gety()+(_ships[0].gety()+10 - (_ships[1].gety()+10))/2;
+        double x = (_ships[1].getx()>_ships[0].getx())? _ships[0].getx()+10+(_ships[1].getx()+10 - (_ships[0].getx()+10))/2:_ships[1].getx()+10+(_ships[0].getx()+10 - (_ships[1].getx()+10))/2;
+        double y = (_ships[1].gety()>_ships[0].gety())? _ships[0].gety()+10+(_ships[1].gety()+10 - (_ships[0].gety()+10))/2:_ships[1].gety()+10+(_ships[0].gety()+10 - (_ships[1].gety()+10))/2;
 
         ball[i] = new Sfera(x,y);
       }while(!ball[i].isValid(_ships,ball,i));
