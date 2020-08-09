@@ -4,25 +4,42 @@ package gw;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Shape;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.List;
+import java.awt.Font;
+
+import javax.swing.JTextField;
+import javax.swing.JFormattedTextField;
+
+import javax.swing.JButton;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+
+import java.util.ArrayList;
 
 class Pair
 {
@@ -42,17 +59,33 @@ class Pair
   {
     return _y;
   }
-  public void setx(double x)
-  {
-    _x = x ;
-  }
-  public void sety(double y)
-  {
-    _x = y ;
-  }
-  
-  
 
+}
+class Sad
+{
+  public int _planetnum;
+  public boolean _inbetween;
+  Sad()
+  {
+    _planetnum =5;
+    _inbetween = false;
+  }
+  // public void setPlanets(int num)
+  // {
+  //   _planetnum = num;
+  // }
+  // public void setInb(boolean a)
+  // {
+  //   _inbetween = a;
+  // }
+  // public int getPlanets()
+  // {
+  //   return _planetnum;
+  // }
+  // public boolean getInb()
+  // {
+  //   return _inbetween;
+  // }
 }
 
 class Trajectory extends JComponent
@@ -93,11 +126,12 @@ class Pannello extends JPanel implements ActionListener
   private int _counter = 0;
   private int _focus = 0;
   private Nave _ships[];
-  private static int h=1200;
-  private static int w=1200;
-  Pair[][] _ForceMatrix = new Pair[h][w];
   private Proiettile pew;
-  private int _planetnum = 5;
+  //private int _planetnum = 5;
+  //private boolean _inbetween  = true;
+  private Sad _set = new Sad();
+  // _set._planetnum = 5;
+  // _set._inbetween = false;
   private Sfera ball[]; ;
   private int _hheigth = 400;
   private int _hwidth = 610;
@@ -107,20 +141,22 @@ class Pannello extends JPanel implements ActionListener
   private Nave _sheep;
   private int _conteggio=0;
 
+
   private Settings s ;
 
-  private ArrayList<Trajectory> _tr = new ArrayList<Trajectory>();
+  private ArrayList<Trajectory> _tr ;
   private Trajectory _current ;
-  private Image bg = new ImageIcon("src/sfondo.jpg").getImage();
+  private Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
 
 
-  private JFormattedTextField angles[] = new JFormattedTextField[2];
-  private JFormattedTextField forces[] = new JFormattedTextField[2];
+  //private JFormattedTextField angles[] ;
+  //private JFormattedTextField forces[] ;
+  private JSpinner angles[];
+  private JSpinner forces[];
+  private JButton butts[];
 
-  private JButton butts[] = new JButton[2];
-
-  private JLabel labels[] = new JLabel[2];
-  private int _points[] = {0,0};
+  private JLabel labels[] ;
+  private int _points[];
 
   public Pannello()
   {
@@ -131,27 +167,55 @@ class Pannello extends JPanel implements ActionListener
 
 
   }
-
-  private void initUI()
+  public void clearUI()
   {
-    angles[0] = new JFormattedTextField();
-    angles[1] = new JFormattedTextField();
-    forces[0] = new JFormattedTextField();
-    forces[1] = new JFormattedTextField();
+    _counter=0;
+    _focus = _counter%2;
+    removeAll();
+    revalidate();
+    initUI();
+  }
 
+  public void initUI()
+  {
+    // angles = new JFormattedTextField[2];
+    // forces = new JFormattedTextField[2];
+    angles = new JSpinner[2];
+    forces = new JSpinner[2];
+    butts = new JButton[2];
+    labels = new JLabel[2];
+    _points = new int[2];
+    _points[1] = 0;
+
+    _points[0] = 0;
+    // angles[0] = new JFormattedTextField();
+    // angles[1] = new JFormattedTextField();
+    // forces[0] = new JFormattedTextField();
+    // forces[1] = new JFormattedTextField();
+
+    angles[0] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
+    angles[1] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
+    forces[0] = new JSpinner(new SpinnerNumberModel(0.0,0.0,5.0,0.01));
+    forces[1] = new JSpinner(new SpinnerNumberModel(0.0,0.0,5.0,0.01));
     setLayout(null);
-    angles[0].setFont(new Font("Verdana", Font.BOLD,14));
-    angles[0].setValue(new Double(0));
+
+
     angles[0].setOpaque(false);
-    angles[0].setForeground(new Color(250,250,250));
+    angles[0].getEditor().setOpaque(false);
+    ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    //angles[0].setValue(new Double(0));
+    ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setOpaque(false);
+    ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
     //one_angle.setPreferredSize(new Dimension(100,20));
     angles[0].setBounds(100,700,100,20);
     add(angles[0]);
 
-    forces[0].setFont(new Font("Verdana", Font.BOLD,14));
-    forces[0].setValue(new Double(0));
     forces[0].setOpaque(false);
-    forces[0].setForeground(new Color(250,250,250));
+    forces[0].getEditor().setOpaque(false);
+    ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setOpaque(false);
+    ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    //forces[0].setValue(new Double(0));
+    ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
     forces[0].setBounds(100,720,100,20);
     add(forces[0]);
 
@@ -160,17 +224,21 @@ class Pannello extends JPanel implements ActionListener
     butts[0].setBounds(100,740,100,20);
     add(butts[0]);
 
-    angles[1].setFont(new Font("Verdana", Font.BOLD,14));
-    angles[1].setValue(new Double(0));
     angles[1].setOpaque(false);
-    angles[1].setForeground(new Color(250,250,250));
+    angles[1].getEditor().setOpaque(false);
+    ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    //angles[0].setValue(new Double(0));
+    ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setOpaque(false);
+    ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setForeground(new Color(250,250,250));
     angles[1].setBounds(1040,700,100,20);
     add(angles[1]);
 
-    forces[1].setFont(new Font("Verdana", Font.BOLD,14));
-    forces[1].setValue(new Double(0));
     forces[1].setOpaque(false);
-    forces[1].setForeground(new Color(250,250,250));
+    forces[1].getEditor().setOpaque(false);
+    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setOpaque(false);
+    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    //forces[0].setValue(new Double(0));
+    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setForeground(new Color(250,250,250));
     forces[1].setBounds(1040,720,100,20);
     add(forces[1]);
 
@@ -190,9 +258,10 @@ class Pannello extends JPanel implements ActionListener
     labels[1].setBounds(1100,50,100,100);
     add(labels[1]);
   }
-  private void loadGame()
+  public void loadGame()
   {
-    ball = new Sfera[_planetnum];
+    _tr = new ArrayList<Trajectory>();
+    ball = new Sfera[_set._planetnum];
     double dist;
     _ships = new Nave[2];
 
@@ -203,38 +272,35 @@ class Pannello extends JPanel implements ActionListener
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
     } while (dist < 100f);
-    for (int i = 0; i < _planetnum ; i++)
-    {
+    loadPlanets();
 
-      do
-      {
-        ball[i] = new Sfera();
-      } while((ball[i].getx() + ball[i].getR() < _ships[0].getx() &&   ball[i].getx()-ball[i].getR()>_ships[0].getx())||(ball[i].gety() + ball[i].getR() <_ships[0].gety() && ball[i].gety() - ball[i].getR()>_ships[0].gety()));
-
-    }
     for (Sfera p : ball)
     {
       System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
     }
-    
-    for(int i=0; i<h; i++) {
-    	for(int j=0; j<w; j++) {
-    		try {
-    			//  Block of code to try
-    			_ForceMatrix[i][j] = Forze(i,j,ball);
-    			//System.out.println(i);
-    			}
-    		catch(Exception e) {
-    			//  Block of code to handle errors
-    			_ForceMatrix[i][j] = new Pair(-1,-1);
-    			System.out.println(e);
-    		}
-        }
+  }
+  private void loadPlanets()
+  {
+    int i = 0;
+    if (_set._inbetween)
+    {
+      do
+      {
+        double x = (_ships[1].getx()>_ships[0].getx())? _ships[0].getx()+10+(_ships[1].getx()+10 - (_ships[0].getx()+10))/2:_ships[1].getx()+10+(_ships[0].getx()+10 - (_ships[1].getx()+10))/2;
+        double y = (_ships[1].gety()>_ships[0].gety())? _ships[0].gety()+10+(_ships[1].gety()+10 - (_ships[0].gety()+10))/2:_ships[1].gety()+10+(_ships[0].gety()+10 - (_ships[1].gety()+10))/2;
+
+        ball[i] = new Sfera(x,y);
+      }while(!ball[i].isValid(_ships,ball,i));
+      i++;
+
     }
-    
-    
-    //draw here
-    
+    for (i = i; i < _set._planetnum; i++)
+    {
+      do
+      {
+        ball[i] = new Sfera();
+      } while(!ball[i].isValid(_ships,ball,i));
+    }
   }
   public Dimension getPreferredSize()
   {
@@ -380,15 +446,6 @@ class Pannello extends JPanel implements ActionListener
     _conteggio++;
 
     time.start();
-    
-    
-    for(int i=50; i<h; i+=100) {
-    	for(int j=50; j<w; j+=100) {
-    		Shape arrow = createArrowShape(new Pair(i,j),_ForceMatrix[i][j]);
-    		g2d.draw(arrow);
-    	}
-    }
-    
   }
 
   public Pair Forze(double x, double y, Sfera[] palle)
@@ -404,8 +461,7 @@ class Pannello extends JPanel implements ActionListener
       distx = x - (i.getx()+(i.getR()/2));
       disty = y - (i.gety()+(i.getR()/2));
       dist = Math.sqrt(distx*distx + disty*disty);
-      //f = -pew.getM()*i.getM()/Math.pow(dist,2);
-      f = -100*i.getM()/Math.pow(dist,2);
+      f = -pew.getM()*i.getM()/Math.pow(dist,2);
       fx += f * (double)(distx/dist);
       fy += f * (double)(disty/dist);
     }
@@ -418,49 +474,18 @@ class Pannello extends JPanel implements ActionListener
   //   s  = new Settings(_planetnum);
   //   return s;
   // }
-  public int getSettings()
+  public Sad getSettings()
   {
-    return _planetnum;
+    return _set;
   }
-  public void setSettings(int number) // best name
+  public void setSettings(Sad set) // best name
   {
     //_planetnum = s.getNumber();
-    _planetnum=number;
-    System.out.println(number);
+    _set = set;
+    System.out.println(_set._planetnum);
+    pew = null;
     loadGame();
     repaint();
   }
-  
-  public static Shape createArrowShape(Pair fromPt, Pair toPt) {
-	    Polygon arrowPolygon = new Polygon();
-	    arrowPolygon.addPoint(-6,1);
-	    arrowPolygon.addPoint(3,1);
-	    arrowPolygon.addPoint(3,3);
-	    arrowPolygon.addPoint(6,0);
-	    arrowPolygon.addPoint(3,-3);
-	    arrowPolygon.addPoint(3,-1);
-	    arrowPolygon.addPoint(-6,-1);
-
-
-	   //Pair MidPoint = midpoint(fromPt, toPt);
-	   //Point midPoint = new Point((int)MidPoint.getx(),(int)MidPoint.gety());
-	   
-	   
-	    double rotate = Math.atan2(toPt.gety(), toPt.getx());
-
-	    AffineTransform transform = new AffineTransform();
-	    transform.translate(fromPt.getx(), fromPt.gety());
-	    double ptDistance = Math.pow((Math.pow(toPt.gety() - fromPt.gety(),2))+(Math.pow(toPt.getx() - fromPt.getx(),2)),0.5);
-	    double scale = 2*Math.atan(ptDistance); 
-	    transform.scale(scale, scale);
-	    transform.rotate(rotate);
-
-	    return transform.createTransformedShape(arrowPolygon);
-	}
-
-	
-  
-  
- 
 
 }
