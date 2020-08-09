@@ -1,16 +1,28 @@
 package gw;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 
 
@@ -21,7 +33,6 @@ public class testa extends JFrame implements ActionListener,WindowListener{
     public testa() {
 
         initUI();
-        setJMenuBar(createMenuBar());
     }
 
     private void initUI() {
@@ -37,7 +48,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         setTitle("GravityWars");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+        setJMenuBar(createMenuBar());
 
     }
 
@@ -51,7 +62,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 
     protected JMenuBar createMenuBar() { //funzione che crea una menuBar
         JMenuBar menuBar = new JMenuBar();
-        System.out.println("new menubar");
+
         //Crea il primo menu.
         JMenu menu = new JMenu("Game");
         menu.setMnemonic(KeyEvent.VK_D);
@@ -97,10 +108,16 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 	public void actionPerformed(ActionEvent e) {
 
         if ("new".equals(e.getActionCommand())) { //new
-            remove(panel);
-            panel = null;
-            //invece di fare così potrebbe essere più utile chiamare pannello.loadGame e pannello.initUI
-            initUI();
+            // remove(panel);
+            // panel = null;
+            // //invece di fare così potrebbe essere più utile chiamare pannello.loadGame e pannello.initUI
+            // initUI();
+            panel.loadGame();
+            // panel.removeAll();
+            // panel.revalidate();
+            // panel.initUI();
+            panel.clearUI();
+            panel.repaint();
 
         }
         if ("settings".equals(e.getActionCommand()))
@@ -108,6 +125,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
           //s  = panel.getSettings();
           s = new Settings(panel.getSettings());
           s.addWindowListener(this);
+          setEnabled(false);
 
           //TODO BISOGNERÀ (QUASI DI CERTO) CREARE UNA FUNZIONE "CREATE SETTINGS IN PANNELLO E CHIAMARE QUELLA"
           //TODO panel.creteSettings();
@@ -123,13 +141,12 @@ public class testa extends JFrame implements ActionListener,WindowListener{
     }
   public void windowClosed(WindowEvent e)
   {
-
+    System.out.println("DIO");
+    setEnabled(true);
+    panel.setSettings(s.getSad());
   }
   public void windowDeactivated(WindowEvent e)
   {
-    System.out.println("DIO");
-
-    panel.setSettings(s.getNumber());
   }
   public void windowActivated(WindowEvent e)
   {

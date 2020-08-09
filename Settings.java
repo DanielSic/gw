@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -25,37 +26,46 @@ import javax.swing.Timer;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
+import javax.swing.JCheckBox;
 
 class Settings extends JFrame implements ActionListener
 {
   private int _planets = 0;
+  private Sad _set;
   private boolean lines = false;
   private int number;
   private JSpinner spin;
-  Settings(int planets)
+  private JCheckBox check;
+  Settings(Sad set)
   {
+    _set = set;
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setFont(new Font("Verdana",Font.BOLD,14));
 
     spin = new JSpinner();
-    number = planets;
+    number = _set._planetnum;
 
     setPreferredSize(new Dimension(400,600));
     setLayout(new FlowLayout());
     JPanel panel = new JPanel(new GridLayout(1,2,2,2));
-    panel.add(new JLabel("Quello è un bottone"));
-    JButton bot = new JButton("Save");
+    panel.add(new JLabel("Numero di pianeti"));
+    JButton bot = new JButton("Apply and Close");
     bot.addActionListener(this);
-    panel.add(bot);
 
-    panel.setPreferredSize(new Dimension(400,400));
+    panel.setPreferredSize(new Dimension(400,100));
     add(panel);
     JPanel sotto = new JPanel();
     sotto.setPreferredSize(new Dimension(400,200));
     sotto.add(new JLabel("SONO SOTTO"));
     sotto.add(new JLabel("FTAFERA FENZA DI TE"));
+    sotto.add(bot);
     add(sotto);
     spin.setValue(number);
     panel.add(spin);
+    panel.add(new JLabel("Pianeta in mezzo"));
+    check = new JCheckBox();
+    check.setSelected(_set._inbetween);
+    panel.add(check);
 
     setResizable(false);
     pack();
@@ -66,9 +76,9 @@ class Settings extends JFrame implements ActionListener
     setLocationRelativeTo(null);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
-  public int getNumber()
+  public Sad getSad()
   {
-    return number;
+    return _set;
   }
   @Override
   public void actionPerformed(ActionEvent evento)
@@ -76,7 +86,8 @@ class Settings extends JFrame implements ActionListener
     if (evento.getSource() instanceof JButton)
     {
       //System.out.println(spin.getValue());
-      number = (int)spin.getValue();
+      _set._planetnum = (int)spin.getValue();
+      _set._inbetween = check.isSelected();
       dispose();
     }
   }
