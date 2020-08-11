@@ -10,9 +10,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -23,21 +26,25 @@ import javax.swing.Timer;
 
 
 
-public class testa extends JFrame implements ActionListener {
+public class testa extends JFrame implements ActionListener,WindowListener{
+    Pannello panel;
+    Settings s;
 
     public testa() {
-        
+
         initUI();
     }
-    
+
     private void initUI() {
-        
-        add(new Pannello());
-        
+        panel = new Pannello();
+        add(panel);
+
+
         setResizable(false);
         pack();
+        setVisible(true);
         //The pack() method causes this window to be sized to fit the preferred size and layouts of its children.
-        
+
         setTitle("GravityWars");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,18 +53,18 @@ public class testa extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        
+
         EventQueue.invokeLater(() -> {
             testa ex = new testa();
             ex.setVisible(true);
         });
     }
-    
+
     protected JMenuBar createMenuBar() { //funzione che crea una menuBar
         JMenuBar menuBar = new JMenuBar();
 
         //Crea il primo menu.
-        JMenu menu = new JMenu("Document");
+        JMenu menu = new JMenu("Game");
         menu.setMnemonic(KeyEvent.VK_D);
         menuBar.add(menu);
 
@@ -70,7 +77,16 @@ public class testa extends JFrame implements ActionListener {
         	menuItem.addActionListener(this);
         	menu.add(menuItem);
 
-        	//Crea il secondo elemento del menu.
+          //Crea il secondo elemento del menu.
+          menuItem = new JMenuItem("Settings");
+          menuItem.setMnemonic(KeyEvent.VK_Q);
+          //menuItem.setAccelerator(KeyStroke.getKeyStroke(
+          //    KeyEvent.VK_Q, ActionEvent.ALT_MASK));
+          menuItem.setActionCommand("settings");
+          menuItem.addActionListener(this);
+          menu.add(menuItem);
+
+        	//Crea il terzo elemento del menu.
         	menuItem = new JMenuItem("Quit");
         	menuItem.setMnemonic(KeyEvent.VK_Q);
         	menuItem.setAccelerator(KeyStroke.getKeyStroke(
@@ -78,7 +94,7 @@ public class testa extends JFrame implements ActionListener {
         	menuItem.setActionCommand("quit");
         	menuItem.addActionListener(this);
         	menu.add(menuItem);
-        	
+
         //Crea il secondo menu.
         JMenu menu2 = new JMenu("Document 2");
         menu2.setMnemonic(KeyEvent.VK_D);
@@ -90,22 +106,72 @@ public class testa extends JFrame implements ActionListener {
 	//Action listener che risponde agli eventi della menubar
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
         if ("new".equals(e.getActionCommand())) { //new
-            System.out.println("new");
+            // remove(panel);
+            // panel = null;
+            // //invece di fare così potrebbe essere più utile chiamare pannello.loadGame e pannello.initUI
+            // initUI();
+            panel.loadGame();
+            // panel.removeAll();
+            // panel.revalidate();
+            // panel.initUI();
+            panel.clearUI();
+            panel.repaint();
+
+        }
+        if ("settings".equals(e.getActionCommand()))
+        {
+          //s  = panel.getSettings();
+          s = new Settings(panel.getSettings());
+          s.addWindowListener(this);
+          setEnabled(false);
+
+          //TODO BISOGNERÀ (QUASI DI CERTO) CREARE UNA FUNZIONE "CREATE SETTINGS IN PANNELLO E CHIAMARE QUELLA"
+          //TODO panel.creteSettings();
+          //TODO QUALCOSA DEL GENERE INSOMMA!
+
+          //TODO? Sono indeciso se possa servire avere una cosa come una struct di impostazioni per rendere più facile lo scambio tra pannello e settings
+
         }
         if ("quit".equals(e.getActionCommand())) { //new
-            System.out.println("quit");
+            dispose();
+            System.exit(0);
         }
-        
-        
-        
     }
-    
-    
+  public void windowClosed(WindowEvent e)
+  {
+    System.out.println("DIO");
+    setEnabled(true);
+    panel.setSettings(s.getSad());
+  }
+  public void windowDeactivated(WindowEvent e)
+  {
+  }
+  public void windowActivated(WindowEvent e)
+  {
+
+  }
+  public void windowClosing(WindowEvent e)
+  {
+
+  }
+  public void windowIconified(WindowEvent e)
+  {
+
+  }
+  public void windowDeiconified(WindowEvent e)
+  {
+
+  }
+  public void windowOpened(WindowEvent e)
+  {
+
+  }
+
+
 }
 // class Texta extends JPanel
 // {
 //   JTextArea testo = new JTextArea(20, 5);
 // }
-
-

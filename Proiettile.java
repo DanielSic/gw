@@ -7,87 +7,59 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 
-public class Proiettile extends JComponent
+public class Proiettile extends Abs
 {
-  private static float G = 1e12f;
-  private static float _m= 100;
-  private int  _px=0;
-  private int  _py=0;
-  private int  _x=0;
-  private int  _y=0;
-  private int  _vx=0;
-  private int  _vy=0;
-  private float  _ax=0;
-  private float  _ay=0;
-
+  private static double G = 1e12f;
+  //private static double _m= 100;
+  private double  _px=0;
+  private double  _py=0;
+  private double  _vx=0;
+  private double  _vy=0;
+  private double  _ax=0;
+  private double  _ay=0;
   private boolean is = false;
 
-  Proiettile(int x, int y)
+  Proiettile(double x, double y)
   {
+    super();
     _x=x;
     _y=y;
+    _m = 100;
     is = true;
   }
 
-  public void Shoot(int vx, int vy)
+  // public void Shoot(int vx, int vy)
+  // {
+  //   _vx = vx/10;
+  //   _vy = vy/10;
+  // }
+  public void Shoot(double angle, double str)
   {
-    _vx = vx/10;
-    _vy = vy/10;
-  }
-  public void Forze(Sfera[] palle)
-  {
-    int distx, disty,dist;
-    float forza,sint,cost;
-    float fx=0;
-    float fy=0;
-    for ( Sfera palla : palle)
-    {
-      distx = (_x - palla.getX());
-      disty = (_y - palla.getY());
-      dist  = (int)Math.sqrt(Math.pow(distx,2)+Math.pow(disty,2));
-
-      forza = G *_m* palla.getM() / (float)Math.pow(dist,2);
-      System.out.println(forza);
-      sint = disty/dist;
-      cost = distx/dist;
-
-      fx += forza*cost;
-      fy += forza*sint;
-    }
-    _ax += (-fx/(_m));
-    _ay += (-fy/(_m));
-    System.out.println("ax: "+_ax+" ay: "+_ay);
+    _vx = (str*Math.cos(Math.toRadians(angle)));
+    _vy = (str*Math.sin(Math.toRadians(angle)));
   }
 
-  public void Update()
+
+  public void Update(Pair forze)
   {
     // _vx = (_vx > 5)? 5: _vx;
     // _vy = (_vy > 5)? 5: _vy;
     _px = _x;
     _py = _y;
+    _vx += forze.getx()*1;
+    _vy += forze.gety()*1;
     _x  += _vx;
     _y  += _vy;
-    _vx += (int)_ax*5;
-    _vy += (int)_ay*5;
-    _ax = 0;
-    _ay = 0;
   }
 
-  public int getPX()
+
+  public double getPX()
   {
     return _px;
   }
-  public int getPY()
+  public double getPY()
   {
     return _py;
-  }
-  public int getX()
-  {
-    return _x;
-  }
-  public int getY()
-  {
-    return _y;
   }
   public boolean Ok()
   {
@@ -98,21 +70,21 @@ public class Proiettile extends JComponent
   {
     g.setColor(Color.YELLOW);
     Graphics2D g2 = (Graphics2D)g;
-    Line2D punto = new Line2D.Float(_x,_y,_px,_py);
-    //Line2D punto = new Line2D.Float(_x,_y,_x,_y);
+    Line2D punto = new Line2D.Double((int)_x,(int)_y,(int)_px,(int)_py);
+    //Line2D punto = new Line2D.Double(_x,_y,_x,_y);
 
     g2.draw(punto);
   }
   @Override
   public Dimension getPreferredSize()
   {
-    int distx = Math.abs(_px-_x);
-    int disty = Math.abs(_py-_y);
+    int distx = Math.abs((int)_px-(int)_x);
+    int disty = Math.abs((int)_py-(int)_y);
     return new Dimension(distx,disty);
   }
   public boolean Hit(Nave nave)
   {
-    if ((_x < nave.getX() + 10 && _x > nave.getX() -10)&&(_y < nave.getY() + 10 && _y > nave.getY() -10))
+    if ((_x < nave.getx() + 20 && _x > nave.getx())&&(_y < nave.gety() + 20 && _y > nave.gety()))
     {
       System.out.println("Bersaglio Colpito in " + _x + " "+_y+" <3");
       return true;
@@ -132,14 +104,17 @@ public class Proiettile extends JComponent
   }
   private boolean Check(Sfera palla)
   {
-    int distx = (palla.getX()- _x);
-    int disty = (palla.getY()- _y);
-    int dist = (int)Math.sqrt(Math.pow(distx,2)+Math.pow(disty,2));
-    if (dist <= palla.getR())
+    double distx = Math.abs((palla.getx()+(palla.getR()/2))- _x);
+    double disty = Math.abs((palla.gety()+(palla.getR()/2))- _y);
+    double distq = Math.pow(distx,2)+Math.pow(disty,2);
+    if (Math.sqrt(distq) <= palla.getR()/2)
     {
-      System.out.println("COLPITO PIANETA");
+      System.out.println("COLPITO PIANETA: "+ _x + " " + _y+" "+Math.sqrt(distq));
+      System.out.println(+ palla.getx() + " " + palla.gety()+" "+palla.getR());
+
       return true;
     }
+
     return false;
   }
 }

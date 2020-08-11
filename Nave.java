@@ -20,51 +20,51 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
 import java.awt.Graphics2D;
 
-class Nave extends JComponent
+class Nave extends Abs
 {
-  private int _x,_mx,_my;
-  private ImageIcon _icon;
+  private int _mx,_my;
   private boolean focus = false;
-  private int _y;
+  private int _punteggio=0;
+
   Nave(int w, int h)
   {
-    _icon = new ImageIcon("starship.png");
-    _x = (int)(Math.random() * (w-60))+30;
-    _y = (int)(Math.random() * (h-60))+30;
+	   super();
+    _icon = new ImageIcon("gw/starship.png");
+    _x = (Math.random() * (w-60))+30;
+    _y = (Math.random() * (h-60))+30;
   }
 
   Nave(int w, int h,String img)
   {
-    _x = (int)(Math.random() * (w-60))+30;
-    _y = (int)(Math.random() * (h-60))+30;
+	  super();
     _icon = new ImageIcon(img);
+    _x = (Math.random() * (w-60))+30;
+    _y = (Math.random() * (h-60))+30;
   }
-  public int getX()
+
+  public int getPunteggio()
   {
-    return _x;
-  }
-  public int getY()
-  {
-    return _y;
+    return _punteggio;
   }
   public void getMouse(int mx, int my)
   {
     _mx = mx;
     _my = my;
   }
+
   @Override
   protected void paintComponent(Graphics g)
   {
 
-    _icon.paintIcon(this, g, _x,_y);
+    _icon.paintIcon(this, g, (int)_x,(int)_y);
     if (focus)
     {
-      int vertd, hord;
+      double vertd, hord;
       vertd = (_my - _y-10);
       hord = (_mx - _x-10 );
       g.setColor(Color.WHITE);
       Graphics2D g2 = (Graphics2D)g;
-      Line2D l2 = new Line2D.Float(_x+10,_y+10,_x-hord+10,_y-vertd+10);
+      Line2D l2 = new Line2D.Double(_x+10,_y+10,_x-hord+10,_y-vertd+10);
       g2.draw(l2);
     }
   }
@@ -72,7 +72,13 @@ class Nave extends JComponent
   public Dimension getPreferredSize()
   {
     if (focus)
-    return new Dimension(Math.abs(_x - _mx), Math.abs(_y-_my));
+    {
+      return new Dimension((int)Math.abs(_x - _mx), (int)Math.abs(_y-_my));
+    }
     return new Dimension(20,20);
+  }
+  public void increase()
+  {
+    _punteggio++;
   }
 }
