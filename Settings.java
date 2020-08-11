@@ -35,7 +35,8 @@ class Settings extends JFrame implements ActionListener
   private boolean lines = false;
   private int number;
   private JSpinner spin;
-  private JCheckBox check;
+  private JCheckBox checkinb;
+  private JCheckBox checkarr;
   Settings(Sad set)
   {
     _set = set;
@@ -63,9 +64,12 @@ class Settings extends JFrame implements ActionListener
     spin.setValue(number);
     panel.add(spin);
     panel.add(new JLabel("Pianeta in mezzo"));
-    check = new JCheckBox();
-    check.setSelected(_set._inbetween);
-    panel.add(check);
+    checkinb = new JCheckBox();
+    checkinb.setSelected(_set._inbetween);
+    panel.add(checkinb);
+    checkarr = new JCheckBox("Frecce ");
+    checkarr.setSelected(_set._frecce);
+    panel.add(checkarr);
 
     setResizable(false);
     pack();
@@ -87,7 +91,8 @@ class Settings extends JFrame implements ActionListener
     {
       //System.out.println(spin.getValue());
       _set._planetnum = (int)spin.getValue();
-      _set._inbetween = check.isSelected();
+      _set._inbetween = checkinb.isSelected();
+      _set._frecce = checkarr.isSelected();
       dispose();
     }
   }

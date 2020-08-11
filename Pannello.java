@@ -21,6 +21,12 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
@@ -65,10 +71,12 @@ class Sad
 {
   public int _planetnum;
   public boolean _inbetween;
+  public boolean _frecce;
   Sad()
   {
     _planetnum =5;
     _inbetween = false;
+    _frecce = false;
   }
   // public void setPlanets(int num)
   // {
@@ -105,6 +113,7 @@ class Trajectory extends JComponent
 
     g.setColor(new Color(0f,0.9f,0.9f,0.4f));
     Graphics2D g2 = (Graphics2D)g;
+
     double px = traj.get(0).getx();
     double py = traj.get(0).gety();
     for (Pair p : traj)
@@ -139,6 +148,9 @@ class Pannello extends JPanel implements ActionListener
   private int _y = 50;
   private int _raggio = 30;
   private Nave _sheep;
+  private static int h=1200;
+  private static int w=800;
+  private Pair[][] _ForceMatrix = new Pair[h][w];
   private int _conteggio=0;
 
 
@@ -260,6 +272,7 @@ class Pannello extends JPanel implements ActionListener
   }
   public void loadGame()
   {
+
     _tr = new ArrayList<Trajectory>();
     ball = new Sfera[_set._planetnum];
     double dist;
@@ -277,6 +290,20 @@ class Pannello extends JPanel implements ActionListener
     for (Sfera p : ball)
     {
       System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
+    }
+    for(int i=0; i<h; i++) {
+    	for(int j=0; j<w; j++) {
+    		try {
+    			//  Block of code to try
+    			_ForceMatrix[i][j] = Forze(i,j,ball);
+    			}
+    		catch(Exception e) {
+    			//  Block of code to handle errors
+    			_ForceMatrix[i][j] = new Pair(-1,-1);
+          //System.out.println(_ForceMatrix[i][j].getx());
+    			System.out.println(e);
+    		}
+      }
     }
   }
   private void loadPlanets()
@@ -437,6 +464,15 @@ class Pannello extends JPanel implements ActionListener
       //pew.paintComponent(g);
       //_current.paintComponent(g);
     }
+    if(_set._frecce)
+    {
+      for(int i=50; i<h; i+=100) {
+        for(int j=50; j<w; j+=100) {
+          Shape arrow = createArrowShape(new Pair(i,j),_ForceMatrix[i][j]);
+          g2d.draw(arrow);
+        }
+      }
+    }
 
 
     for (Sfera balla : ball)
@@ -461,7 +497,7 @@ class Pannello extends JPanel implements ActionListener
       distx = x - (i.getx()+(i.getR()/2));
       disty = y - (i.gety()+(i.getR()/2));
       dist = Math.sqrt(distx*distx + disty*disty);
-      f = -pew.getM()*i.getM()/Math.pow(dist,2);
+      f = -100*i.getM()/Math.pow(dist,2);
       fx += f * (double)(distx/dist);
       fy += f * (double)(disty/dist);
     }
@@ -487,5 +523,30 @@ class Pannello extends JPanel implements ActionListener
     loadGame();
     repaint();
   }
+  public static Shape createArrowShape(Pair fromPt, Pair toPt) {
+    Polygon arrowPolygon = new Polygon();
+    arrowPolygon.addPoint(-6,1);
+    arrowPolygon.addPoint(3,1);
+    arrowPolygon.addPoint(3,3);
+    arrowPolygon.addPoint(6,0);
+    arrowPolygon.addPoint(3,-3);
+    arrowPolygon.addPoint(3,-1);
+    arrowPolygon.addPoint(-6,-1);
 
+
+     //Pair MidPoint = midpoint(fromPt, toPt);
+     //Point midPoint = new Point((int)MidPoint.getx(),(int)MidPoint.gety());
+
+
+    double rotate = Math.atan2(toPt.gety(), toPt.getx());
+
+    AffineTransform transform = new AffineTransform();
+    transform.translate(fromPt.getx(), fromPt.gety());
+    double ptDistance = Math.pow((Math.pow(toPt.gety() - fromPt.gety(),2))+(Math.pow(toPt.getx() - fromPt.getx(),2)),0.5);
+    double scale = 2*Math.atan(ptDistance);
+    transform.scale(scale, scale);
+    transform.rotate(rotate);
+
+    return transform.createTransformedShape(arrowPolygon);
+  }
 }
