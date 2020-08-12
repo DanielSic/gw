@@ -2,7 +2,7 @@
 ### Quando si inizia a lavorare
 * Se si hanno modifiche locali in corso usare `git fetch`
 * Altrimenti usare `git pull`
-* Creare un nuovo branch se non lo si ha già `git checkout -b `nome_del_branch`
+* Creare un nuovo branch se non lo si ha già `git checkout -b nome_del_branch`
 
 ### Quando si finisce di lavorare
 * Dal nuovo branch `git push origin nome_del_branch`
