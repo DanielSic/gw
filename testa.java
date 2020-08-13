@@ -141,7 +141,6 @@ public class testa extends JFrame implements ActionListener,WindowListener{
     }
   public void windowClosed(WindowEvent e)
   {
-    System.out.println("DIO");
     setEnabled(true);
     panel.setSettings(s.getSad());
   }

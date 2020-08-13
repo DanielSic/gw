@@ -69,6 +69,7 @@ class Pair
 }
 class Sad
 {
+  public boolean _modified = false;
   public int _planetnum;
   public boolean _inbetween;
   public boolean _frecce;
@@ -518,10 +519,13 @@ class Pannello extends JPanel implements ActionListener
   {
     //_planetnum = s.getNumber();
     _set = set;
-    System.out.println(_set._planetnum);
-    pew = null;
-    loadGame();
-    repaint();
+    if (_set._modified)
+    {
+      System.out.println(_set._planetnum);
+      pew = null;
+      loadGame();
+      repaint();
+    }
   }
   public static Shape createArrowShape(Pair fromPt, Pair toPt) {
     Polygon arrowPolygon = new Polygon();
