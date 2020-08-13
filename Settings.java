@@ -93,6 +93,7 @@ class Settings extends JFrame implements ActionListener
       _set._planetnum = (int)spin.getValue();
       _set._inbetween = checkinb.isSelected();
       _set._frecce = checkarr.isSelected();
+      _set._modified = true;
       dispose();
     }
   }
