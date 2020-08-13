@@ -169,6 +169,7 @@ class Pannello extends JPanel implements ActionListener
 
   private JLabel labels[] ;
   private int _points[];
+  private Pair _max ,_min;
 
   public Pannello()
   {
@@ -291,11 +292,21 @@ class Pannello extends JPanel implements ActionListener
     {
       System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
     }
+    double maxx=0;
+    double minx=1e6;
+    double maxy=0;
+    double miny=1e6;
+
     for(int i=0; i<h; i++) {
     	for(int j=0; j<w; j++) {
     		try {
     			//  Block of code to try
     			_ForceMatrix[i][j] = Forze(i,j,ball);
+          maxx = (Math.abs(_ForceMatrix[i][j].getx())> maxx)? Math.abs(_ForceMatrix[i][j].getx()) : maxx;
+          maxy = (Math.abs(_ForceMatrix[i][j].gety())> maxy)? Math.abs(_ForceMatrix[i][j].gety()) : maxy;
+          minx = (Math.abs(_ForceMatrix[i][j].getx())< minx)? Math.abs(_ForceMatrix[i][j].getx()) : minx;
+          miny = (Math.abs(_ForceMatrix[i][j].gety())< miny)? Math.abs(_ForceMatrix[i][j].gety()) : miny;
+
     			}
     		catch(Exception e) {
     			//  Block of code to handle errors
@@ -305,6 +316,8 @@ class Pannello extends JPanel implements ActionListener
     		}
       }
     }
+    _max = new Pair(maxx,maxy);
+    _min = new Pair(minx,miny);
   }
   private void loadPlanets()
   {
@@ -469,6 +482,11 @@ class Pannello extends JPanel implements ActionListener
       for(int i=50; i<h; i+=100) {
         for(int j=50; j<w; j+=100) {
           Shape arrow = createArrowShape(new Pair(i,j),_ForceMatrix[i][j]);
+          double colx = (Math.abs(_ForceMatrix[i][j].getx())> _max.getx()/1e7)?1:(Math.abs(_ForceMatrix[i][j].getx())-_min.getx())/(_max.getx()-_min.getx())*0.3+0.5;
+          double coly = (Math.abs(_ForceMatrix[i][j].gety())> _max.gety()/1e7)?1:(Math.abs(_ForceMatrix[i][j].gety())-_min.gety())/(_max.getx()-_min.gety())*0.3+0.5;
+          // System.out.println(Math.abs(_ForceMatrix[i][j].getx()));
+          Color col = new Color((float)colx,0,(float)coly,0.5f);
+          g2d.setColor(col);
           g2d.draw(arrow);
         }
       }
