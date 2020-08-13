@@ -2,7 +2,7 @@
 ### Quando si inizia a lavorare
 * Se si hanno modifiche locali in corso usare `git fetch`
 * Altrimenti usare `git pull`
-* Creare un nuovo branch se non lo si ha già `git checkout -d nome_del_branch`
+* Creare un nuovo branch se non lo si ha già `git checkout -b nome_del_branch`
 
 ### Quando si finisce di lavorare
 * Dal nuovo branch `git push origin nome_del_branch`
@@ -11,4 +11,8 @@
   * Inserire tra i reviewers gli altri membri del gruppo
   * In fondo alla pagina si trova il tasto merge
   * In caso di conflitti si possono risolvere direttamente su github ma conviene farlo assieme
-  
+  * Rimuovere il branch da github e effettuare un pull in locale
+
+## Compilazione ed esecuzione
+* Per compilare usare ` javac gw/*.java` dalla cartella che contiene gw
+* Per eseguire `java gw/testa`
