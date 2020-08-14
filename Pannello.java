@@ -44,6 +44,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.BorderFactory;
 
 import java.util.ArrayList;
 
@@ -214,16 +215,20 @@ class Pannello extends JPanel implements ActionListener
 
 
     angles[0].setOpaque(false);
+    angles[0].setBorder(BorderFactory.createLineBorder(new Color(72, 160, 220),2,true));
     angles[0].getEditor().setOpaque(false);
     ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
     //angles[0].setValue(new Double(0));
     ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setOpaque(false);
     ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
+
     //one_angle.setPreferredSize(new Dimension(100,20));
     angles[0].setBounds(100,700,100,20);
     add(angles[0]);
 
     forces[0].setOpaque(false);
+    forces[0].setBorder(BorderFactory.createLineBorder(new Color(72, 160, 220),2,true));
+
     forces[0].getEditor().setOpaque(false);
     ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setOpaque(false);
     ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
@@ -235,9 +240,12 @@ class Pannello extends JPanel implements ActionListener
     butts[0] = new JButton("Shoot");
     butts[0].addActionListener(this);
     butts[0].setBounds(100,740,100,20);
+    butts[0].setBorder(BorderFactory.createLineBorder(new Color(72, 160, 220),2,true));
     add(butts[0]);
 
     angles[1].setOpaque(false);
+    angles[1].setBorder(BorderFactory.createLineBorder(new Color(255, 89, 230),2,true));
+
     angles[1].getEditor().setOpaque(false);
     ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
     //angles[0].setValue(new Double(0));
@@ -247,17 +255,20 @@ class Pannello extends JPanel implements ActionListener
     add(angles[1]);
 
     forces[1].setOpaque(false);
+    forces[1].setBorder(BorderFactory.createLineBorder(new Color(255, 89, 230),2,true));
+
     forces[1].getEditor().setOpaque(false);
     ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setOpaque(false);
     ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
     //forces[0].setValue(new Double(0));
-    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setForeground(new Color(250,250,250));
+    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setForeground(new Color(250, 250, 250));
     forces[1].setBounds(1040,720,100,20);
     add(forces[1]);
 
     butts[1] = new JButton("Shoot");
     butts[1].addActionListener(this);
     butts[1].setBounds(1040,740,100,20);
+    butts[1].setBorder(BorderFactory.createLineBorder(new Color(255, 89, 230),2,true));
     butts[1].setEnabled(false);
     add(butts[1]);
     labels[0] = new JLabel(Integer.toString(_points[0]));
@@ -282,7 +293,7 @@ class Pannello extends JPanel implements ActionListener
     _ships[0] = new Nave(_hwidth*2, _hheigth*2);
     do
     {
-      _ships[1] = new Nave(_hwidth*2, _hheigth*2);
+      _ships[1] = new Nave(_hwidth*2, _hheigth*2,"gw/20x20spshp.png");
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
     } while (dist < 100f);
