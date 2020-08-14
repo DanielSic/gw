@@ -40,7 +40,7 @@ class Settings extends JFrame implements ActionListener
   Settings(Sad set)
   {
     _set = set;
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setFont(new Font("Verdana",Font.BOLD,14));
 
     spin = new JSpinner();
@@ -78,7 +78,6 @@ class Settings extends JFrame implements ActionListener
 
     setTitle("GravityWars-Settings");
     setLocationRelativeTo(null);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
   public Sad getSad()
   {

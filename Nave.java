@@ -57,16 +57,18 @@ class Nave extends Abs
   {
 
     _icon.paintIcon(this, g, (int)_x,(int)_y);
-    if (focus)
-    {
-      double vertd, hord;
-      vertd = (_my - _y-10);
-      hord = (_mx - _x-10 );
-      g.setColor(Color.WHITE);
-      Graphics2D g2 = (Graphics2D)g;
-      Line2D l2 = new Line2D.Double(_x+10,_y+10,_x-hord+10,_y-vertd+10);
-      g2.draw(l2);
-    }
+    Graphics2D g2 = (Graphics2D)g;
+    g2.drawOval((int)_x-5,(int)_y-5,30,30);
+    // if (focus)
+    // {
+    //   double vertd, hord;
+    //   vertd = (_my - _y-10);
+    //   hord = (_mx - _x-10 );
+    //   g.setColor(Color.WHITE);
+    //   Graphics2D g2 = (Graphics2D)g;
+    //   Line2D l2 = new Line2D.Double(_x+10,_y+10,_x-hord+10,_y-vertd+10);
+    //   g2.draw(l2);
+    // }
   }
   @Override
   public Dimension getPreferredSize()
