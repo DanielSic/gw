@@ -26,6 +26,7 @@ class Nave extends Abs
   private boolean focus = false;
   private int _punteggio=0;
   private int _l = 20;
+  private double _angle;
 
   Nave(int w, int h)
   {
@@ -53,12 +54,19 @@ class Nave extends Abs
     _my = my;
   }
 
+  public void rotate(double angle)
+  {
+    _angle = angle+45;
+  }
   @Override
   protected void paintComponent(Graphics g)
   {
 
-    _icon.paintIcon(this, g, (int)_x,(int)_y);
     Graphics2D g2 = (Graphics2D)g;
+    g2.rotate(Math.toRadians(_angle),(int)_x+_l/2,(int)_y+_l/2);
+    _icon.paintIcon(this, g, (int)_x,(int)_y);
+    g2.rotate(Math.toRadians(-_angle),(int)_x+_l/2,(int)_y+_l/2);
+
     g2.drawOval((int)_x-(((int)(Math.sqrt(2)*_l)-_l)/2),(int)_y-(((int)(Math.sqrt(2)*_l)-_l)/2),(int)(Math.sqrt(2)*_l),(int)(Math.sqrt(2)*_l));
     //Si potrebbe anche creare un oggetto ellipse2D e fargli disegnare quello credo
     // if (focus)
