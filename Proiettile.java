@@ -84,7 +84,7 @@ public class Proiettile extends Abs
   }
   public boolean Hit(Nave nave)
   {
-    if ((_x < nave.getx() + 20 && _x > nave.getx())&&(_y < nave.gety() + 20 && _y > nave.gety()))
+    if ((_x < nave.getx() + nave.getL() && _x > nave.getx())&&(_y < nave.gety() + nave.getL() && _y > nave.gety()))
     {
       System.out.println("Bersaglio Colpito in " + _x + " "+_y+" <3");
       return true;

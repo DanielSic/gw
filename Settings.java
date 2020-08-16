@@ -41,6 +41,7 @@ class Settings extends JFrame implements ActionListener
   private JSpinner spin_h;
   private JCheckBox checkinb;
   private JCheckBox checkarr;
+  private JSpinner spin_img;
 
   Settings(Sad set)
   {
@@ -57,16 +58,25 @@ class Settings extends JFrame implements ActionListener
     spin_plan.setValue(plan_def);
     spin_w = new JSpinner();
     w_def = _set._W;
+
     spin_w.setValue(w_def);
     spin_h = new JSpinner();
     h_def = _set._H;
+
     spin_h.setValue(h_def);
+
+    spin_img = new JSpinner();
+    spin_img.setValue(_set._imgEdge);
+
+
     panel.add(new JLabel("Numero di pianeti: "));
     panel.add(spin_plan);
     panel.add(new JLabel("Larghezza: "));
     panel.add(spin_w);
     panel.add(new JLabel("Altezza: "));
     panel.add(spin_h);
+    panel.add(new JLabel("Lato Navetta: "));
+    panel.add(spin_img);
 
     checkinb = new JCheckBox("Pianeta in mezzo");
     checkinb.setSelected(_set._inbetween);
@@ -110,6 +120,7 @@ class Settings extends JFrame implements ActionListener
       _set._frecce = checkarr.isSelected();
       _set._W = (int)spin_w.getValue();
       _set._H = (int)spin_h.getValue();
+      _set._imgEdge = (int)spin_img.getValue();
       _set._modified = true;
       dispose();
     }

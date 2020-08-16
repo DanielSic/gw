@@ -78,6 +78,7 @@ class Sad
   public boolean _frecce;
   public int _W;
   public int _H;
+  public int _imgEdge=20;
 
   Sad()
   {
@@ -296,6 +297,10 @@ class Pannello extends JPanel implements ActionListener
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
     } while (dist < 100f);
+    for (Nave s : _ships)
+    {
+      s.Scale(_set._imgEdge);
+    }
     loadPlanets();
 
     for (Sfera p : ball)
@@ -344,23 +349,23 @@ class Pannello extends JPanel implements ActionListener
   {
     return new Dimension(_set._W,_set._H);
   }
-  private void freccia(int x, int y)
-  {
-    if (x != _x || y!= _y)
-    {
-      int hord,vertd;
-      _x = x;
-      _y=y;
-      _ships[_focus].getMouse(x,y);
-      repaint();
-    }
-  }
+  // private void freccia(int x, int y)
+  // {
+  //   if (x != _x || y!= _y)
+  //   {
+  //     int hord,vertd;
+  //     _x = x;
+  //     _y=y;
+  //     _ships[_focus].getMouse(x,y);
+  //     repaint();
+  //   }
+  // }
   public void actionPerformed(ActionEvent evento)
   {
     if (evento.getSource() instanceof JButton) {
       double angle = (double)angles[_focus].getValue();
-      double pewX = _ships[_focus].getx() + 10 + ((Math.cos(Math.toRadians(angle)))*20);
-      double pewY = _ships[_focus].gety() + 10 + ((Math.sin(Math.toRadians(angle)))*20);
+      double pewX = _ships[_focus].getx() + _ships[_focus].getL()/2 + ((Math.cos(Math.toRadians(angle)))*_ships[_focus].getL());
+      double pewY = _ships[_focus].gety() + _ships[_focus].getL()/2 + ((Math.sin(Math.toRadians(angle)))*_ships[_focus].getL());
       pew = new Proiettile(pewX,pewY);
       _current = new Trajectory();
       _current.push(new Pair(pewX,pewY));
@@ -539,6 +544,7 @@ class Pannello extends JPanel implements ActionListener
       loadGame();
       repaint();
     }
+    _set._modified = false;
   }
 
   public static Shape createArrowShape(Pair fromPt, Pair toPt) {
