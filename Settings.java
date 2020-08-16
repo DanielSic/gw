@@ -33,65 +33,83 @@ class Settings extends JFrame implements ActionListener
   private int _planets = 0;
   private Sad _set;
   private boolean lines = false;
-  private int number;
-  private JSpinner spin;
+  private int plan_def;
+  private int w_def;
+  private int h_def;
+  private JSpinner spin_plan;
+  private JSpinner spin_w;
+  private JSpinner spin_h;
   private JCheckBox checkinb;
   private JCheckBox checkarr;
+
   Settings(Sad set)
   {
     _set = set;
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setFont(new Font("Verdana",Font.BOLD,14));
+    setPreferredSize(new Dimension(600,400));
 
-    spin = new JSpinner();
-    number = _set._planetnum;
+    JPanel panel = new JPanel();
+    panel.setPreferredSize(new Dimension(600,50));
+    setLayout(new GridLayout(2,2,2,2));
+    spin_plan = new JSpinner();
+    plan_def = _set._planetnum;
+    spin_plan.setValue(plan_def);
+    spin_w = new JSpinner();
+    w_def = _set._W;
+    spin_w.setValue(w_def);
+    spin_h = new JSpinner();
+    h_def = _set._H;
+    spin_h.setValue(h_def);
+    panel.add(new JLabel("Numero di pianeti: "));
+    panel.add(spin_plan);
+    panel.add(new JLabel("Larghezza: "));
+    panel.add(spin_w);
+    panel.add(new JLabel("Altezza: "));
+    panel.add(spin_h);
 
-    setPreferredSize(new Dimension(400,600));
-    setLayout(new FlowLayout());
-    JPanel panel = new JPanel(new GridLayout(1,2,2,2));
-    panel.add(new JLabel("Numero di pianeti"));
+    checkinb = new JCheckBox("Pianeta in mezzo");
+    checkinb.setSelected(_set._inbetween);
+    panel.add(checkinb);
+    checkarr = new JCheckBox("Frecce");
+    checkarr.setSelected(_set._frecce);
+    panel.add(checkarr);
+    add(panel);
+
+    JPanel sotto = new JPanel();
+    sotto.setPreferredSize(new Dimension(600,30));
     JButton bot = new JButton("Apply and Close");
     bot.addActionListener(this);
-
-    panel.setPreferredSize(new Dimension(400,100));
-    add(panel);
-    JPanel sotto = new JPanel();
-    sotto.setPreferredSize(new Dimension(400,200));
-    sotto.add(new JLabel("SONO SOTTO"));
+    sotto.add(new JLabel("Larghezza schermo:"));
     sotto.add(new JLabel("FTAFERA FENZA DI TE"));
     sotto.add(bot);
     add(sotto);
-    spin.setValue(number);
-    panel.add(spin);
-    panel.add(new JLabel("Pianeta in mezzo"));
-    checkinb = new JCheckBox();
-    checkinb.setSelected(_set._inbetween);
-    panel.add(checkinb);
-    checkarr = new JCheckBox("Frecce ");
-    checkarr.setSelected(_set._frecce);
-    panel.add(checkarr);
 
     setResizable(false);
     pack();
     setVisible(true);
     //The pack() method causes this window to be sized to fit the preferred size and layouts of its children.
 
-    setTitle("GravityWars-Settings");
+    setTitle("GravityWars - Settings");
     setLocationRelativeTo(null);
   }
+
   public Sad getSad()
   {
     return _set;
   }
+
   @Override
   public void actionPerformed(ActionEvent evento)
   {
     if (evento.getSource() instanceof JButton)
     {
-      //System.out.println(spin.getValue());
-      _set._planetnum = (int)spin.getValue();
+      //System.out.println(spin_plan.getValue());
+      _set._planetnum = (int)spin_plan.getValue();
       _set._inbetween = checkinb.isSelected();
       _set._frecce = checkarr.isSelected();
+      _set._W = (int)spin_w.getValue();
+      _set._H = (int)spin_h.getValue();
       _set._modified = true;
       dispose();
     }

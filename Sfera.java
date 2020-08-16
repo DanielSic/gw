@@ -15,16 +15,17 @@ public class Sfera extends Abs
     return _r;
   }
 
-  public Sfera()
+  public Sfera(int W, int H)
   {
     super();
-    _x = (Math.random() * 1080);
-    _y = (Math.random() * 720);
     _r = (Math.random() * 140 + 10);
+    _x = (Math.random() * (W-_r));
+    _y = (Math.random() * (H-_r));
     _m = (Math.random() * (700 - 100) + 100);
     double col = ((double)_m-100)/(900);
     colore = new Color((float)col,0f,(float)(1-col));
   }
+
   public Sfera(double x, double y)
   {
     _r = (Math.random() * 140 + 10);

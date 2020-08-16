@@ -29,7 +29,7 @@ class Nave extends Abs
   Nave(int w, int h)
   {
 	   super();
-    _icon = new ImageIcon("gw/starship.png");
+     _icon = new ImageIcon("gw/starship.png");
     _x = (Math.random() * (w-60))+30;
     _y = (Math.random() * (h-60))+30;
   }
@@ -84,3 +84,5 @@ class Nave extends Abs
     _punteggio++;
   }
 }
+//Image newImage = yourimage.getScaledInstance(nuovalarghezza, nuovaaltezza,Image.SCALE_DEFAULT);
+//ImageIcon newicon
