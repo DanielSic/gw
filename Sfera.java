@@ -43,8 +43,8 @@ public class Sfera extends Abs
     {
       //Cerca il punto sul perimetro del quadrato più vicino al cerchio,
       // se dista meno del raggio del cerchio allora c'è intersezione
-      double minx = (_x+_r/2 < ship.getx()+20)? _x+_r/2 : ship.getx()+20;
-      double miny = (_y+_r/2 < ship.gety()+20)? _y+_r/2 : ship.gety()+20;
+      double minx = (_x+_r/2 < ship.getx()+ship.getL())? _x+_r/2 : ship.getx()+ship.getL();
+      double miny = (_y+_r/2 < ship.gety()+ship.getL())? _y+_r/2 : ship.gety()+ship.getL();
       double nearx = (ship.getx() > minx)? ship.getx() : minx;
       double neary = (ship.gety() > miny)? ship.gety() : miny;
       if (Math.sqrt(Math.pow(_x+_r/2-nearx,2)+Math.pow(_y+_r/2-neary,2))<= _r/2)

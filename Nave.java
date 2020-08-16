@@ -25,6 +25,7 @@ class Nave extends Abs
   private int _mx,_my;
   private boolean focus = false;
   private int _punteggio=0;
+  private int _l = 20;
 
   Nave(int w, int h)
   {
@@ -58,7 +59,8 @@ class Nave extends Abs
 
     _icon.paintIcon(this, g, (int)_x,(int)_y);
     Graphics2D g2 = (Graphics2D)g;
-    g2.drawOval((int)_x-5,(int)_y-5,30,30);
+    g2.drawOval((int)_x-(((int)(Math.sqrt(2)*_l)-_l)/2),(int)_y-(((int)(Math.sqrt(2)*_l)-_l)/2),(int)(Math.sqrt(2)*_l),(int)(Math.sqrt(2)*_l));
+    //Si potrebbe anche creare un oggetto ellipse2D e fargli disegnare quello credo
     // if (focus)
     // {
     //   double vertd, hord;
@@ -77,11 +79,20 @@ class Nave extends Abs
     {
       return new Dimension((int)Math.abs(_x - _mx), (int)Math.abs(_y-_my));
     }
-    return new Dimension(20,20);
+    return new Dimension(_l,_l);
   }
   public void increase()
   {
     _punteggio++;
+  }
+  public void Scale(int l)
+  {
+    _l = l;
+    _icon = new ImageIcon(_icon.getImage().getScaledInstance(l,l,Image.SCALE_DEFAULT));
+  }
+  public int getL()
+  {
+    return _l;
   }
 }
 //Image newImage = yourimage.getScaledInstance(nuovalarghezza, nuovaaltezza,Image.SCALE_DEFAULT);
