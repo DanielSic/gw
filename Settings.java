@@ -50,17 +50,24 @@ class Settings extends JFrame implements ActionListener
     setPreferredSize(new Dimension(600,400));
 
     JPanel panel = new JPanel();
+    panel.setPreferredSize(new Dimension(600,50));
     setLayout(new GridLayout(2,2,2,2));
     spin_plan = new JSpinner();
     plan_def = _set._planetnum;
+    spin_plan.setValue(plan_def);
     spin_w = new JSpinner();
     w_def = _set._W;
+    spin_w.setValue(w_def);
     spin_h = new JSpinner();
     h_def = _set._H;
-    panel.add(new JLabel("Numero di pianeti"));
-    panel.setPreferredSize(new Dimension(600,50));
-    spin_plan.setValue(plan_def);
+    spin_h.setValue(h_def);
+    panel.add(new JLabel("Numero di pianeti: "));
     panel.add(spin_plan);
+    panel.add(new JLabel("Larghezza: "));
+    panel.add(spin_w);
+    panel.add(new JLabel("Altezza: "));
+    panel.add(spin_h);
+
     checkinb = new JCheckBox("Pianeta in mezzo");
     checkinb.setSelected(_set._inbetween);
     panel.add(checkinb);
@@ -70,7 +77,7 @@ class Settings extends JFrame implements ActionListener
     add(panel);
 
     JPanel sotto = new JPanel();
-    sotto.setPreferredSize(new Dimension(600,50));
+    sotto.setPreferredSize(new Dimension(600,30));
     JButton bot = new JButton("Apply and Close");
     bot.addActionListener(this);
     sotto.add(new JLabel("Larghezza schermo:"));
@@ -91,6 +98,7 @@ class Settings extends JFrame implements ActionListener
   {
     return _set;
   }
+
   @Override
   public void actionPerformed(ActionEvent evento)
   {
@@ -100,6 +108,8 @@ class Settings extends JFrame implements ActionListener
       _set._planetnum = (int)spin_plan.getValue();
       _set._inbetween = checkinb.isSelected();
       _set._frecce = checkarr.isSelected();
+      _set._W = (int)spin_w.getValue();
+      _set._H = (int)spin_h.getValue();
       _set._modified = true;
       dispose();
     }

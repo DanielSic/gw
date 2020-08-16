@@ -186,7 +186,7 @@ class Pannello extends JPanel implements ActionListener
     loadGame();
   }
 
-  public void clearUI()
+  public void refreshUI()
   {
     _counter=0;
     _focus = _counter%2;
@@ -535,6 +535,7 @@ class Pannello extends JPanel implements ActionListener
     {
       System.out.println(_set._planetnum);
       pew = null;
+      refreshUI();
       loadGame();
       repaint();
     }

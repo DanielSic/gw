@@ -40,7 +40,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         add(panel);
 
 
-        setResizable(false);
+        setResizable(true);
         pack();
         setVisible(true);
         //The pack() method causes this window to be sized to fit the preferred size and layouts of its children.
@@ -116,7 +116,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
             // panel.removeAll();
             // panel.revalidate();
             // panel.initUI();
-            panel.clearUI();
+            panel.refreshUI();
             panel.repaint();
 
         }
@@ -143,26 +143,32 @@ public class testa extends JFrame implements ActionListener,WindowListener{
   {
     setEnabled(true);
     panel.setSettings(s.getSad());
+    pack();
   }
   public void windowDeactivated(WindowEvent e)
   {
   }
+
   public void windowActivated(WindowEvent e)
   {
 
   }
+
   public void windowClosing(WindowEvent e)
   {
 
   }
+
   public void windowIconified(WindowEvent e)
   {
 
   }
+
   public void windowDeiconified(WindowEvent e)
   {
 
   }
+
   public void windowOpened(WindowEvent e)
   {
 
