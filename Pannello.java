@@ -212,10 +212,10 @@ class Pannello extends JPanel implements ActionListener
     // forces[0] = new JFormattedTextField();
     // forces[1] = new JFormattedTextField();
 
-    angles[0] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
-    angles[1] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
-    forces[0] = new JSpinner(new SpinnerNumberModel(0.0,0.0,5.0,0.01));
-    forces[1] = new JSpinner(new SpinnerNumberModel(0.0,0.0,5.0,0.01));
+    angles[0] = new JSpinner(new SpinnerNumberModel(-45.0,-180,180,1));
+    angles[1] = new JSpinner(new SpinnerNumberModel(-45.0,-180,180,1));
+    forces[0] = new JSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01));
+    forces[1] = new JSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01));
     setLayout(null);
 
     angles[0].setOpaque(false);
@@ -371,6 +371,7 @@ class Pannello extends JPanel implements ActionListener
       _current.push(new Pair(pewX,pewY));
 
       pew.Shoot(angle,(double)forces[_focus].getValue());
+      _ships[_focus].rotate(angle);
       _counter++;
       butts[_focus].setEnabled(false);
       _focus=_counter%2;
