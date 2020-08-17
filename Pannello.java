@@ -26,6 +26,7 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 
 import javax.swing.JTextField;
@@ -163,7 +164,7 @@ class Pannello extends JPanel implements ActionListener
   private Nave _sheep;
   // private static int h=1200;
   // private static int w=800;
-  private Pair[][] _ForceMatrix = new Pair[_set._H][_set._W];
+  private Pair[][] _ForceMatrix ;
   private int _conteggio=0;
 
   private Settings s ;
@@ -240,6 +241,8 @@ class Pannello extends JPanel implements ActionListener
     add(forces[0]);
 
     butts[0] = new JButton("Shoot");
+    butts[0].setMnemonic(KeyEvent.VK_ENTER); // ENNONMIPIACE, esistono altri modi ma sono immensamente pallosi
+                                             // Si dovrebbe usare la action map e quindi creare un'azione apposta -- Balza
     butts[0].addActionListener(this);
     butts[0].setBounds(20,_set._H-60,100,20);
     butts[0].setBorder(BorderFactory.createLineBorder(new Color(72, 160, 220),2,true));
@@ -281,10 +284,13 @@ class Pannello extends JPanel implements ActionListener
     labels[1].setFont(new Font("Verdana", Font.BOLD,40));
     labels[1].setBounds(_set._W-50,20,100,100);
     add(labels[1]);
+
+
   }
 
   public void loadGame()
   {
+    _ForceMatrix = new Pair[_set._H][_set._W];
     _tr = new ArrayList<Trajectory>();
     ball = new Sfera[_set._planetnum];
     double dist;
@@ -574,4 +580,5 @@ class Pannello extends JPanel implements ActionListener
 
     return transform.createTransformedShape(arrowPolygon);
   }
+
 }
