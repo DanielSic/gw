@@ -254,7 +254,7 @@ class Pannello extends JPanel implements ActionListener
     add(forces[0]);
 
     butts[0] = new JButton("Shoot");
-    butts[0].setMnemonic(KeyEvent.VK_ENTER); // ENNONMIPIACE, esistono altri modi ma sono immensamente pallosi
+    //butts[0].setMnemonic(KeyEvent.VK_ENTER); // ENNONMIPIACE, esistono altri modi ma sono immensamente pallosi
                                              // Si dovrebbe usare la action map e quindi creare un'azione apposta -- Balza
     butts[0].addActionListener(this);
     butts[0].setBounds(20,_set._H-60,100,20);
