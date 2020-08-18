@@ -18,6 +18,8 @@ import java.awt.Image;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
+import java.awt.Rectangle;
+
 import java.awt.Graphics2D;
 
 class Nave extends Abs
@@ -101,6 +103,10 @@ class Nave extends Abs
   public int getL()
   {
     return _l;
+  }
+  public Rectangle getRect()
+  {
+    return new Rectangle((int)_x-(((int)(Math.sqrt(2)*_l)-_l)/2),(int)_y-(((int)(Math.sqrt(2)*_l)-_l)/2),(int)(Math.sqrt(2)*_l),(int)(Math.sqrt(2)*_l));
   }
 }
 //Image newImage = yourimage.getScaledInstance(nuovalarghezza, nuovaaltezza,Image.SCALE_DEFAULT);

@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
+import java.awt.Rectangle;
 
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
@@ -46,6 +47,9 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.BorderFactory;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 
 import java.util.ArrayList;
 
@@ -228,6 +232,15 @@ class Pannello extends JPanel implements ActionListener
     ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
     //one_angle.setPreferredSize(new Dimension(100,20));
     angles[0].setBounds(20,_set._H-100,100,20);
+    // Aggiunge un change listener per poter ruotare la nave direttamente
+    // variando il valore dello spinner
+    angles[0].addChangeListener(new ChangeListener(){
+      public void stateChanged(ChangeEvent e)
+      {
+        _ships[0].rotate((double)angles[0].getValue());
+        repaint(_ships[0].getRect());
+      }
+    });
     add(angles[0]);
 
     forces[0].setOpaque(false);
@@ -256,6 +269,14 @@ class Pannello extends JPanel implements ActionListener
     ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setOpaque(false);
     ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setForeground(new Color(250,250,250));
     angles[1].setBounds(_set._W-120,_set._H-100,100,20);
+    // Aggiunge un change listener per poter ruotare la nave direttamente variando il valore dello spinner
+    angles[1].addChangeListener(new ChangeListener(){
+      public void stateChanged(ChangeEvent e)
+      {
+        _ships[1].rotate((double)angles[1].getValue());
+        repaint(_ships[1].getRect());
+      }
+    });
     add(angles[1]);
 
     forces[1].setOpaque(false);
