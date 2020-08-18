@@ -323,7 +323,7 @@ class Pannello extends JPanel implements ActionListener
       _ships[1] = new Nave(_set._W, _set._H,"gw/20x20spshp.png");
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
-    } while (dist < 100f);
+    } while (dist < 2*_set._imgEdge+100f);
     for (Nave s : _ships)
     {
       s.Scale(_set._imgEdge);
