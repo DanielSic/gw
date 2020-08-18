@@ -26,7 +26,9 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
+import java.awt.Rectangle;
 
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
@@ -45,6 +47,9 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.BorderFactory;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 
 import java.util.ArrayList;
 
@@ -163,7 +168,7 @@ class Pannello extends JPanel implements ActionListener
   private Nave _sheep;
   // private static int h=1200;
   // private static int w=800;
-  private Pair[][] _ForceMatrix = new Pair[_set._H][_set._W];
+  private Pair[][] _ForceMatrix ;
   private int _conteggio=0;
 
   private Settings s ;
@@ -227,6 +232,15 @@ class Pannello extends JPanel implements ActionListener
     ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
     //one_angle.setPreferredSize(new Dimension(100,20));
     angles[0].setBounds(20,_set._H-100,100,20);
+    // Aggiunge un change listener per poter ruotare la nave direttamente
+    // variando il valore dello spinner
+    angles[0].addChangeListener(new ChangeListener(){
+      public void stateChanged(ChangeEvent e)
+      {
+        _ships[0].rotate((double)angles[0].getValue());
+        repaint(_ships[0].getRect());
+      }
+    });
     add(angles[0]);
 
     forces[0].setOpaque(false);
@@ -240,6 +254,8 @@ class Pannello extends JPanel implements ActionListener
     add(forces[0]);
 
     butts[0] = new JButton("Shoot");
+    //butts[0].setMnemonic(KeyEvent.VK_ENTER); // ENNONMIPIACE, esistono altri modi ma sono immensamente pallosi
+                                             // Si dovrebbe usare la action map e quindi creare un'azione apposta -- Balza
     butts[0].addActionListener(this);
     butts[0].setBounds(20,_set._H-60,100,20);
     butts[0].setBorder(BorderFactory.createLineBorder(new Color(72, 160, 220),2,true));
@@ -253,6 +269,14 @@ class Pannello extends JPanel implements ActionListener
     ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setOpaque(false);
     ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setForeground(new Color(250,250,250));
     angles[1].setBounds(_set._W-120,_set._H-100,100,20);
+    // Aggiunge un change listener per poter ruotare la nave direttamente variando il valore dello spinner
+    angles[1].addChangeListener(new ChangeListener(){
+      public void stateChanged(ChangeEvent e)
+      {
+        _ships[1].rotate((double)angles[1].getValue());
+        repaint(_ships[1].getRect());
+      }
+    });
     add(angles[1]);
 
     forces[1].setOpaque(false);
@@ -281,10 +305,13 @@ class Pannello extends JPanel implements ActionListener
     labels[1].setFont(new Font("Verdana", Font.BOLD,40));
     labels[1].setBounds(_set._W-50,20,100,100);
     add(labels[1]);
+
+
   }
 
   public void loadGame()
   {
+    _ForceMatrix = new Pair[_set._H][_set._W];
     _tr = new ArrayList<Trajectory>();
     ball = new Sfera[_set._planetnum];
     double dist;
@@ -296,7 +323,7 @@ class Pannello extends JPanel implements ActionListener
       _ships[1] = new Nave(_set._W, _set._H,"gw/20x20spshp.png");
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
-    } while (dist < 100f);
+    } while (dist < 2*_set._imgEdge+100f);
     for (Nave s : _ships)
     {
       s.Scale(_set._imgEdge);
@@ -574,4 +601,5 @@ class Pannello extends JPanel implements ActionListener
 
     return transform.createTransformedShape(arrowPolygon);
   }
+
 }
