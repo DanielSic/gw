@@ -11,4 +11,11 @@
   * Inserire tra i reviewers gli altri membri del gruppo
   * In fondo alla pagina si trova il tasto merge
   * In caso di conflitti si possono risolvere direttamente su github ma conviene farlo assieme
-  
+
+
+## Comandi di java
+ *Da effettuarsi dalla cartella superiore*
+* Compilare con `javac gw/*.java`
+* Eseguire con `java gw.testa`  
+* Impacchettare con `jar cvfm GravityWars.jar gw/manifest.mf gw/*.class`
+* Si può eseguire sia con `java -jar GravityWars.jar` che con il doppio click
