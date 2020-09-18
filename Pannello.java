@@ -13,12 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
-<<<<<<< Updated upstream
 import java.awt.Rectangle;
-=======
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
->>>>>>> Stashed changes
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -28,16 +25,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-<<<<<<< Updated upstream
 import javax.swing.BorderFactory;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 
 import java.util.ArrayList;
-=======
 import javax.swing.Timer;
->>>>>>> Stashed changes
 
 class Pair
 {
@@ -154,28 +148,22 @@ class Pannello extends JPanel implements ActionListener
   private Nave _sheep;
   // private static int h=1200;
   // private static int w=800;
-<<<<<<< Updated upstream
-  private Pair[][] _ForceMatrix ;
-  private int _conteggio=0;
 
-=======
   private Pair[][] _ForceMatrix = new Pair[_set._W][_set._H];
-  private int _conteggio=0;
-  
-  
+    private int _conteggio=0;
+
   //roba per le frecce
   public int gap = 13;
   private Color clr;
   private float frc;
   private float frc_red;
   private float frc_blue;
-  
->>>>>>> Stashed changes
+
   private Settings s ;
 
   private ArrayList<Trajectory> _tr ;
   private Trajectory _current ;
-  private Image bg = new ImageIcon("src/sfondo.jpg").getImage();
+  private Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
 
 
   //private JFormattedTextField angles[] ;
@@ -232,7 +220,6 @@ class Pannello extends JPanel implements ActionListener
     ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
     //one_angle.setPreferredSize(new Dimension(100,20));
     angles[0].setBounds(20,_set._H-100,100,20);
-<<<<<<< Updated upstream
     // Aggiunge un change listener per poter ruotare la nave direttamente
     // variando il valore dello spinner
     angles[0].addChangeListener(new ChangeListener(){
@@ -242,8 +229,6 @@ class Pannello extends JPanel implements ActionListener
         repaint(_ships[0].getRect());
       }
     });
-=======
->>>>>>> Stashed changes
     add(angles[0]);
 
     forces[0].setOpaque(false);
@@ -272,7 +257,6 @@ class Pannello extends JPanel implements ActionListener
     ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setOpaque(false);
     ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setForeground(new Color(250,250,250));
     angles[1].setBounds(_set._W-120,_set._H-100,100,20);
-<<<<<<< Updated upstream
     // Aggiunge un change listener per poter ruotare la nave direttamente variando il valore dello spinner
     angles[1].addChangeListener(new ChangeListener(){
       public void stateChanged(ChangeEvent e)
@@ -281,8 +265,6 @@ class Pannello extends JPanel implements ActionListener
         repaint(_ships[1].getRect());
       }
     });
-=======
->>>>>>> Stashed changes
     add(angles[1]);
 
     forces[1].setOpaque(false);
@@ -317,10 +299,6 @@ class Pannello extends JPanel implements ActionListener
 
   public void loadGame()
   {
-<<<<<<< Updated upstream
-    _ForceMatrix = new Pair[_set._H][_set._W];
-=======
->>>>>>> Stashed changes
     _tr = new ArrayList<Trajectory>();
     ball = new Sfera[_set._planetnum];
     double dist;
@@ -329,17 +307,11 @@ class Pannello extends JPanel implements ActionListener
     _ships[0] = new Nave(_set._W, _set._H);
     do
     {
-<<<<<<< Updated upstream
       _ships[1] = new Nave(_set._W, _set._H,"gw/20x20spshp.png");
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
     } while (dist < 2*_set._imgEdge+100f);
-=======
-      _ships[1] = new Nave(_set._W, _set._H,"src/20x20spshp.png");
-      dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
-      // System.out.println(_ships[0].getx());
-    } while (dist < 100f);
->>>>>>> Stashed changes
+
     for (Nave s : _ships)
     {
       s.Scale(_set._imgEdge);
@@ -350,13 +322,8 @@ class Pannello extends JPanel implements ActionListener
     {
       System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
     }
-<<<<<<< Updated upstream
-    for(int i=0; i<_set._H; i++) {
-    	for(int j=0; j<_set._W; j++) {
-=======
     for(int i=0; i<_set._W; i++) {
-    	for(int j=0; j<_set._H; j++) {
->>>>>>> Stashed changes
+        	for(int j=0; j<_set._H; j++) {
     		try {
     			//  Block of code to try
     			_ForceMatrix[i][j] = Forze(i,j,ball);
@@ -530,25 +497,17 @@ class Pannello extends JPanel implements ActionListener
       _current.paintComponent(g);
     }
     if(_set._frecce)
-    	
+
     {
-<<<<<<< Updated upstream
-      for(int i=50; i<_set._H; i+=100) {
-        for(int j=50; j<_set._W; j+=100) {
-          Shape arrow = createArrowShape(new Pair(i,j),_ForceMatrix[i][j]);
-=======
+
       for(int i=gap; i<_set._W; i+=2*gap) {
         for(int j=gap; j<_set._H; j+=2*gap) {
           Shape arrow = createArrowShape(new Pair(i,j),_ForceMatrix[i][j]);
           frc = risultante(_ForceMatrix[i][j]);
           frc_blue=(float)(1-(2*Math.atan(4*frc)/Math.PI));
           frc_red=(float)(2*Math.atan(4*frc)/Math.PI);
-          System.out.println(frc_blue);
-          System.out.println(frc_red);
-          
           clr = new Color(frc_red,0f,frc_blue);
           g2d.setColor(clr);
->>>>>>> Stashed changes
           g2d.draw(arrow);
         }
       }
@@ -585,17 +544,17 @@ class Pannello extends JPanel implements ActionListener
     double ay = (fy*1/8);
     return new Pair(ax,ay);
   }
-  
+
   public float risultante(Pair p)
   {
     double x,y, risultante;
     x= p.getx();
     y= p.gety();
-	
-    risultante = Math.sqrt(x*x + y*y); 
-    
+
+    risultante = Math.sqrt(x*x + y*y);
+
     return (float)risultante;
-	 
+
   }
   // public Settings getSettings()
   // {
@@ -624,7 +583,7 @@ class Pannello extends JPanel implements ActionListener
   }
 
   public static Shape createArrowShape(Pair fromPt, Pair toPt) {
-	
+
     Polygon arrowPolygon = new Polygon();
     arrowPolygon.addPoint(-6,1);
     arrowPolygon.addPoint(3,1);
@@ -648,7 +607,7 @@ class Pannello extends JPanel implements ActionListener
     transform.scale(scale, scale);
     transform.rotate(rotate);
 
-    
+
     return transform.createTransformedShape(arrowPolygon);
   }
 
