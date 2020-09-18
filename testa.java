@@ -20,6 +20,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -79,12 +81,13 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 
           //Crea il secondo elemento del menu.
           menuItem = new JMenuItem("Settings");
-          menuItem.setMnemonic(KeyEvent.VK_Q);
+          //menuItem.setMnemonic(KeyEvent.VK_Q);
           //menuItem.setAccelerator(KeyStroke.getKeyStroke(
           //    KeyEvent.VK_Q, ActionEvent.ALT_MASK));
           menuItem.setActionCommand("settings");
           menuItem.addActionListener(this);
           menu.add(menuItem);
+
 
         	//Crea il terzo elemento del menu.
         	menuItem = new JMenuItem("Quit");
@@ -99,6 +102,12 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         JMenu menu2 = new JMenu("Document 2");
         menu2.setMnemonic(KeyEvent.VK_D);
         menuBar.add(menu2);
+
+        //Rendiamo utile il secondo menu per un po'
+        menuItem = new JMenuItem("Level Editor");
+        menuItem.setActionCommand("lvl");
+        menuItem.addActionListener(this);
+        menu2.add(menuItem);
 
         return menuBar;
     }
@@ -137,6 +146,20 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         if ("quit".equals(e.getActionCommand())) { //new
             dispose();
             System.exit(0);
+        }
+        if ( "lvl".equals(e.getActionCommand()))
+        {
+          JFrame lvl = new JFrame();
+          lvl.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+          LevelEditor edit = new LevelEditor();
+
+          edit.setVisible(true);
+          edit.setPreferredSize(new Dimension(400,400));
+          edit.add(new JLabel("CIao"));
+          lvl.add(edit);
+          lvl.pack();
+          lvl.setVisible(true);
+
         }
     }
   public void windowClosed(WindowEvent e)

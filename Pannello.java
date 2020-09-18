@@ -156,7 +156,7 @@ class Pannello extends JPanel implements ActionListener
   private Proiettile pew;
   //private int _planetnum = 5;
   //private boolean _inbetween  = true;
-  private Sad _set = new Sad();
+  protected Sad _set = new Sad();
   // _set._planetnum = 5;
   // _set._inbetween = false;
   private Sfera ball[];
@@ -165,17 +165,16 @@ class Pannello extends JPanel implements ActionListener
   private int _x = 50;
   private int _y = 50;
   private int _raggio = 30;
-  private Nave _sheep;
   // private static int h=1200;
   // private static int w=800;
   private Pair[][] _ForceMatrix ;
   private int _conteggio=0;
 
-  private Settings s ;
+  protected Settings s ;
 
   private ArrayList<Trajectory> _tr ;
   private Trajectory _current ;
-  private Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
+  protected Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
 
 
   //private JFormattedTextField angles[] ;
