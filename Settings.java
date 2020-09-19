@@ -28,6 +28,10 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JCheckBox;
 
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 class Settings extends JFrame implements ActionListener
 {
   private int _planets = 0;
@@ -52,48 +56,92 @@ class Settings extends JFrame implements ActionListener
 
     JPanel panel = new JPanel();
     panel.setPreferredSize(new Dimension(600,50));
-    setLayout(new GridLayout(2,2,2,2));
+
+    GridBagLayout layout = new GridBagLayout();
+    panel.setLayout(layout);
+    GridBagConstraints gbc = new GridBagConstraints();
+
     spin_plan = new JSpinner();
     plan_def = _set._planetnum;
     spin_plan.setValue(plan_def);
+
     spin_w = new JSpinner();
     w_def = _set._W;
-
     spin_w.setValue(w_def);
+
     spin_h = new JSpinner();
     h_def = _set._H;
-
     spin_h.setValue(h_def);
 
     spin_img = new JSpinner();
     spin_img.setValue(_set._imgEdge);
 
-
-    panel.add(new JLabel("Numero di pianeti: "));
-    panel.add(spin_plan);
-    panel.add(new JLabel("Larghezza: "));
-    panel.add(spin_w);
-    panel.add(new JLabel("Altezza: "));
-    panel.add(spin_h);
-    panel.add(new JLabel("Lato Navetta: "));
-    panel.add(spin_img);
+    JButton bot = new JButton("Apply and Close");
+    bot.addActionListener(this);
 
     checkinb = new JCheckBox("Pianeta in mezzo");
     checkinb.setSelected(_set._inbetween);
-    panel.add(checkinb);
+
     checkarr = new JCheckBox("Frecce");
     checkarr.setSelected(_set._frecce);
-    panel.add(checkarr);
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.ipady = 20;
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    panel.add(new JLabel("Numero di pianeti: "),gbc);
+
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    panel.add(spin_plan,gbc);
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.ipady = 20;
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    panel.add(new JLabel("Larghezza: "),gbc);
+
+    gbc.gridx = 1;
+    gbc.gridy = 1;
+    panel.add(spin_w,gbc);
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.ipady = 20;
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    panel.add(new JLabel("Altezza: "),gbc);
+
+    gbc.gridx = 1;
+    gbc.gridy = 2;
+    panel.add(spin_h,gbc);
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.ipady = 20;
+    gbc.gridx = 0;
+    gbc.gridy = 3;
+    panel.add(new JLabel("Lato Navetta: "),gbc);
+
+    gbc.gridx = 1;
+    gbc.gridy = 3;
+    panel.add(spin_img,gbc);
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.ipady = 20;
+    gbc.gridx = 0;
+    gbc.gridy = 4;
+    panel.add(checkinb,gbc);
+
+    gbc.gridx = 1;
+    gbc.gridy = 4;
+    panel.add(checkarr,gbc);
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 2;
+    gbc.gridy = 5;
+    panel.add(bot,gbc);
+
     add(panel);
 
-    JPanel sotto = new JPanel();
-    sotto.setPreferredSize(new Dimension(600,30));
-    JButton bot = new JButton("Apply and Close");
-    bot.addActionListener(this);
-    sotto.add(new JLabel("Larghezza schermo:"));
-    sotto.add(new JLabel("FTAFERA FENZA DI TE"));
-    sotto.add(bot);
-    add(sotto);
 
     setResizable(false);
     pack();
