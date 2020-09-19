@@ -129,7 +129,7 @@ class Pannello extends JPanel implements ActionListener
 {
   // private int W_RES = 800;
   // private int H_RES = 600;
-  private Timer time = new Timer(20,this);
+  private Timer time = new Timer(2,this);
   private int _counter = 0;
   private int _focus = 0;
   private Nave _ships[];
@@ -205,8 +205,8 @@ class Pannello extends JPanel implements ActionListener
     // forces[0] = new JFormattedTextField();
     // forces[1] = new JFormattedTextField();
 
-    angles[0] = new JSpinner(new SpinnerNumberModel(-45.0,-180,180,1));
-    angles[1] = new JSpinner(new SpinnerNumberModel(-45.0,-180,180,1));
+    angles[0] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
+    angles[1] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
     forces[0] = new JSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01));
     forces[1] = new JSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01));
     setLayout(null);
@@ -379,8 +379,8 @@ class Pannello extends JPanel implements ActionListener
   {
     if (evento.getSource() instanceof JButton) {
       double angle = (double)angles[_focus].getValue();
-      double pewX = _ships[_focus].getx() + _ships[_focus].getL()/2 + ((Math.cos(Math.toRadians(angle)))*_ships[_focus].getL());
-      double pewY = _ships[_focus].gety() + _ships[_focus].getL()/2 + ((Math.sin(Math.toRadians(angle)))*_ships[_focus].getL());
+      double pewX = _ships[_focus].getx() + _ships[_focus].getL()/2 + ((Math.sin(Math.toRadians(angle)))*_ships[_focus].getL());
+      double pewY = _ships[_focus].gety() + _ships[_focus].getL()/2 - ((Math.cos(Math.toRadians(angle)))*_ships[_focus].getL());
       pew = new Proiettile(pewX,pewY);
       _current = new Trajectory();
       _current.push(new Pair(pewX,pewY));
@@ -479,6 +479,23 @@ class Pannello extends JPanel implements ActionListener
 
     g2d.drawImage(bg,0,0,null);
 
+    if(_set._frecce)
+
+    {
+
+      for(int i=gap; i<_set._W; i+=2*gap) {
+        for(int j=gap; j<_set._H; j+=2*gap) {
+          Shape arrow = createArrowShape(new Pair(i,j),_ForceMatrix[i][j]);
+          frc = risultante(_ForceMatrix[i][j]);
+          frc_blue=(float)(1-(2*Math.atan(4*frc)/Math.PI));
+          frc_red=(float)(2*Math.atan(4*frc)/Math.PI);
+          clr = new Color(frc_red,0f,frc_blue);
+          g2d.setColor(clr);
+          g2d.draw(arrow);
+        }
+      }
+    }
+
     _ships[0].paintComponent(g);
     _ships[1].paintComponent(g);
     for (Trajectory raj : _tr)
@@ -496,22 +513,7 @@ class Pannello extends JPanel implements ActionListener
       pew.paintComponent(g);
       _current.paintComponent(g);
     }
-    if(_set._frecce)
 
-    {
-
-      for(int i=gap; i<_set._W; i+=2*gap) {
-        for(int j=gap; j<_set._H; j+=2*gap) {
-          Shape arrow = createArrowShape(new Pair(i,j),_ForceMatrix[i][j]);
-          frc = risultante(_ForceMatrix[i][j]);
-          frc_blue=(float)(1-(2*Math.atan(4*frc)/Math.PI));
-          frc_red=(float)(2*Math.atan(4*frc)/Math.PI);
-          clr = new Color(frc_red,0f,frc_blue);
-          g2d.setColor(clr);
-          g2d.draw(arrow);
-        }
-      }
-    }
 
 
     for (Sfera balla : ball)
@@ -585,13 +587,13 @@ class Pannello extends JPanel implements ActionListener
   public static Shape createArrowShape(Pair fromPt, Pair toPt) {
 
     Polygon arrowPolygon = new Polygon();
-    arrowPolygon.addPoint(-6,1);
-    arrowPolygon.addPoint(3,1);
-    arrowPolygon.addPoint(3,3);
+    arrowPolygon.addPoint(-6,0);
     arrowPolygon.addPoint(6,0);
-    arrowPolygon.addPoint(3,-3);
+    arrowPolygon.addPoint(3,1);
+    arrowPolygon.addPoint(6,0);
     arrowPolygon.addPoint(3,-1);
-    arrowPolygon.addPoint(-6,-1);
+    arrowPolygon.addPoint(6,0);
+    arrowPolygon.addPoint(-6,0);
 
 
      //Pair MidPoint = midpoint(fromPt, toPt);

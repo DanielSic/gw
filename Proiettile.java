@@ -18,6 +18,8 @@ public class Proiettile extends Abs
   private double  _ax=0;
   private double  _ay=0;
   private boolean is = false;
+  private double _dt;
+  private double _vmod;
 
   Proiettile(double x, double y)
   {
@@ -35,23 +37,28 @@ public class Proiettile extends Abs
   // }
   public void Shoot(double angle, double str)
   {
-    _vx = (str*Math.cos(Math.toRadians(angle)));
-    _vy = (str*Math.sin(Math.toRadians(angle)));
+    _vx = (str*Math.sin(Math.toRadians(angle)));
+    _vy = -(str*Math.cos(Math.toRadians(angle)));
   }
-
 
   public void Update(Pair forze)
   {
-    // _vx = (_vx > 5)? 5: _vx;
-    // _vy = (_vy > 5)? 5: _vy;
-    _px = _x;
-    _py = _y;
-    _vx += forze.getx()*1;
-    _vy += forze.gety()*1;
-    _x  += _vx;
-    _y  += _vy;
-  }
+    _dt=1;
+        _px = _x;
+        _py = _y;
+        _vx += forze.getx()*_dt;
+        _vy += forze.gety()*_dt;
+        // _vmod = Math.sqrt(Math.pow(_vx,2) + Math.pow(_vy,2));
 
+        if(_vx > 5){
+          _dt = 5/_vx;
+        }else if(_vy > 5){
+          _dt = 5/_vy;
+        }
+
+        _x  += _vx*_dt;
+        _y  += _vy*_dt;
+  }
 
   public double getPX()
   {
@@ -82,6 +89,45 @@ public class Proiettile extends Abs
     int disty = Math.abs((int)_py-(int)_y);
     return new Dimension(distx,disty);
   }
+
+  // public boolean Hit(Nave nave)
+  // {
+  //   if ((_x < nave.getx() + nave.getL() && _x > nave.getx())&&(_y < nave.gety() + nave.getL() && _y > nave.gety()))
+  //   {
+  //     System.out.println("Bersaglio Colpito in " + _x + " "+_y+" <3");
+  //     return true;
+  //   }
+  //   return false;
+  // }
+  //
+  // public boolean Hit(Sfera[] palle)
+  // {
+  //   for (Sfera i : palle)
+  //   {
+  //     if(Check(i))
+  //     {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
+  //
+  // private boolean Check(Sfera palla)
+  // {
+  //   double distx = Math.abs((palla.getx()+(palla.getR()/2))- _x);
+  //   double disty = Math.abs((palla.gety()+(palla.getR()/2))- _y);
+  //   double distq = Math.pow(distx,2)+Math.pow(disty,2);
+  //   if (Math.sqrt(distq) <= palla.getR()/2)
+  //   {
+  //     System.out.println("COLPITO PIANETA: "+ _x + " " + _y+" "+Math.sqrt(distq));
+  //     System.out.println(+ palla.getx() + " " + palla.gety()+" "+palla.getR());
+  //
+  //     return true;
+  //   }
+  //
+  //   return false;
+  // }
+
   public boolean Hit(Nave nave)
   {
     if ((_x < nave.getx() + nave.getL() && _x > nave.getx())&&(_y < nave.gety() + nave.getL() && _y > nave.gety()))
@@ -91,6 +137,7 @@ public class Proiettile extends Abs
     }
     return false;
   }
+
   public boolean Hit(Sfera[] palle)
   {
     for (Sfera i : palle)
@@ -102,6 +149,7 @@ public class Proiettile extends Abs
     }
     return false;
   }
+
   private boolean Check(Sfera palla)
   {
     double distx = Math.abs((palla.getx()+(palla.getR()/2))- _x);
