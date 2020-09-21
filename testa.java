@@ -20,6 +20,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -43,7 +45,6 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         setResizable(true);
         pack();
         setVisible(true);
-        //The pack() method causes this window to be sized to fit the preferred size and layouts of its children.
 
         setTitle("GravityWars");
         setLocationRelativeTo(null);
@@ -60,9 +61,58 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         });
     }
 
+    protected JMenu createFileMenu(Pannello panne){
+      JMenu fileMenu = new JMenu("File");
+      JMenuItem save = new JMenuItem("Salva");
+      save.setActionCommand("salva");
+      save.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+            panne.saveToFile();
+          }
+        }
+      );
+      fileMenu.add(save);
+      JMenuItem load = new JMenuItem("Carica");
+      load.setActionCommand("load");
+      load.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+            panne.readFromFile();
+          }
+        }
+      );
+      fileMenu.add(load);
+      return fileMenu;
+    }
+    protected JMenu createFileMenu(LevelEditor panne){
+      JMenu fileMenu = new JMenu("File");
+      JMenuItem save = new JMenuItem("Salva");
+      save.setActionCommand("salva");
+      save.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+            panne.saveToFile();
+          }
+        }
+      );
+      fileMenu.add(save);
+      JMenuItem load = new JMenuItem("Carica");
+      load.setActionCommand("load");
+      load.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+            panne.readFromFile();
+          }
+        }
+      );
+      fileMenu.add(load);
+      return fileMenu;
+    }
     protected JMenuBar createMenuBar() { //funzione che crea una menuBar
         JMenuBar menuBar = new JMenuBar();
-
+        //Crea il primissimo menu
+        menuBar.add(createFileMenu(panel));
         //Crea il primo menu.
         JMenu menu = new JMenu("Game");
         menu.setMnemonic(KeyEvent.VK_D);
@@ -79,12 +129,11 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 
           //Crea il secondo elemento del menu.
           menuItem = new JMenuItem("Settings");
-          menuItem.setMnemonic(KeyEvent.VK_Q);
-          //menuItem.setAccelerator(KeyStroke.getKeyStroke(
-          //    KeyEvent.VK_Q, ActionEvent.ALT_MASK));
+
           menuItem.setActionCommand("settings");
           menuItem.addActionListener(this);
           menu.add(menuItem);
+
 
         	//Crea il terzo elemento del menu.
         	menuItem = new JMenuItem("Quit");
@@ -96,9 +145,15 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         	menu.add(menuItem);
 
         //Crea il secondo menu.
-        JMenu menu2 = new JMenu("Document 2");
+        JMenu menu2 = new JMenu("Edit");
         menu2.setMnemonic(KeyEvent.VK_D);
         menuBar.add(menu2);
+
+        //Rendiamo utile il secondo menu per un po'
+        menuItem = new JMenuItem("Level Editor");
+        menuItem.setActionCommand("lvl");
+        menuItem.addActionListener(this);
+        menu2.add(menuItem);
 
         return menuBar;
     }
@@ -108,35 +163,40 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 	public void actionPerformed(ActionEvent e) {
 
         if ("new".equals(e.getActionCommand())) { //new
-            // remove(panel);
-            // panel = null;
-            // //invece di fare così potrebbe essere più utile chiamare pannello.loadGame e pannello.initUI
-            // initUI();
+
             panel.loadGame();
-            // panel.removeAll();
-            // panel.revalidate();
-            // panel.initUI();
+
             panel.refreshUI();
             panel.repaint();
 
         }
         if ("settings".equals(e.getActionCommand()))
         {
-          //s  = panel.getSettings();
           s = new Settings(panel.getSettings());
           s.addWindowListener(this);
           setEnabled(false);
 
-          //TODO BISOGNERÀ (QUASI DI CERTO) CREARE UNA FUNZIONE "CREATE SETTINGS IN PANNELLO E CHIAMARE QUELLA"
-          //TODO panel.creteSettings();
-          //TODO QUALCOSA DEL GENERE INSOMMA!
 
-          //TODO? Sono indeciso se possa servire avere una cosa come una struct di impostazioni per rendere più facile lo scambio tra pannello e settings
 
         }
         if ("quit".equals(e.getActionCommand())) { //new
             dispose();
             System.exit(0);
+        }
+        if ( "lvl".equals(e.getActionCommand()))
+        {
+          JFrame lvl = new JFrame();
+          lvl.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+          LevelEditor edit = new LevelEditor();
+          JMenuBar menubar = new JMenuBar();
+          menubar.add(createFileMenu(edit));
+          lvl.setJMenuBar(menubar);
+          edit.setVisible(true);
+          edit.setPreferredSize(new Dimension(400,400));
+          lvl.add(edit);
+          lvl.pack();
+          lvl.setVisible(true);
+
         }
     }
   public void windowClosed(WindowEvent e)
@@ -176,7 +236,3 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 
 
 }
-// class Texta extends JPanel
-// {
-//   JTextArea testo = new JTextArea(20, 5);
-// }
