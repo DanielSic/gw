@@ -4,8 +4,9 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import java.io.*;
 
-public class Abs extends JComponent {
+public class Abs extends JComponent implements java.io.Serializable{
 
     protected double _x;
     protected double _y;
@@ -49,7 +50,10 @@ public class Abs extends JComponent {
     public double gety() {
         return _y;
     }
-
+    public void setM(double m)
+    {
+      _m = m;
+    }
     public double getM() {
         return _m;
     }
@@ -58,8 +62,16 @@ public class Abs extends JComponent {
         return visible;
     }
 
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
+    // public void setVisible(Boolean visible) {
+    //     this.visible = visible;
+    // }
+    public void setx(double x)
+    {
+      _x = x;
+    }
+    public void sety(double y)
+    {
+      _y = y;
     }
 
     // public Rectangle getBounds() {

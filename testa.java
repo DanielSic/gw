@@ -20,6 +20,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -60,9 +62,58 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         });
     }
 
+    protected JMenu createFileMenu(Pannello panne){
+      JMenu fileMenu = new JMenu("File");
+      JMenuItem save = new JMenuItem("Salva");
+      save.setActionCommand("salva");
+      save.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+            panne.saveToFile();
+          }
+        }
+      );
+      fileMenu.add(save);
+      JMenuItem load = new JMenuItem("Carica");
+      load.setActionCommand("load");
+      load.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+            panne.readFromFile();
+          }
+        }
+      );
+      fileMenu.add(load);
+      return fileMenu;
+    }
+    protected JMenu createFileMenu(LevelEditor panne){
+      JMenu fileMenu = new JMenu("File");
+      JMenuItem save = new JMenuItem("Salva");
+      save.setActionCommand("salva");
+      save.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+            panne.saveToFile();
+          }
+        }
+      );
+      fileMenu.add(save);
+      JMenuItem load = new JMenuItem("Carica");
+      load.setActionCommand("load");
+      load.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+
+          }
+        }
+      );
+      fileMenu.add(load);
+      return fileMenu;
+    }
     protected JMenuBar createMenuBar() { //funzione che crea una menuBar
         JMenuBar menuBar = new JMenuBar();
-
+        //Crea il primissimo menu
+        menuBar.add(createFileMenu(panel));
         //Crea il primo menu.
         JMenu menu = new JMenu("Game");
         menu.setMnemonic(KeyEvent.VK_D);
@@ -79,12 +130,13 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 
           //Crea il secondo elemento del menu.
           menuItem = new JMenuItem("Settings");
-          menuItem.setMnemonic(KeyEvent.VK_Q);
+          //menuItem.setMnemonic(KeyEvent.VK_Q);
           //menuItem.setAccelerator(KeyStroke.getKeyStroke(
           //    KeyEvent.VK_Q, ActionEvent.ALT_MASK));
           menuItem.setActionCommand("settings");
           menuItem.addActionListener(this);
           menu.add(menuItem);
+
 
         	//Crea il terzo elemento del menu.
         	menuItem = new JMenuItem("Quit");
@@ -99,6 +151,12 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         JMenu menu2 = new JMenu("Document 2");
         menu2.setMnemonic(KeyEvent.VK_D);
         menuBar.add(menu2);
+
+        //Rendiamo utile il secondo menu per un po'
+        menuItem = new JMenuItem("Level Editor");
+        menuItem.setActionCommand("lvl");
+        menuItem.addActionListener(this);
+        menu2.add(menuItem);
 
         return menuBar;
     }
@@ -137,6 +195,21 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         if ("quit".equals(e.getActionCommand())) { //new
             dispose();
             System.exit(0);
+        }
+        if ( "lvl".equals(e.getActionCommand()))
+        {
+          JFrame lvl = new JFrame();
+          lvl.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+          LevelEditor edit = new LevelEditor();
+          JMenuBar menubar = new JMenuBar();
+          menubar.add(createFileMenu(edit));
+          lvl.setJMenuBar(menubar);
+          edit.setVisible(true);
+          edit.setPreferredSize(new Dimension(400,400));
+          lvl.add(edit);
+          lvl.pack();
+          lvl.setVisible(true);
+
         }
     }
   public void windowClosed(WindowEvent e)
