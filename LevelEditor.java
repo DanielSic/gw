@@ -118,63 +118,63 @@ class LevelEditor extends JPanel {
           }
 
           repaint();
-          addMouseMotionListener(new MouseAdapter()
-          {
-            public void mouseDragged(MouseEvent e)
-            {
-              obiettivo.setx(e.getX()-obiettivo.getR()/2);
-              obiettivo.sety(e.getY()-obiettivo.getR()/2);
-
-            }
-            public void mouseReleased(MouseEvent e)
-            {
-              Sfera b[] = new Sfera[balle.size()];
-              b= balle.toArray(b);
-              if (!obiettivo.isValid(_ships,b,balle.size()))
-              {
-                balle.remove(balle.size()-1);
-                obiettivo = null;
-
-              }
-            }
-          });
+          // addMouseMotionListener(new MouseAdapter()
+          // {
+          //   public void mouseDragged(MouseEvent e)
+          //   {
+          //     obiettivo.setx(e.getX()-obiettivo.getR()/2);
+          //     obiettivo.sety(e.getY()-obiettivo.getR()/2);
+          //
+          //   }
+          //   public void mouseReleased(MouseEvent e)
+          //   {
+          //     Sfera b[] = new Sfera[balle.size()];
+          //     b= balle.toArray(b);
+          //     if (!obiettivo.isValid(_ships,b,balle.size()))
+          //     {
+          //       balle.remove(balle.size()-1);
+          //       obiettivo = null;
+          //
+          //     }
+          //   }
+          // });
           }
         }
       }
     });
-    addMouseMotionListener(new MouseMotionAdapter(){
-      Nave target = null;
-      double posX;
-      double posY;
-      public void mouseDragged(MouseEvent e)
-      {
-        if (target == null){
-          target = onShip(e);
-          if (target !=null)
-          {
-            posX=target.getx();
-            posY = target.gety();
-          }
-        }else{
-          target.setx(e.getX()-target.getR()/2);
-          target.sety(e.getY()-target.getR()/2);
-        }
-        repaint();
-        addMouseListener(new MouseAdapter()
-        {
-          public void mouseReleased(MouseEvent e)
-          {
-            if (onPlanet(e)!=null && target != null)
-            {
-              target.setx(posX);
-              target.sety(posY);
-              repaint();
-            }
-            target = null;
-          }
-        });
-      }
-    });
+    // addMouseMotionListener(new MouseMotionAdapter(){
+    //   Nave target = null;
+    //   double posX;
+    //   double posY;
+    //   public void mouseDragged(MouseEvent e)
+    //   {
+    //     if (target == null){
+    //       target = onShip(e);
+    //       if (target !=null)
+    //       {
+    //         posX=target.getx();
+    //         posY = target.gety();
+    //       }
+    //     }else{
+    //       target.setx(e.getX()-target.getR()/2);
+    //       target.sety(e.getY()-target.getR()/2);
+    //     }
+    //     repaint();
+    //     addMouseListener(new MouseAdapter()
+    //     {
+    //       public void mouseReleased(MouseEvent e)
+    //       {
+    //         if (onPlanet(e)!=null && target != null)
+    //         {
+    //           target.setx(posX);
+    //           target.sety(posY);
+    //           repaint();
+    //         }
+    //         target = null;
+    //       }
+    //     });
+    //   }
+    // });
   }
 
 
@@ -199,9 +199,13 @@ class LevelEditor extends JPanel {
     // });
     Sfera b[] = new Sfera[balle.size()];
     b= balle.toArray(b);
-    if (s.isValid(_ships,b,balle.size())){balle.add(s);}
+    if (s.isValid(_ships,b,balle.size())){
+      balle.add(s);
+      repaint();
+      return s;
+    }
     repaint();
-    return balle.get(balle.size()-1);
+    return null;
   }
   public Sfera onPlanet(MouseEvent e)
   {
