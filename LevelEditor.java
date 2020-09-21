@@ -87,8 +87,10 @@ class LevelEditor extends JPanel {
       Sfera obiettivo;
       public void mouseClicked(MouseEvent e)
       {
+
         if (e.getClickCount() == 1)
         {
+
 
         } else if (e.getClickCount() == 2)
         {
@@ -141,40 +143,41 @@ class LevelEditor extends JPanel {
           }
         }
       }
+  
     });
-    // addMouseMotionListener(new MouseMotionAdapter(){
-    //   Nave target = null;
-    //   double posX;
-    //   double posY;
-    //   public void mouseDragged(MouseEvent e)
-    //   {
-    //     if (target == null){
-    //       target = onShip(e);
-    //       if (target !=null)
-    //       {
-    //         posX=target.getx();
-    //         posY = target.gety();
-    //       }
-    //     }else{
-    //       target.setx(e.getX()-target.getR()/2);
-    //       target.sety(e.getY()-target.getR()/2);
-    //     }
-    //     repaint();
-    //     addMouseListener(new MouseAdapter()
-    //     {
-    //       public void mouseReleased(MouseEvent e)
-    //       {
-    //         if (onPlanet(e)!=null && target != null)
-    //         {
-    //           target.setx(posX);
-    //           target.sety(posY);
-    //           repaint();
-    //         }
-    //         target = null;
-    //       }
-    //     });
-    //   }
-    // });
+    addMouseMotionListener(new MouseMotionAdapter(){
+      Nave target = null;
+      double posX;
+      double posY;
+      public void mouseDragged(MouseEvent e)
+      {
+        if (target == null){
+          target = onShip(e);
+          if (target !=null)
+          {
+            posX=target.getx();
+            posY = target.gety();
+          }
+        }else{
+          target.setx(e.getX()-target.getR()/2);
+          target.sety(e.getY()-target.getR()/2);
+        }
+        repaint();
+        addMouseListener(new MouseAdapter()
+        {
+          public void mouseReleased(MouseEvent e)
+          {
+            if (onPlanet(e)!=null && target != null)
+            {
+              target.setx(posX);
+              target.sety(posY);
+              repaint();
+            }
+            target = null;
+          }
+        });
+      }
+    });
   }
 
 
