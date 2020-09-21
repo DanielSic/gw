@@ -54,8 +54,8 @@ public class Proiettile extends Abs
     _vmod = Math.sqrt(Math.pow(_vx,2) + Math.pow(_vy,2));
 
 
-    if( _vmod > 5){
-      _dt = 5/_vmod;
+    if( _vmod > 1){
+      _dt = 1/_vmod;
       _dx += forze.getx()*_dt;
       _dy += forze.gety()*_dt;
     }

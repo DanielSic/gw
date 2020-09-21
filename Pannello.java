@@ -99,8 +99,8 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
 
   public Pannello()
   {
-    initUI();
     loadGame();
+    initUI();
   }
 
   public void refreshUI()
@@ -110,7 +110,38 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     pew=null;
     removeAll();
     revalidate();
+    loadMatrix();
     initUI();
+  }
+
+  private JSpinner createSpinner(SpinnerNumberModel spnm,int index,int x, int y)
+  {
+    JSpinner spin = new JSpinner(spnm);
+    spin.setOpaque(false);
+    spin.setBorder(BorderFactory.createLineBorder(_ships[index].getColor(),2,true));
+    spin.getEditor().setOpaque(false);
+    ((JSpinner.NumberEditor)spin.getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    //angles[0].setValue(new Double(0));
+    ((JSpinner.NumberEditor)spin.getEditor()).getTextField().setOpaque(false);
+    ((JSpinner.NumberEditor)spin.getEditor()).getTextField().setForeground(new Color(250,250,250));
+    //one_angle.setPreferredSize(new Dimension(100,20));
+    spin.setBounds(x,y,100,20);
+    //    spin.setBounds(20,_set._H-100,100,20);
+
+    // Aggiunge un change listener per poter ruotare la nave direttamente
+    // variando il valore dello spinner
+
+    return spin;
+
+  }
+
+  public JButton createButton(int index, int x, int y)
+  {
+    JButton button = new JButton("Shoot");
+    button.addActionListener(this);
+    button.setBounds(x,y,100,20);
+    button.setBorder(BorderFactory.createLineBorder(_ships[index].getColor(),2,true));
+    return button;
   }
 
   public void initUI()
@@ -129,23 +160,34 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     // forces[0] = new JFormattedTextField();
     // forces[1] = new JFormattedTextField();
 
-    angles[0] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
-    angles[1] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
-    forces[0] = new JSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01));
-    forces[1] = new JSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01));
-    setLayout(null);
+    // angles[0] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
+    // angles[1] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
+    // forces[0] = new JSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01));
+    // forces[1] = new JSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01));
+    forces[0] = createSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01),0,20,_set._H-80);
+    forces[1] = createSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01),1,_set._W-120,_set._H-80);
 
-    angles[0].setOpaque(false);
-    angles[0].setBorder(BorderFactory.createLineBorder(new Color(72, 160, 220),2,true));
-    angles[0].getEditor().setOpaque(false);
-    ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
-    //angles[0].setValue(new Double(0));
-    ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setOpaque(false);
-    ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
-    //one_angle.setPreferredSize(new Dimension(100,20));
-    angles[0].setBounds(20,_set._H-100,100,20);
-    // Aggiunge un change listener per poter ruotare la nave direttamente
-    // variando il valore dello spinner
+    setLayout(null);
+    //
+    // angles[0].setOpaque(false);
+    // angles[0].setBorder(BorderFactory.createLineBorder(_ships[0].getColor(),2,true));
+    // angles[0].getEditor().setOpaque(false);
+    // ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    // //angles[0].setValue(new Double(0));
+    // ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setOpaque(false);
+    // ((JSpinner.NumberEditor)angles[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
+    // //one_angle.setPreferredSize(new Dimension(100,20));
+    // angles[0].setBounds(20,_set._H-100,100,20);
+    // // Aggiunge un change listener per poter ruotare la nave direttamente
+    // // variando il valore dello spinner
+    // angles[0].addChangeListener(new ChangeListener(){
+    //   public void stateChanged(ChangeEvent e)
+    //   {
+    //     _ships[0].rotate((double)angles[0].getValue());
+    //     repaint(_ships[0].getRect());
+    //   }
+    // });
+    angles[0] = createSpinner(new SpinnerNumberModel(0.0,-180,180,1),0,20,_set._H-100);
     angles[0].addChangeListener(new ChangeListener(){
       public void stateChanged(ChangeEvent e)
       {
@@ -155,33 +197,34 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     });
     add(angles[0]);
 
-    forces[0].setOpaque(false);
-    forces[0].setBorder(BorderFactory.createLineBorder(new Color(72, 160, 220),2,true));
-    forces[0].getEditor().setOpaque(false);
-    ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setOpaque(false);
-    ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
-    //forces[0].setValue(new Double(0));
-    ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
-    forces[0].setBounds(20,_set._H-80,100,20);
+    // forces[0].setOpaque(false);
+    // forces[0].setBorder(BorderFactory.createLineBorder(_ships[0].getColor(),2,true));
+    // forces[0].getEditor().setOpaque(false);
+    // ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setOpaque(false);
+    // ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    // //forces[0].setValue(new Double(0));
+    // ((JSpinner.NumberEditor)forces[0].getEditor()).getTextField().setForeground(new Color(250,250,250));
+    // forces[0].setBounds(20,_set._H-80,100,20);
     add(forces[0]);
 
-    butts[0] = new JButton("Shoot");
-    //butts[0].setMnemonic(KeyEvent.VK_ENTER); // ENNONMIPIACE, esistono altri modi ma sono immensamente pallosi
-                                             // Si dovrebbe usare la action map e quindi creare un'azione apposta -- Balza
-    butts[0].addActionListener(this);
-    butts[0].setBounds(20,_set._H-60,100,20);
-    butts[0].setBorder(BorderFactory.createLineBorder(new Color(72, 160, 220),2,true));
-    add(butts[0]);
 
-    angles[1].setOpaque(false);
-    angles[1].setBorder(BorderFactory.createLineBorder(new Color(255, 89, 230),2,true));
-    angles[1].getEditor().setOpaque(false);
-    ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
-    //angles[0].setValue(new Double(0));
-    ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setOpaque(false);
-    ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setForeground(new Color(250,250,250));
-    angles[1].setBounds(_set._W-120,_set._H-100,100,20);
-    // Aggiunge un change listener per poter ruotare la nave direttamente variando il valore dello spinner
+    // angles[1].setOpaque(false);
+    // angles[1].setBorder(BorderFactory.createLineBorder(new Color(255, 89, 230),2,true));
+    // angles[1].getEditor().setOpaque(false);
+    // ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    // //angles[0].setValue(new Double(0));
+    // ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setOpaque(false);
+    // ((JSpinner.NumberEditor)angles[1].getEditor()).getTextField().setForeground(new Color(250,250,250));
+    // angles[1].setBounds(_set._W-120,_set._H-100,100,20);
+    // // Aggiunge un change listener per poter ruotare la nave direttamente variando il valore dello spinner
+    // angles[1].addChangeListener(new ChangeListener(){
+    //   public void stateChanged(ChangeEvent e)
+    //   {
+    //     _ships[1].rotate((double)angles[1].getValue());
+    //     repaint(_ships[1].getRect());
+    //   }
+    // });
+    angles[1] = createSpinner(new SpinnerNumberModel(0.0,-180,180,1),1,_set._W-120,_set._H-100);
     angles[1].addChangeListener(new ChangeListener(){
       public void stateChanged(ChangeEvent e)
       {
@@ -191,30 +234,39 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     });
     add(angles[1]);
 
-    forces[1].setOpaque(false);
-    forces[1].setBorder(BorderFactory.createLineBorder(new Color(255, 89, 230),2,true));
-    forces[1].getEditor().setOpaque(false);
-    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setOpaque(false);
-    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
-    //forces[0].setValue(new Double(0));
-    ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setForeground(new Color(250, 250, 250));
-    forces[1].setBounds(_set._W-120,_set._H-80,100,20);
+    // forces[1].setOpaque(false);
+    // forces[1].setBorder(BorderFactory.createLineBorder(new Color(255, 89, 230),2,true));
+    // forces[1].getEditor().setOpaque(false);
+    // ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setOpaque(false);
+    // ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setFont(new Font("Verdana", Font.BOLD,14));
+    // //forces[0].setValue(new Double(0));
+    // ((JSpinner.NumberEditor)forces[1].getEditor()).getTextField().setForeground(new Color(250, 250, 250));
+    // forces[1].setBounds(_set._W-120,_set._H-80,100,20);
     add(forces[1]);
 
-    butts[1] = new JButton("Shoot");
-    butts[1].addActionListener(this);
-    butts[1].setBounds(_set._W-120,_set._H-60,100,20);
-    butts[1].setBorder(BorderFactory.createLineBorder(new Color(255, 89, 230),2,true));
+    // butts[0] = new JButton("Shoot");
+    // butts[0].addActionListener(this);
+    // butts[0].setBounds(20,_set._H-60,100,20);
+    // butts[0].setBorder(BorderFactory.createLineBorder(new Color(72, 160, 220),2,true));
+    butts[0] = createButton(0, 20, _set._H-60);
+    add(butts[0]);
+
+    // butts[1] = new JButton("Shoot");
+    // butts[1].addActionListener(this);
+    // butts[1].setBounds(_set._W-120,_set._H-60,100,20);
+    // butts[1].setBorder(BorderFactory.createLineBorder(new Color(255, 89, 230),2,true));
+    butts[1] = createButton(1, _set._W-120,_set._H-60);
     butts[1].setEnabled(false);
     add(butts[1]);
 
     labels[0] = new JLabel(Integer.toString(_points[0]));
     labels[0].setFont(new Font("Verdana", Font.BOLD,40));
+    labels[0].setForeground(_ships[0].getColor());
     labels[0].setBounds(_set._W-150,20,100,100);
     add(labels[0]);
-
     labels[1] = new JLabel(Integer.toString(_points[1]));
     labels[1].setFont(new Font("Verdana", Font.BOLD,40));
+    labels[1].setForeground(_ships[1].getColor());
     labels[1].setBounds(_set._W-50,20,100,100);
     add(labels[1]);
 
@@ -229,9 +281,11 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     _ships = new Nave[2];
 
     _ships[0] = new Nave(_set._W, _set._H);
+    _ships[0].setColor(new Color(72,160,220));
     do
     {
       _ships[1] = new Nave(_set._W, _set._H,"gw/20x20spshp.png");
+      _ships[1].setColor(new Color(255, 89, 230));
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
     } while (dist < 2*_set._imgEdge+100f);
@@ -246,6 +300,10 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     {
       System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
     }
+    loadMatrix();
+  }
+  private void loadMatrix()
+  {
     for(int i=0; i<_set._W; i++) {
         	for(int j=0; j<_set._H; j++) {
     		try {
@@ -550,7 +608,7 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
         ObjectOutputStream out = new ObjectOutputStream(file);
         toSerialize nuova = new toSerialize();
         nuova.navi = _ships;
-        nuova.sfere = b;
+        nuova.sfere = ball;
         out.writeObject(nuova);
         out.close();
         file.close();

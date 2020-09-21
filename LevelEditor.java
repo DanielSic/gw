@@ -89,7 +89,7 @@ class LevelEditor extends JPanel {
           if (obiettivo != null)
           {
             JSpinner massa = new JSpinner(new SpinnerNumberModel(150.0,100,700,1));
-            JSpinner raggio = new JSpinner(new SpinnerNumberModel(150.0,0,180,1));
+            JSpinner raggio = new JSpinner(new SpinnerNumberModel(150.0,30,150,1));
 
             Object[] inputFields = {"Inserisci la massa", massa,
                 "Inserisci il raggio",raggio};

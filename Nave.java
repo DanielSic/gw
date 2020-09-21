@@ -28,6 +28,7 @@ class Nave extends Abs
   private boolean focus = false;
   private int _punteggio=0;
   private int _l = 20;
+  private Color _color;
   private double _angle;
 
   Nave(int w, int h)
@@ -45,11 +46,19 @@ class Nave extends Abs
     _x = (Math.random() * (w-60))+30;
     _y = (Math.random() * (h-60))+30;
   }
-
+  public Color getColor()
+  {
+    return _color;
+  }
+  public void setColor(Color c)
+  {
+    _color = c;
+  }
   public int getPunteggio()
   {
     return _punteggio;
   }
+
   public void getMouse(int mx, int my)
   {
     _mx = mx;
