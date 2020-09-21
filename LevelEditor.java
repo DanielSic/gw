@@ -299,6 +299,7 @@ class LevelEditor extends JPanel {
         for (Sfera i : eh.sfere)
         {
           balle.add(i);
+        }
 
         repaint();
       }catch(IOException e){
