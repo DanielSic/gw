@@ -9,7 +9,7 @@ import java.awt.Dimension;
 
 public class Proiettile extends Abs
 {
-  private static double G = 1e12f;
+  private static double G = 1e6f;
   //private static double _m= 100;
   private double  _px=0;
   private double  _py=0;
@@ -18,12 +18,14 @@ public class Proiettile extends Abs
   private double  _ax=0;
   private double  _ay=0;
   private boolean is = false;
+  private double _dt, _vmod;
 
   Proiettile(double x, double y)
   {
     super();
     _x=x;
     _y=y;
+
     _m = 100;
     is = true;
   }
@@ -44,12 +46,22 @@ public class Proiettile extends Abs
   {
     // _vx = (_vx > 5)? 5: _vx;
     // _vy = (_vy > 5)? 5: _vy;
+    _dt=1;
     _px = _x;
     _py = _y;
-    _vx += forze.getx()*1;
-    _vy += forze.gety()*1;
-    _x  += _vx;
-    _y  += _vy;
+    _vx += forze.getx()*_dt;
+    _vy += forze.gety()*_dt;
+    _vmod = Math.sqrt(Math.pow(_vx,2) + Math.pow(_vy,2));
+
+    if( _vmod > 10){
+      _dt = 10/_vmod;
+      _vx += forze.getx()*_dt;
+      _vy += forze.gety()*_dt;
+    }
+
+    _x  += _vx*_dt;
+    _y  += _vy*_dt;
+
   }
 
 

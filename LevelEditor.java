@@ -34,10 +34,12 @@ import java.awt.Rectangle;
 
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
-
+import javax.swing.JOptionPane;
+import javax.swing.JDialog;
 import javax.swing.JButton;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -51,15 +53,16 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.BorderFactory;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.*;
 
 import java.util.ArrayList;
-class LevelEditor extends JPanel implements java.io.Serializable {
+class LevelEditor extends JPanel {
   ArrayList<Sfera> balle;
   Nave _ships[] = new Nave[2];
   Sad _set = new Sad();
   Sfera s;
-  protected Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
+  protected transient Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
 
   LevelEditor()
   {
@@ -77,21 +80,89 @@ class LevelEditor extends JPanel implements java.io.Serializable {
     //super.removeAll(); O questo o l'override di initUI,
     // Non sono aancora completamente convinto di volere che loadgame sia un child di pannello
     addMouseListener(new MouseAdapter(){
+      Sfera obiettivo;
       public void mouseClicked(MouseEvent e)
       {
         if (e.getClickCount() == 2)
         {
-          addSfera(e.getX(),e.getY());
+          obiettivo = addSfera(e.getX(),e.getY());
+          if (obiettivo != null)
+          {
+            JSpinner massa = new JSpinner(new SpinnerNumberModel(150.0,100,700,1));
+            JSpinner raggio = new JSpinner(new SpinnerNumberModel(150.0,0,180,1));
+
+            Object[] inputFields = {"Inserisci la massa", massa,
+                "Inserisci il raggio",raggio};
+            int option = JOptionPane.showConfirmDialog(
+             null,
+             inputFields,
+             "Nuovo Pianeta",
+             JOptionPane.OK_CANCEL_OPTION,
+             JOptionPane.INFORMATION_MESSAGE
+          );
+          if (option ==JOptionPane.OK_OPTION){
+            obiettivo.setM((double)massa.getValue());
+            obiettivo.setR((double)raggio.getValue());
+          }else{
+            balle.remove(balle.size()-1);
+            obiettivo = null;
+            repaint();
+            return;
+          }
+
+            repaint();
+            addMouseMotionListener(new MouseAdapter()
+            {
+              public void mouseDragged(MouseEvent e)
+              {
+                obiettivo.setx(e.getX()-obiettivo.getR()/2);
+                obiettivo.sety(e.getY()-obiettivo.getR()/2);
+                // double distx= e.getX()-(obiettivo.getx()+obiettivo.getR()/2);
+                // double disty = e.getY()-(obiettivo.gety()+obiettivo.getR()/2);
+                // double oldR = obiettivo.getR()/2;
+                // double newM = obiettivo.getM()+disty;
+                // double newR = obiettivo.getR()+distx/5;
+                // double addR = (newR >150)?150:(newR<30)?30:newR;
+                // double addM =(newM >600)?600:(newM<100)?100:newR;
+                // obiettivo.setM(addM);
+                // obiettivo.setR(addR);
+                //
+                //
+                // obiettivo.setx(obiettivo.getx()+(oldR-obiettivo.getR()/2));
+                // obiettivo.sety(obiettivo.gety()+(oldR-obiettivo.getR()/2));
+                //
+                // repaint();
+              }
+            });
+            // addKeyListener(new KeyAdapter(){
+            //   public void keyTyped(KeyEvent e)
+            //   {
+            //     System.out.println("Soffro");
+            //     System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
+            //     if (KeyEvent.getKeyText(e.getKeyCode()) == "l")
+            //     {
+            //       obiettivo.setR(obiettivo.getR()+10);
+            //       repaint();
+            //     }
+            //   }
+            // });
+          }
         }
-      
       }
     });
     addMouseMotionListener(new MouseMotionAdapter(){
       Nave target = null;
+      double posX;
+      double posY;
       public void mouseDragged(MouseEvent e)
       {
         if (target == null){
           target = onShip(e);
+          if (target !=null)
+          {
+            posX=target.getx();
+            posY = target.gety();
+          }
         }else{
           target.setx(e.getX()-target.getL()/2);
           target.sety(e.getY()-target.getL()/2);
@@ -101,6 +172,12 @@ class LevelEditor extends JPanel implements java.io.Serializable {
         {
           public void mouseReleased(MouseEvent e)
           {
+            if (onPlanet(e)!=null && target != null)
+            {
+              target.setx(posX);
+              target.sety(posY);
+              repaint();
+            }
             target = null;
           }
         });
@@ -108,7 +185,7 @@ class LevelEditor extends JPanel implements java.io.Serializable {
     });
   }
 
-  public void addSfera(int x, int y)
+  public Sfera addSfera(int x, int y)
   {
     s = new Sfera();
     s.setx((double)x-s.getR()/2);
@@ -127,7 +204,7 @@ class LevelEditor extends JPanel implements java.io.Serializable {
     b= balle.toArray(b);
     if (s.isValid(_ships,b,balle.size())){balle.add(s);}
     repaint();
-
+    return balle.get(balle.size()-1);
   }
   public Sfera onPlanet(MouseEvent e)
   {
@@ -177,6 +254,32 @@ class LevelEditor extends JPanel implements java.io.Serializable {
   public Dimension getPreferredSize()
   {
     return new Dimension(_set._W,_set._H);
+  }
+  public void saveToFile()
+  {
+    JFileChooser chooser = new JFileChooser();
+    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "gw", "gw");
+    chooser.setFileFilter(filter);
+    int returnVal = chooser.showSaveDialog(this);
+    if(returnVal == JFileChooser.APPROVE_OPTION) {
+      try{
+        File chosen =chooser.getSelectedFile();
+        FileOutputStream file = new FileOutputStream(chosen.getName()+".gw");
+        ObjectOutputStream out = new ObjectOutputStream(file);
+        //out.writeObject(_ships);
+        Sfera b[] = new Sfera[balle.size()];
+        b= balle.toArray(b);
+        toSerialize nuova = new toSerialize();
+        nuova.navi = _ships;
+        nuova.sfere = b;
+        out.writeObject(nuova);
+        out.close();
+        file.close();
+      }catch(IOException e){
+        e.printStackTrace();
+      }
+    }
   }
 
 }

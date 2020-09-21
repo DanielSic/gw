@@ -62,9 +62,58 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         });
     }
 
+    protected JMenu createFileMenu(Pannello panne){
+      JMenu fileMenu = new JMenu("File");
+      JMenuItem save = new JMenuItem("Salva");
+      save.setActionCommand("salva");
+      save.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+            panne.saveToFile();
+          }
+        }
+      );
+      fileMenu.add(save);
+      JMenuItem load = new JMenuItem("Carica");
+      load.setActionCommand("load");
+      load.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+            panne.readFromFile();
+          }
+        }
+      );
+      fileMenu.add(load);
+      return fileMenu;
+    }
+    protected JMenu createFileMenu(LevelEditor panne){
+      JMenu fileMenu = new JMenu("File");
+      JMenuItem save = new JMenuItem("Salva");
+      save.setActionCommand("salva");
+      save.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+            panne.saveToFile();
+          }
+        }
+      );
+      fileMenu.add(save);
+      JMenuItem load = new JMenuItem("Carica");
+      load.setActionCommand("load");
+      load.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e)
+          {
+
+          }
+        }
+      );
+      fileMenu.add(load);
+      return fileMenu;
+    }
     protected JMenuBar createMenuBar() { //funzione che crea una menuBar
         JMenuBar menuBar = new JMenuBar();
-
+        //Crea il primissimo menu
+        menuBar.add(createFileMenu(panel));
         //Crea il primo menu.
         JMenu menu = new JMenu("Game");
         menu.setMnemonic(KeyEvent.VK_D);
@@ -152,10 +201,11 @@ public class testa extends JFrame implements ActionListener,WindowListener{
           JFrame lvl = new JFrame();
           lvl.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
           LevelEditor edit = new LevelEditor();
-
+          JMenuBar menubar = new JMenuBar();
+          menubar.add(createFileMenu(edit));
+          lvl.setJMenuBar(menubar);
           edit.setVisible(true);
           edit.setPreferredSize(new Dimension(400,400));
-          edit.add(new JLabel("CIao"));
           lvl.add(edit);
           lvl.pack();
           lvl.setVisible(true);

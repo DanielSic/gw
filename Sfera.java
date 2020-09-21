@@ -25,7 +25,7 @@ public class Sfera extends Abs
   Sfera(int W, int H)
   {
     super();
-    _r = (Math.random() * 140 + 10);
+    _r = (Math.random() * 130 + 20);
     _x = (Math.random() * (W-_r));
     _y = (Math.random() * (H-_r));
     _m = (Math.random() * (700 - 100) + 100);
@@ -35,13 +35,10 @@ public class Sfera extends Abs
 
   public Sfera(double x, double y)
   {
-    _r = (Math.random() * 140 + 10);
+    _r = (Math.random() * 130 + 20);
     _x = x-_r/2;
     _y = y-_r/2;
     _m = (Math.random() * (700 - 100) + 100);
-    double col = ((double)_m-100)/(900);
-    colore = new Color((float)col,0f,(float)(1-col));
-
   }
   public void setR(double r)
   {
@@ -86,6 +83,8 @@ public class Sfera extends Abs
   @Override
   protected void paintComponent(Graphics g)
   {
+    double col = ((double)_m-100)/(900);
+    colore = new Color((float)col,0f,(float)(1-col));
     g.setColor(colore);
     g.drawOval((int)_x,(int)_y,(int)_r,(int)_r);
     g.fillOval((int)_x,(int)_y,(int)_r,(int)_r);
@@ -96,4 +95,6 @@ public class Sfera extends Abs
   {
     return new Dimension((int)_r,(int)_r);
   }
+
+
 }

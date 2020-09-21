@@ -37,6 +37,11 @@ import javax.swing.JButton;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JFileChooser;
+import java.io.*;
+
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -50,113 +55,25 @@ import javax.swing.BorderFactory;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 import java.util.ArrayList;
 
-class Pair
-{
-  private double _x;
-  private double _y;
 
-  Pair(double x, double y )
-  {
-    _x = x;
-    _y = y;
-  }
 
-  public double getx()
-  {
-    return _x;
-  }
 
-  public double gety()
-  {
-    return _y;
-  }
-}
 
-class Sad
-{
-  public boolean _modified = false;
-  public int _planetnum;
-  public boolean _inbetween;
-  public boolean _frecce;
-  public int _W;
-  public int _H;
-  public int _imgEdge=20;
 
-  Sad()
-  {
-    _planetnum = 5;
-    _inbetween = false;
-    _frecce = false;
-    _W = 1200;
-    _H = 700;
-
-  }
-  // public void setPlanets(int num)
-  // {
-  //   _planetnum = num;
-  // }
-  // public void setInb(boolean a)
-  // {
-  //   _inbetween = a;
-  // }
-  // public int getPlanets()
-  // {
-  //   return _planetnum;
-  // }
-  // public boolean getInb()
-  // {
-  //   return _inbetween;
-  // }
-}
-
-class Trajectory extends JComponent
-{
-  private ArrayList<Pair> traj;
-
-  Trajectory()
-  {
-    traj = new ArrayList<Pair>();
-  }
-
-  public void push(Pair p)
-  {
-    traj.add(p);
-  }
-
-  @Override
-  protected void paintComponent(Graphics g)
-  {
-    g.setColor(new Color(0f,0.9f,0.9f,0.4f));
-    Graphics2D g2 = (Graphics2D)g;
-
-    double px = traj.get(0).getx();
-    double py = traj.get(0).gety();
-    for (Pair p : traj)
-    {
-      Line2D punto = new Line2D.Double(p.getx(),p.gety(),px,py);
-      px = p.getx();
-      py = p.gety();
-      g2.draw(punto);
-    }
-    //Line2D punto = new Line2D.Double(_x,_y,_x,_y);
-  }
-}
-
-class Pannello extends JPanel implements ActionListener
+class Pannello extends JPanel implements ActionListener,java.io.Serializable
 {
   // private int W_RES = 800;
   // private int H_RES = 600;
-  private Timer time = new Timer(20,this);
+  private Timer time = new Timer(5,this);
   private int _counter = 0;
   private int _focus = 0;
   private Nave _ships[];
   private Proiettile pew;
   //private int _planetnum = 5;
   //private boolean _inbetween  = true;
-  protected Sad _set = new Sad();
+  protected  Sad _set = new Sad();
   // _set._planetnum = 5;
   // _set._inbetween = false;
   private Sfera ball[];
@@ -167,14 +84,14 @@ class Pannello extends JPanel implements ActionListener
   private int _raggio = 30;
   // private static int h=1200;
   // private static int w=800;
-  private Pair[][] _ForceMatrix ;
+  private transient Pair[][] _ForceMatrix ;
   private int _conteggio=0;
 
   protected Settings s ;
 
-  private ArrayList<Trajectory> _tr ;
-  private Trajectory _current ;
-  protected Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
+  private transient ArrayList<Trajectory> _tr ;
+  private transient Trajectory _current ;
+  protected transient Image bg = new ImageIcon("gw/sfondo.jpg").getImage();
 
 
   //private JFormattedTextField angles[] ;
@@ -195,6 +112,7 @@ class Pannello extends JPanel implements ActionListener
   {
     _counter=0;
     _focus = _counter%2;
+    pew=null;
     removeAll();
     revalidate();
     initUI();
@@ -393,7 +311,7 @@ class Pannello extends JPanel implements ActionListener
       double pewX = _ships[_focus].getx() + _ships[_focus].getL()/2 + ((Math.cos(Math.toRadians(angle)))*_ships[_focus].getL());
       double pewY = _ships[_focus].gety() + _ships[_focus].getL()/2 + ((Math.sin(Math.toRadians(angle)))*_ships[_focus].getL());
       pew = new Proiettile(pewX,pewY);
-      _current = new Trajectory();
+      _current = new Trajectory(_focus);
       _current.push(new Pair(pewX,pewY));
 
       pew.Shoot(angle,(double)forces[_focus].getValue());
@@ -419,7 +337,7 @@ class Pannello extends JPanel implements ActionListener
 
         pew = null;
         _tr = new ArrayList<Trajectory>();
-        _current= new Trajectory();
+        _current= null;
         loadGame();
       }else if (pew.Hit(_ships[1]))
       {
@@ -431,7 +349,7 @@ class Pannello extends JPanel implements ActionListener
         labels[0].setText(Integer.toString(_points[0]));
         pew = null;
         _tr = new ArrayList<Trajectory>();
-        _current= new Trajectory();
+        _current= null;
         loadGame();
 
       }else if ( pew.Hit(ball))
@@ -544,8 +462,8 @@ class Pannello extends JPanel implements ActionListener
       fx += f * (double)(distx/dist);
       fy += f * (double)(disty/dist);
     }
-    double ax = (fx*1/8);
-    double ay = (fy*1/8);
+    double ax = (fx*1/50);
+    double ay = (fy*1/50);
     return new Pair(ax,ay);
   }
   // public Settings getSettings()
@@ -598,7 +516,64 @@ class Pannello extends JPanel implements ActionListener
     transform.scale(scale, scale);
     transform.rotate(rotate);
 
+
     return transform.createTransformedShape(arrowPolygon);
   }
+  public void saveToFile()
+  {
+    JFileChooser chooser = new JFileChooser();
+    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "gw", "gw");
+    chooser.setFileFilter(filter);
+    int returnVal = chooser.showSaveDialog(this);
+    if(returnVal == JFileChooser.APPROVE_OPTION) {
+      try{
+        File chosen =chooser.getSelectedFile();
+        FileOutputStream file = new FileOutputStream(chosen.getName()+".gw");
+        ObjectOutputStream out = new ObjectOutputStream(file);
+        toSerialize nuova = new toSerialize();
+        nuova.navi = _ships;
+        nuova.sfere = b;
+        out.writeObject(nuova);
+        out.close();
+        file.close();
+        out.writeObject(this);
+        out.close();
+        file.close();
+      }catch(IOException e){
+        e.printStackTrace();
+      }
+    }
+  }
+  public void readFromFile()
+  {
+    JFileChooser chooser = new JFileChooser();
+    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "gw", "gw");
+    chooser.setFileFilter(filter);
+    int returnVal = chooser.showOpenDialog(this);
+    if(returnVal == JFileChooser.APPROVE_OPTION) {
+      try{
+        File chosen = chooser.getSelectedFile();
 
+        FileInputStream file = new FileInputStream(chosen.getName());
+        ObjectInputStream in = new ObjectInputStream(file);
+        toSerialize  eh = (toSerialize)in.readObject();
+        System.out.println("PORCA MADONNA ");
+        in.close();
+        file.close();
+        _ships = eh.navi;
+        ball = eh.sfere;
+        refreshUI();
+        repaint();
+      }catch(IOException e){
+        e.printStackTrace();
+      }catch (ClassNotFoundException c) {
+         System.out.println("Employee class not found");
+         c.printStackTrace();
+         return;
+      }
+  }
+
+}
 }
