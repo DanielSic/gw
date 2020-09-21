@@ -49,6 +49,5 @@ class Trajectory extends JComponent
       py = p.gety();
       g2.draw(punto);
     }
-    //Line2D punto = new Line2D.Double(_x,_y,_x,_y);
   }
 }

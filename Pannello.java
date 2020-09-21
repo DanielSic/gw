@@ -287,7 +287,6 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
       _ships[1] = new Nave(_set._W, _set._H,"gw/20x20spshp.png");
       _ships[1].setColor(new Color(255, 89, 230));
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
-      // System.out.println(_ships[0].getx());
     } while (dist < 2*_set._imgEdge+100f);
 
     for (Nave s : _ships)
@@ -296,10 +295,6 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     }
     loadPlanets();
 
-    for (Sfera p : ball)
-    {
-      System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
-    }
     loadMatrix();
   }
   private void loadMatrix()
@@ -307,14 +302,10 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     for(int i=0; i<_set._W; i++) {
         	for(int j=0; j<_set._H; j++) {
     		try {
-    			//  Block of code to try
     			_ForceMatrix[i][j] = Forze(i,j,ball);
     			}
     		catch(Exception e) {
-    			//  Block of code to handle errors
     			_ForceMatrix[i][j] = new Pair(-1,-1);
-          //System.out.println(_ForceMatrix[i][j].getx());
-    			System.out.println(e);
     		}
       }
     }
@@ -434,7 +425,6 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
         //pew.Forze(ball);
         //pew.Update();
         Pair forces = Forze(pew.getx(),pew.gety(),ball);
-        System.out.println(forces.getx());
         if (Math.abs(forces.getx()) < 1e-4 && Math.abs(forces.gety()) < 1e-4)
         {
           _tr.add(_current);
@@ -557,7 +547,6 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     _set = set;
     if (_set._modified)
     {
-      System.out.println(_set._planetnum);
       pew = null;
       refreshUI();
       loadGame();
@@ -634,7 +623,6 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
         FileInputStream file = new FileInputStream(chosen.getName());
         ObjectInputStream in = new ObjectInputStream(file);
         toSerialize  eh = (toSerialize)in.readObject();
-        System.out.println("PORCA MADONNA ");
         in.close();
         file.close();
         _ships = eh.navi;
@@ -644,7 +632,6 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
       }catch(IOException e){
         e.printStackTrace();
       }catch (ClassNotFoundException c) {
-         System.out.println("Employee class not found");
          c.printStackTrace();
          return;
       }

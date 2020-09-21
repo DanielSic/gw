@@ -73,9 +73,6 @@ public class Abs extends JComponent implements java.io.Serializable{
         return visible;
     }
 
-    // public void setVisible(Boolean visible) {
-    //     this.visible = visible;
-    // }
     public void setx(double x)
     {
       _x = x;
@@ -85,7 +82,5 @@ public class Abs extends JComponent implements java.io.Serializable{
       _y = y;
     }
 
-    // public Rectangle getBounds() {
-    //     return new Rectangle(_x, _y, _width, _height);
-    // }
+
 }

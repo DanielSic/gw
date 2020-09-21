@@ -89,10 +89,7 @@ class Nave extends Abs
   @Override
   public Dimension getPreferredSize()
   {
-    // if (focus)
-    // {
-    //   return new Dimension((int)Math.abs(_x - _mx), (int)Math.abs(_y-_my));
-    // }
+
     return new Dimension((int)_r,(int)_r);
   }
 
