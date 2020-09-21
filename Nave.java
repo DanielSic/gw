@@ -31,6 +31,7 @@ class Nave extends Abs
   private Color _color;
   private double _angle;
 
+
   Nave(int w, int h)
   {
 	   super();

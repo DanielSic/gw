@@ -290,10 +290,10 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
       // System.out.println(_ships[0].getx());
     } while (dist < 2*_set._imgEdge+100f);
 
-    for (Nave s : _ships)
-    {
-      s.Scale(_set._imgEdge);
-    }
+    // for (Nave s : _ships)
+    // {
+    //   s.Scale(_set._imgEdge);
+    // }
     loadPlanets();
 
     for (Sfera p : ball)

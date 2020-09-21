@@ -45,24 +45,32 @@ public class Sfera extends Abs
   {
     for (Nave ship : ships)
     {
-      //Cerca il punto sul perimetro del quadrato più vicino al cerchio,
-      // se dista meno del raggio del cerchio allora c'è intersezione
-      double minx = (_x+_r/2 < ship.getx()+ship.getR())? _x+_r/2 : ship.getx()+ship.getR();
-      double miny = (_y+_r/2 < ship.gety()+ship.getR())? _y+_r/2 : ship.gety()+ship.getR();
-      double nearx = (ship.getx() > minx)? ship.getx() : minx;
-      double neary = (ship.gety() > miny)? ship.gety() : miny;
-      if (Math.sqrt(Math.pow(_x+_r/2-nearx,2)+Math.pow(_y+_r/2-neary,2))<= _r/2)
+      // //Cerca il punto sul perimetro del quadrato più vicino al cerchio,
+      // // se dista meno del raggio del cerchio allora c'è intersezione
+      // double minx = (_x+_r/2 < ship.getx()+ship.getR())? _x+_r/2 : ship.getx()+ship.getR();
+      // double miny = (_y+_r/2 < ship.gety()+ship.getR())? _y+_r/2 : ship.gety()+ship.getR();
+      // double nearx = (ship.getx() > minx)? ship.getx() : minx;
+      // double neary = (ship.gety() > miny)? ship.gety() : miny;
+      // if (Math.sqrt(Math.pow(_x+_r/2-nearx,2)+Math.pow(_y+_r/2-neary,2))<= _r/2)
+      // {
+      //   return false;
+      // }
+      if(overlap(ship))
       {
         return false;
       }
     }
     for (int i = 0;i < len; i++)
     {
-      double distx = (_x + _r/2) - (pal[i].getx()+pal[i].getR()/2);
-      double disty = (_y + _r/2) - (pal[i].gety()+pal[i].getR()/2);
-      double dist = Math.sqrt(distx*distx + disty*disty);
-      System.out.println("ciao");
-      if (dist <= ((_r/2f) + (pal[i].getR()/2f)))
+      // double distx = (_x + _r/2) - (pal[i].getx()+pal[i].getR()/2);
+      // double disty = (_y + _r/2) - (pal[i].gety()+pal[i].getR()/2);
+      // double dist = Math.sqrt(distx*distx + disty*disty);
+      // System.out.println("ciao");
+      // if (dist <= ((_r/2f) + (pal[i].getR()/2f)))
+      // {
+      //   return false;
+      // }
+      if(overlap(pal[i]))
       {
         return false;
       }
