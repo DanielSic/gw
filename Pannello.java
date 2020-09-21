@@ -4,24 +4,9 @@ package gw;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Line2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.Font;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
@@ -29,12 +14,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
 
-import javax.swing.JTextField;
-import javax.swing.JFormattedTextField;
-
-import javax.swing.JButton;
-
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -47,8 +30,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.BorderFactory;
@@ -56,6 +41,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import java.util.ArrayList;
+import javax.swing.Timer;
 
 
 
@@ -67,6 +53,7 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
   // private int W_RES = 800;
   // private int H_RES = 600;
   private Timer time = new Timer(5,this);
+
   private int _counter = 0;
   private int _focus = 0;
   private Nave _ships[];
@@ -84,8 +71,16 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
   private int _raggio = 30;
   // private static int h=1200;
   // private static int w=800;
-  private transient Pair[][] _ForceMatrix ;
-  private int _conteggio=0;
+
+  private Pair[][] _ForceMatrix = new Pair[_set._W][_set._H];
+    private int _conteggio=0;
+
+  //roba per le frecce
+  public int gap = 13;
+  private Color clr;
+  private float frc;
+  private float frc_red;
+  private float frc_blue;
 
   protected Settings s ;
 
@@ -134,8 +129,8 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     // forces[0] = new JFormattedTextField();
     // forces[1] = new JFormattedTextField();
 
-    angles[0] = new JSpinner(new SpinnerNumberModel(-45.0,-180,180,1));
-    angles[1] = new JSpinner(new SpinnerNumberModel(-45.0,-180,180,1));
+    angles[0] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
+    angles[1] = new JSpinner(new SpinnerNumberModel(0.0,-180,180,1));
     forces[0] = new JSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01));
     forces[1] = new JSpinner(new SpinnerNumberModel(1.0,0.0,5.0,0.01));
     setLayout(null);
@@ -228,7 +223,6 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
 
   public void loadGame()
   {
-    _ForceMatrix = new Pair[_set._H][_set._W];
     _tr = new ArrayList<Trajectory>();
     ball = new Sfera[_set._planetnum];
     double dist;
@@ -241,6 +235,7 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
     } while (dist < 2*_set._imgEdge+100f);
+
     for (Nave s : _ships)
     {
       s.Scale(_set._imgEdge);
@@ -251,8 +246,8 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     {
       System.out.println(p.getx()+" "+ p.gety()+" "+p.getR());
     }
-    for(int i=0; i<_set._H; i++) {
-    	for(int j=0; j<_set._W; j++) {
+    for(int i=0; i<_set._W; i++) {
+        	for(int j=0; j<_set._H; j++) {
     		try {
     			//  Block of code to try
     			_ForceMatrix[i][j] = Forze(i,j,ball);
@@ -308,8 +303,8 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
   {
     if (evento.getSource() instanceof JButton) {
       double angle = (double)angles[_focus].getValue();
-      double pewX = _ships[_focus].getx() + _ships[_focus].getL()/2 + ((Math.cos(Math.toRadians(angle)))*_ships[_focus].getL());
-      double pewY = _ships[_focus].gety() + _ships[_focus].getL()/2 + ((Math.sin(Math.toRadians(angle)))*_ships[_focus].getL());
+      double pewX = _ships[_focus].getx() + _ships[_focus].getL()/2 + ((Math.sin(Math.toRadians(angle)))*_ships[_focus].getL());
+      double pewY = _ships[_focus].gety() + _ships[_focus].getL()/2 - ((Math.cos(Math.toRadians(angle)))*_ships[_focus].getL());
       pew = new Proiettile(pewX,pewY);
       _current = new Trajectory(_focus);
       _current.push(new Pair(pewX,pewY));
@@ -408,6 +403,23 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
 
     g2d.drawImage(bg,0,0,null);
 
+    if(_set._frecce)
+
+    {
+
+      for(int i=gap; i<_set._W; i+=2*gap) {
+        for(int j=gap; j<_set._H; j+=2*gap) {
+          Shape arrow = createArrowShape(new Pair(i,j),_ForceMatrix[i][j]);
+          frc = risultante(_ForceMatrix[i][j]);
+          frc_blue=(float)(1-(2*Math.atan(4*frc)/Math.PI));
+          frc_red=(float)(2*Math.atan(4*frc)/Math.PI);
+          clr = new Color(frc_red,0f,frc_blue);
+          g2d.setColor(clr);
+          g2d.draw(arrow);
+        }
+      }
+    }
+
     _ships[0].paintComponent(g);
     _ships[1].paintComponent(g);
     for (Trajectory raj : _tr)
@@ -425,15 +437,7 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
       pew.paintComponent(g);
       _current.paintComponent(g);
     }
-    if(_set._frecce)
-    {
-      for(int i=50; i<_set._H; i+=100) {
-        for(int j=50; j<_set._W; j+=100) {
-          Shape arrow = createArrowShape(new Pair(i,j),_ForceMatrix[i][j]);
-          g2d.draw(arrow);
-        }
-      }
-    }
+
 
 
     for (Sfera balla : ball)
@@ -466,6 +470,18 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
     double ay = (fy*1/50);
     return new Pair(ax,ay);
   }
+
+  public float risultante(Pair p)
+  {
+    double x,y, risultante;
+    x= p.getx();
+    y= p.gety();
+
+    risultante = Math.sqrt(x*x + y*y);
+
+    return (float)risultante;
+
+  }
   // public Settings getSettings()
   // {
   //   s  = new Settings(_planetnum);
@@ -493,14 +509,15 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
   }
 
   public static Shape createArrowShape(Pair fromPt, Pair toPt) {
+
     Polygon arrowPolygon = new Polygon();
-    arrowPolygon.addPoint(-6,1);
-    arrowPolygon.addPoint(3,1);
-    arrowPolygon.addPoint(3,3);
+    arrowPolygon.addPoint(-6,0);
     arrowPolygon.addPoint(6,0);
-    arrowPolygon.addPoint(3,-3);
+    arrowPolygon.addPoint(3,1);
+    arrowPolygon.addPoint(6,0);
     arrowPolygon.addPoint(3,-1);
-    arrowPolygon.addPoint(-6,-1);
+    arrowPolygon.addPoint(6,0);
+    arrowPolygon.addPoint(-6,0);
 
 
      //Pair MidPoint = midpoint(fromPt, toPt);
