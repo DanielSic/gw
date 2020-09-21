@@ -58,7 +58,7 @@ class Nave extends Abs
 
   public void rotate(double angle)
   {
-    _angle = angle+45;
+    _angle = angle-45;
   }
   @Override
   protected void paintComponent(Graphics g)
