@@ -68,10 +68,14 @@ class LevelEditor extends JPanel {
   {
     balle = new ArrayList<Sfera>();
     _ships[0] = new Nave(_set._W, _set._H);
+    _ships[0].setColor(new Color(72,160,220));
+
+
     double dist;
     do
     {
       _ships[1] = new Nave(_set._W, _set._H,"gw/20x20spshp.png");
+      _ships[1].setColor(new Color(255, 89, 230));
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
       // System.out.println(_ships[0].getx());
     } while (dist < 2*_set._imgEdge+100f);
@@ -83,7 +87,10 @@ class LevelEditor extends JPanel {
       Sfera obiettivo;
       public void mouseClicked(MouseEvent e)
       {
-        if (e.getClickCount() == 2)
+        if (e.getClickCount() == 1)
+        {
+
+        } else if (e.getClickCount() == 2)
         {
           obiettivo = addSfera(e.getX(),e.getY());
           if (obiettivo != null)
@@ -110,30 +117,27 @@ class LevelEditor extends JPanel {
             return;
           }
 
-            repaint();
-            addMouseMotionListener(new MouseAdapter()
+          repaint();
+          addMouseMotionListener(new MouseAdapter()
+          {
+            public void mouseDragged(MouseEvent e)
             {
-              public void mouseDragged(MouseEvent e)
+              obiettivo.setx(e.getX()-obiettivo.getR()/2);
+              obiettivo.sety(e.getY()-obiettivo.getR()/2);
+
+            }
+            public void mouseReleased(MouseEvent e)
+            {
+              Sfera b[] = new Sfera[balle.size()];
+              b= balle.toArray(b);
+              if (!obiettivo.isValid(_ships,b,balle.size()))
               {
-                obiettivo.setx(e.getX()-obiettivo.getR()/2);
-                obiettivo.sety(e.getY()-obiettivo.getR()/2);
-                // double distx= e.getX()-(obiettivo.getx()+obiettivo.getR()/2);
-                // double disty = e.getY()-(obiettivo.gety()+obiettivo.getR()/2);
-                // double oldR = obiettivo.getR()/2;
-                // double newM = obiettivo.getM()+disty;
-                // double newR = obiettivo.getR()+distx/5;
-                // double addR = (newR >150)?150:(newR<30)?30:newR;
-                // double addM =(newM >600)?600:(newM<100)?100:newR;
-                // obiettivo.setM(addM);
-                // obiettivo.setR(addR);
-                //
-                //
-                // obiettivo.setx(obiettivo.getx()+(oldR-obiettivo.getR()/2));
-                // obiettivo.sety(obiettivo.gety()+(oldR-obiettivo.getR()/2));
-                //
-                // repaint();
+                balle.remove(balle.size()-1);
+                obiettivo = null;
+
               }
-            });
+            }
+          });
             // addKeyListener(new KeyAdapter(){
             //   public void keyTyped(KeyEvent e)
             //   {
@@ -164,8 +168,8 @@ class LevelEditor extends JPanel {
             posY = target.gety();
           }
         }else{
-          target.setx(e.getX()-target.getL()/2);
-          target.sety(e.getY()-target.getL()/2);
+          target.setx(e.getX()-target.getR()/2);
+          target.sety(e.getY()-target.getR()/2);
         }
         repaint();
         addMouseListener(new MouseAdapter()
@@ -222,7 +226,7 @@ class LevelEditor extends JPanel {
   {
     for (Nave s : _ships)
     {
-      if ((e.getX() >= s.getx() && e.getX() <=s.getx()+s.getL())&&(e.getY() > s.gety() && e.getY() <= s.gety()+s.getL()))
+      if ((e.getX() >= s.getx() && e.getX() <=s.getx()+s.getR())&&(e.getY() > s.gety() && e.getY() <= s.gety()+s.getR()))
       {
         System.out.println("NAVE");
         return s;

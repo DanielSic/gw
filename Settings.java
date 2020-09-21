@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.JSpinner;
 import javax.swing.JCheckBox;
 
@@ -37,9 +38,6 @@ class Settings extends JFrame implements ActionListener
   private int _planets = 0;
   private Sad _set;
   private boolean lines = false;
-  private int plan_def;
-  private int w_def;
-  private int h_def;
   private JSpinner spin_plan;
   private JSpinner spin_w;
   private JSpinner spin_h;
@@ -61,19 +59,16 @@ class Settings extends JFrame implements ActionListener
     panel.setLayout(layout);
     GridBagConstraints gbc = new GridBagConstraints();
 
-    spin_plan = new JSpinner();
-    plan_def = _set._planetnum;
-    spin_plan.setValue(plan_def);
+    spin_plan = new JSpinner(new SpinnerNumberModel(_set._planetnum,1,100,1));
+    spin_plan.setValue(_set._planetnum);
 
-    spin_w = new JSpinner();
-    w_def = _set._W;
-    spin_w.setValue(w_def);
+    spin_w = new JSpinner(new SpinnerNumberModel(_set._W,400,3840,10));
+    spin_w.setValue(_set._W);
 
-    spin_h = new JSpinner();
-    h_def = _set._H;
-    spin_h.setValue(h_def);
+    spin_h = new JSpinner(new SpinnerNumberModel(_set._H,200,2160,10));
+    spin_h.setValue(_set._H);
 
-    spin_img = new JSpinner();
+    spin_img = new JSpinner(new SpinnerNumberModel(_set._imgEdge,20,100,1));
     spin_img.setValue(_set._imgEdge);
 
     JButton bot = new JButton("Apply and Close");
@@ -142,11 +137,9 @@ class Settings extends JFrame implements ActionListener
 
     add(panel);
 
-
     setResizable(false);
     pack();
     setVisible(true);
-    //The pack() method causes this window to be sized to fit the preferred size and layouts of its children.
 
     setTitle("GravityWars - Settings");
     setLocationRelativeTo(null);

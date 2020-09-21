@@ -7,21 +7,16 @@ import java.awt.Graphics;
 public class Sfera extends Abs
 {
 
-  private double  _r;
   private Color colore;
-
-  public double getR()
-  {
-    return _r;
-  }
 
   Sfera()
   {
     _r = 150;
-    _m =  200;
+    _m = 200;
     double col = ((double)_m-100)/(900);
     colore = new Color((float)col,0f,(float)(1-col));
   }
+
   Sfera(int W, int H)
   {
     super();
@@ -40,33 +35,28 @@ public class Sfera extends Abs
     _y = y-_r/2;
     _m = (Math.random() * (700 - 100) + 100);
   }
-  public void setR(double r)
-  {
-    _r = r;
-  }
+
   public void setColor(Color c)
   {
     colore = c;
   }
+
   public boolean isValid(Nave[] ships, Sfera[] pal,int len)
   {
-
     for (Nave ship : ships)
     {
       //Cerca il punto sul perimetro del quadrato più vicino al cerchio,
       // se dista meno del raggio del cerchio allora c'è intersezione
-      double minx = (_x+_r/2 < ship.getx()+ship.getL())? _x+_r/2 : ship.getx()+ship.getL();
-      double miny = (_y+_r/2 < ship.gety()+ship.getL())? _y+_r/2 : ship.gety()+ship.getL();
+      double minx = (_x+_r/2 < ship.getx()+ship.getR())? _x+_r/2 : ship.getx()+ship.getR();
+      double miny = (_y+_r/2 < ship.gety()+ship.getR())? _y+_r/2 : ship.gety()+ship.getR();
       double nearx = (ship.getx() > minx)? ship.getx() : minx;
       double neary = (ship.gety() > miny)? ship.gety() : miny;
       if (Math.sqrt(Math.pow(_x+_r/2-nearx,2)+Math.pow(_y+_r/2-neary,2))<= _r/2)
       {
         return false;
       }
-
-
     }
-    for (int i = 0;i < len; i++) //Secondo voi perché l'ho fatto con un for così?
+    for (int i = 0;i < len; i++)
     {
       double distx = (_x + _r/2) - (pal[i].getx()+pal[i].getR()/2);
       double disty = (_y + _r/2) - (pal[i].gety()+pal[i].getR()/2);
@@ -95,6 +85,5 @@ public class Sfera extends Abs
   {
     return new Dimension((int)_r,(int)_r);
   }
-
 
 }

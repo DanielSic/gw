@@ -361,8 +361,8 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
   {
     if (evento.getSource() instanceof JButton) {
       double angle = (double)angles[_focus].getValue();
-      double pewX = _ships[_focus].getx() + _ships[_focus].getL()/2 + ((Math.sin(Math.toRadians(angle)))*_ships[_focus].getL());
-      double pewY = _ships[_focus].gety() + _ships[_focus].getL()/2 - ((Math.cos(Math.toRadians(angle)))*_ships[_focus].getL());
+      double pewX = _ships[_focus].getx() + _ships[_focus].getR()/2 + ((Math.sin(Math.toRadians(angle)))*_ships[_focus].getR());
+      double pewY = _ships[_focus].gety() + _ships[_focus].getR()/2 - ((Math.cos(Math.toRadians(angle)))*_ships[_focus].getR());
       pew = new Proiettile(pewX,pewY);
       _current = new Trajectory(_focus);
       _current.push(new Pair(pewX,pewY));

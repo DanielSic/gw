@@ -95,7 +95,7 @@ public class Proiettile extends Abs
 
   // public boolean Hit(Nave nave)
   // {
-  //   if ((_x < nave.getx() + nave.getL() && _x > nave.getx())&&(_y < nave.gety() + nave.getL() && _y > nave.gety()))
+  //   if ((_x < nave.getx() + nave.getR() && _x > nave.getx())&&(_y < nave.gety() + nave.getR() && _y > nave.gety()))
   //   {
   //     System.out.println("Bersaglio Colpito in " + _x + " "+_y+" <3");
   //     return true;
@@ -133,7 +133,7 @@ public class Proiettile extends Abs
 
   public boolean Hit(Nave nave)
   {
-    if ((_x < nave.getx() + nave.getL() && _x > nave.getx())&&(_y < nave.gety() + nave.getL() && _y > nave.gety()))
+    if ((_x < nave.getx() + nave.getR() && _x > nave.getx())&&(_y < nave.gety() + nave.getR() && _y > nave.gety()))
     {
       System.out.println("Bersaglio Colpito in " + _x + " "+_y+" <3");
       return true;
@@ -153,7 +153,7 @@ public class Proiettile extends Abs
     return false;
   }
 
-  private boolean Check(Sfera palla)
+  private boolean Check(Abs palla)
   {
     double distx = Math.abs((palla.getx()+(palla.getR()/2))- _x);
     double disty = Math.abs((palla.gety()+(palla.getR()/2))- _y);

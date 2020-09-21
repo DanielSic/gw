@@ -11,6 +11,7 @@ public class Abs extends JComponent implements java.io.Serializable{
     protected double _x;
     protected double _y;
     protected double _m;
+    protected double _r;
 
     protected int _width;
     protected int _height;
@@ -18,9 +19,19 @@ public class Abs extends JComponent implements java.io.Serializable{
     protected Image _image;
     protected ImageIcon _icon;
 
-    public Abs() {
+    public Abs()
+    {
 
+    }
 
+    public double getR()
+    {
+      return _r;
+    }
+
+    public void setR(double r)
+    {
+      _r = r;
     }
 
     protected void getImageDimensions() {

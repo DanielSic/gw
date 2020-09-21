@@ -27,7 +27,7 @@ class Nave extends Abs
   private int _mx,_my;
   private boolean focus = false;
   private int _punteggio=0;
-  private int _l = 20;
+  // private int _l = 20;
   private Color _color;
   private double _angle;
 
@@ -37,6 +37,7 @@ class Nave extends Abs
      _icon = new ImageIcon("gw/starship.png");
     _x = (Math.random() * (w-60))+30;
     _y = (Math.random() * (h-60))+30;
+    _r = 20;
   }
 
   Nave(int w, int h,String img)
@@ -45,15 +46,19 @@ class Nave extends Abs
     _icon = new ImageIcon(img);
     _x = (Math.random() * (w-60))+30;
     _y = (Math.random() * (h-60))+30;
+    _r = 20;
   }
+
   public Color getColor()
   {
     return _color;
   }
+
   public void setColor(Color c)
   {
     _color = c;
   }
+
   public int getPunteggio()
   {
     return _punteggio;
@@ -69,53 +74,49 @@ class Nave extends Abs
   {
     _angle = angle-45;
   }
+
   @Override
   protected void paintComponent(Graphics g)
   {
-
     Graphics2D g2 = (Graphics2D)g;
-    g2.rotate(Math.toRadians(_angle),(int)_x+_l/2,(int)_y+_l/2);
+    g2.rotate(Math.toRadians(_angle),(int)_x+_r/2,(int)_y+_r/2);
     _icon.paintIcon(this, g, (int)_x,(int)_y);
-    g2.rotate(Math.toRadians(-_angle),(int)_x+_l/2,(int)_y+_l/2);
+    g2.rotate(Math.toRadians(-_angle),(int)_x+_r/2,(int)_y+_r/2);
 
-    g2.drawOval((int)_x-(((int)(Math.sqrt(2)*_l)-_l)/2),(int)_y-(((int)(Math.sqrt(2)*_l)-_l)/2),(int)(Math.sqrt(2)*_l),(int)(Math.sqrt(2)*_l));
-    //Si potrebbe anche creare un oggetto ellipse2D e fargli disegnare quello credo
-    // if (focus)
-    // {
-    //   double vertd, hord;
-    //   vertd = (_my - _y-10);
-    //   hord = (_mx - _x-10 );
-    //   g.setColor(Color.WHITE);
-    //   Graphics2D g2 = (Graphics2D)g;
-    //   Line2D l2 = new Line2D.Double(_x+10,_y+10,_x-hord+10,_y-vertd+10);
-    //   g2.draw(l2);
-    // }
+    g2.drawOval((int)_x-(((int)(Math.sqrt(2)*(int)_r)-(int)_r)/2),(int)_y-(((int)(Math.sqrt(2)*(int)_r)-(int)_r)/2),(int)(Math.sqrt(2)*(int)_r),(int)(Math.sqrt(2)*(int)_r));
   }
+
   @Override
   public Dimension getPreferredSize()
   {
-    if (focus)
-    {
-      return new Dimension((int)Math.abs(_x - _mx), (int)Math.abs(_y-_my));
-    }
-    return new Dimension(_l,_l);
+    // if (focus)
+    // {
+    //   return new Dimension((int)Math.abs(_x - _mx), (int)Math.abs(_y-_my));
+    // }
+    return new Dimension((int)_r,(int)_r);
   }
+
   public void increase()
   {
     _punteggio++;
   }
+
   public void Scale(int l)
   {
-    _l = l;
+    _r = l;
     _icon = new ImageIcon(_icon.getImage().getScaledInstance(l,l,Image.SCALE_DEFAULT));
   }
-  public int getL()
-  {
-    return _l;
-  }
+
+  // public int getL()
+  // {
+  //   return _l;
+  // }
+
   public Rectangle getRect()
   {
-    return new Rectangle((int)_x-(((int)(Math.sqrt(2)*_l)-_l)/2),(int)_y-(((int)(Math.sqrt(2)*_l)-_l)/2),(int)(Math.sqrt(2)*_l),(int)(Math.sqrt(2)*_l));
+    return new Rectangle(
+      (int)_x-(((int)(Math.sqrt(2)*(int)_r)-(int)_r)/2),(int)_y-(((int)(Math.sqrt(2)*(int)_r)-(int)_r)/2),(int)(Math.sqrt(2)*(int)_r),(int)(Math.sqrt(2)*(int)_r)
+    );
   }
 }
 //Image newImage = yourimage.getScaledInstance(nuovalarghezza, nuovaaltezza,Image.SCALE_DEFAULT);
