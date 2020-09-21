@@ -89,7 +89,7 @@ public class Proiettile extends Abs
 
   public boolean Hit(Nave nave)
   {
-    if ((_x < nave.getx() + nave.getR() && _x > nave.getx())&&(_y < nave.gety() + nave.getR() && _y > nave.gety()))
+    if (overlap(nave))
     {
       return true;
     }
@@ -100,7 +100,7 @@ public class Proiettile extends Abs
   {
     for (Sfera i : palle)
     {
-      if(Check(i))
+      if(overlap(i))
       {
         return true;
       }

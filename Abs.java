@@ -65,11 +65,13 @@ public class Abs extends JComponent implements java.io.Serializable{
     {
       _m = m;
     }
-    public double getM() {
+    public double getM()
+    {
         return _m;
     }
 
-    public boolean isVisible() {
+    public boolean isVisible()
+    {
         return visible;
     }
 
@@ -81,6 +83,20 @@ public class Abs extends JComponent implements java.io.Serializable{
     {
       _y = y;
     }
+
+    public boolean overlap(Abs altro)
+    {
+      double distx = (_x + _r/2) - (altro.getx()+altro.getR()/2);
+      double disty = (_y + _r/2) - (altro.gety()+altro.getR()/2);
+      double dist = Math.sqrt(distx*distx + disty*disty);
+      System.out.println("ciao");
+      if (dist <= ((_r/2f) + (altro.getR()/2f)))
+      {
+        return true;
+      }
+    return false;
+    }
+
 
 
 }

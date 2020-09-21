@@ -289,10 +289,10 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
     } while (dist < 2*_set._imgEdge+100f);
 
-    for (Nave s : _ships)
-    {
-      s.Scale(_set._imgEdge);
-    }
+    // for (Nave s : _ships)
+    // {
+    //   s.Scale(_set._imgEdge);
+    // }
     loadPlanets();
 
     loadMatrix();

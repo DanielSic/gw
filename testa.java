@@ -145,7 +145,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         	menu.add(menuItem);
 
         //Crea il secondo menu.
-        JMenu menu2 = new JMenu("Document 2");
+        JMenu menu2 = new JMenu("Edit");
         menu2.setMnemonic(KeyEvent.VK_D);
         menuBar.add(menu2);
 

@@ -43,7 +43,7 @@ class Settings extends JFrame implements ActionListener
   private JSpinner spin_h;
   private JCheckBox checkinb;
   private JCheckBox checkarr;
-  private JSpinner spin_img;
+  // private JSpinner spin_img;
 
   Settings(Sad set)
   {
@@ -68,8 +68,8 @@ class Settings extends JFrame implements ActionListener
     spin_h = new JSpinner(new SpinnerNumberModel(_set._H,200,2160,10));
     spin_h.setValue(_set._H);
 
-    spin_img = new JSpinner(new SpinnerNumberModel(_set._imgEdge,20,100,1));
-    spin_img.setValue(_set._imgEdge);
+    // spin_img = new JSpinner(new SpinnerNumberModel(_set._imgEdge,20,100,1));
+    // spin_img.setValue(_set._imgEdge);
 
     JButton bot = new JButton("Apply and Close");
     bot.addActionListener(this);
@@ -110,15 +110,15 @@ class Settings extends JFrame implements ActionListener
     gbc.gridy = 2;
     panel.add(spin_h,gbc);
 
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.ipady = 20;
-    gbc.gridx = 0;
-    gbc.gridy = 3;
-    panel.add(new JLabel("Lato Navetta: "),gbc);
-
-    gbc.gridx = 1;
-    gbc.gridy = 3;
-    panel.add(spin_img,gbc);
+    // gbc.fill = GridBagConstraints.HORIZONTAL;
+    // gbc.ipady = 20;
+    // gbc.gridx = 0;
+    // gbc.gridy = 3;
+    // panel.add(new JLabel("Lato Navetta: "),gbc);
+    //
+    // gbc.gridx = 1;
+    // gbc.gridy = 3;
+    // panel.add(spin_img,gbc);
 
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.ipady = 20;
@@ -160,7 +160,7 @@ class Settings extends JFrame implements ActionListener
       _set._frecce = checkarr.isSelected();
       _set._W = (int)spin_w.getValue();
       _set._H = (int)spin_h.getValue();
-      _set._imgEdge = (int)spin_img.getValue();
+      // _set._imgEdge = (int)spin_img.getValue();
       _set._modified = true;
       dispose();
     }
