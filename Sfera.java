@@ -62,14 +62,6 @@ public class Sfera extends Abs
     }
     for (int i = 0;i < len; i++)
     {
-      // double distx = (_x + _r/2) - (pal[i].getx()+pal[i].getR()/2);
-      // double disty = (_y + _r/2) - (pal[i].gety()+pal[i].getR()/2);
-      // double dist = Math.sqrt(distx*distx + disty*disty);
-      // System.out.println("ciao");
-      // if (dist <= ((_r/2f) + (pal[i].getR()/2f)))
-      // {
-      //   return false;
-      // }
       if(overlap(pal[i]))
       {
         return false;

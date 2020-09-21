@@ -155,7 +155,6 @@ class Settings extends JFrame implements ActionListener
   {
     if (evento.getSource() instanceof JButton)
     {
-      //System.out.println(spin_plan.getValue());
       _set._planetnum = (int)spin_plan.getValue();
       _set._inbetween = checkinb.isSelected();
       _set._frecce = checkarr.isSelected();

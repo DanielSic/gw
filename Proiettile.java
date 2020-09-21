@@ -10,7 +10,6 @@ import java.awt.Dimension;
 public class Proiettile extends Abs
 {
   private static double G = 1e6f;
-  //private static double _m= 100;
   private double  _px=0;
   private double  _py=0;
   private double  _vx=0;
@@ -32,11 +31,7 @@ public class Proiettile extends Abs
     is = true;
   }
 
-  // public void Shoot(int vx, int vy)
-  // {
-  //   _vx = vx/10;
-  //   _vy = vy/10;
-  // }
+
   public void Shoot(double angle, double str)
   {
     _vx = (str*Math.sin(Math.toRadians(angle)));
@@ -81,7 +76,6 @@ public class Proiettile extends Abs
     g.setColor(Color.YELLOW);
     Graphics2D g2 = (Graphics2D)g;
     Line2D punto = new Line2D.Double((int)_x,(int)_y,(int)_px,(int)_py);
-    //Line2D punto = new Line2D.Double(_x,_y,_x,_y);
 
     g2.draw(punto);
   }
@@ -93,49 +87,10 @@ public class Proiettile extends Abs
     return new Dimension(distx,disty);
   }
 
-  // public boolean Hit(Nave nave)
-  // {
-  //   if ((_x < nave.getx() + nave.getR() && _x > nave.getx())&&(_y < nave.gety() + nave.getR() && _y > nave.gety()))
-  //   {
-  //     System.out.println("Bersaglio Colpito in " + _x + " "+_y+" <3");
-  //     return true;
-  //   }
-  //   return false;
-  // }
-  //
-  // public boolean Hit(Sfera[] palle)
-  // {
-  //   for (Sfera i : palle)
-  //   {
-  //     if(Check(i))
-  //     {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
-  //
-  // private boolean Check(Sfera palla)
-  // {
-  //   double distx = Math.abs((palla.getx()+(palla.getR()/2))- _x);
-  //   double disty = Math.abs((palla.gety()+(palla.getR()/2))- _y);
-  //   double distq = Math.pow(distx,2)+Math.pow(disty,2);
-  //   if (Math.sqrt(distq) <= palla.getR()/2)
-  //   {
-  //     System.out.println("COLPITO PIANETA: "+ _x + " " + _y+" "+Math.sqrt(distq));
-  //     System.out.println(+ palla.getx() + " " + palla.gety()+" "+palla.getR());
-  //
-  //     return true;
-  //   }
-  //
-  //   return false;
-  // }
-
   public boolean Hit(Nave nave)
   {
     if (overlap(nave))
     {
-      System.out.println("Bersaglio Colpito in " + _x + " "+_y+" <3");
       return true;
     }
     return false;
@@ -160,8 +115,7 @@ public class Proiettile extends Abs
     double distq = Math.pow(distx,2)+Math.pow(disty,2);
     if (Math.sqrt(distq) <= palla.getR()/2)
     {
-      System.out.println("COLPITO PIANETA: "+ _x + " " + _y+" "+Math.sqrt(distq));
-      System.out.println(+ palla.getx() + " " + palla.gety()+" "+palla.getR());
+
 
       return true;
     }

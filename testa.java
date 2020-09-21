@@ -45,7 +45,6 @@ public class testa extends JFrame implements ActionListener,WindowListener{
         setResizable(true);
         pack();
         setVisible(true);
-        //The pack() method causes this window to be sized to fit the preferred size and layouts of its children.
 
         setTitle("GravityWars");
         setLocationRelativeTo(null);
@@ -103,7 +102,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
       load.addActionListener(new ActionListener(){
           public void actionPerformed(ActionEvent e)
           {
-
+            panne.readFromFile();
           }
         }
       );
@@ -130,9 +129,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 
           //Crea il secondo elemento del menu.
           menuItem = new JMenuItem("Settings");
-          //menuItem.setMnemonic(KeyEvent.VK_Q);
-          //menuItem.setAccelerator(KeyStroke.getKeyStroke(
-          //    KeyEvent.VK_Q, ActionEvent.ALT_MASK));
+
           menuItem.setActionCommand("settings");
           menuItem.addActionListener(this);
           menu.add(menuItem);
@@ -166,30 +163,20 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 	public void actionPerformed(ActionEvent e) {
 
         if ("new".equals(e.getActionCommand())) { //new
-            // remove(panel);
-            // panel = null;
-            // //invece di fare così potrebbe essere più utile chiamare pannello.loadGame e pannello.initUI
-            // initUI();
+
             panel.loadGame();
-            // panel.removeAll();
-            // panel.revalidate();
-            // panel.initUI();
+
             panel.refreshUI();
             panel.repaint();
 
         }
         if ("settings".equals(e.getActionCommand()))
         {
-          //s  = panel.getSettings();
           s = new Settings(panel.getSettings());
           s.addWindowListener(this);
           setEnabled(false);
 
-          //TODO BISOGNERÀ (QUASI DI CERTO) CREARE UNA FUNZIONE "CREATE SETTINGS IN PANNELLO E CHIAMARE QUELLA"
-          //TODO panel.creteSettings();
-          //TODO QUALCOSA DEL GENERE INSOMMA!
 
-          //TODO? Sono indeciso se possa servire avere una cosa come una struct di impostazioni per rendere più facile lo scambio tra pannello e settings
 
         }
         if ("quit".equals(e.getActionCommand())) { //new
@@ -249,7 +236,3 @@ public class testa extends JFrame implements ActionListener,WindowListener{
 
 
 }
-// class Texta extends JPanel
-// {
-//   JTextArea testo = new JTextArea(20, 5);
-// }

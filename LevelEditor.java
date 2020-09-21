@@ -77,18 +77,18 @@ class LevelEditor extends JPanel {
       _ships[1] = new Nave(_set._W, _set._H,"gw/20x20spshp.png");
       _ships[1].setColor(new Color(255, 89, 230));
       dist = Math.sqrt(Math.pow(_ships[0].getx() - _ships[1].getx(),2)+Math.pow(_ships[0].gety() - _ships[1].gety(),2));
-      // System.out.println(_ships[0].getx());
     } while (dist < 2*_set._imgEdge+100f);
 
 
-    //super.removeAll(); O questo o l'override di initUI,
-    // Non sono aancora completamente convinto di volere che loadgame sia un child di pannello
+
     addMouseListener(new MouseAdapter(){
       Sfera obiettivo;
       public void mouseClicked(MouseEvent e)
       {
+
         if (e.getClickCount() == 1)
         {
+
 
         } else if (e.getClickCount() == 2)
         {
@@ -118,41 +118,11 @@ class LevelEditor extends JPanel {
           }
 
           repaint();
-          addMouseMotionListener(new MouseAdapter()
-          {
-            public void mouseDragged(MouseEvent e)
-            {
-              obiettivo.setx(e.getX()-obiettivo.getR()/2);
-              obiettivo.sety(e.getY()-obiettivo.getR()/2);
 
-            }
-            public void mouseReleased(MouseEvent e)
-            {
-              Sfera b[] = new Sfera[balle.size()];
-              b= balle.toArray(b);
-              if (!obiettivo.isValid(_ships,b,balle.size()))
-              {
-                balle.remove(balle.size()-1);
-                obiettivo = null;
-
-              }
-            }
-          });
-            // addKeyListener(new KeyAdapter(){
-            //   public void keyTyped(KeyEvent e)
-            //   {
-            //     System.out.println("Soffro");
-            //     System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
-            //     if (KeyEvent.getKeyText(e.getKeyCode()) == "l")
-            //     {
-            //       obiettivo.setR(obiettivo.getR()+10);
-            //       repaint();
-            //     }
-            //   }
-            // });
           }
         }
       }
+
     });
     addMouseMotionListener(new MouseMotionAdapter(){
       Nave target = null;
@@ -189,26 +159,26 @@ class LevelEditor extends JPanel {
     });
   }
 
+
+
+
+
+
   public Sfera addSfera(int x, int y)
   {
     s = new Sfera();
     s.setx((double)x-s.getR()/2);
     s.sety((double)y-s.getR()/2);
-    // s.addMouseListener(new MouseAdapter(){
-    //   public void mouseClicked(MouseEvent e)
-    //   {
-    //
-    //     // double distx = e.getX() - (s.getx()-s.getR()/2);
-    //     // s.setR(distx+10);
-    //     repaint();
-    //
-    //   }
-    // });
+
     Sfera b[] = new Sfera[balle.size()];
     b= balle.toArray(b);
-    if (s.isValid(_ships,b,balle.size())){balle.add(s);}
+    if (s.isValid(_ships,b,balle.size())){
+      balle.add(s);
+      repaint();
+      return s;
+    }
     repaint();
-    return balle.get(balle.size()-1);
+    return null;
   }
   public Sfera onPlanet(MouseEvent e)
   {
@@ -216,7 +186,6 @@ class LevelEditor extends JPanel {
     {
       if (Math.sqrt(Math.pow(e.getX()-s.getx()-s.getR()/2,2)+Math.pow(e.getY()-s.gety()-s.getR()/2,2)) <= s.getR()/2)
       {
-        System.out.println("Bullseye");
         return s;
       }
     }
@@ -228,7 +197,6 @@ class LevelEditor extends JPanel {
     {
       if ((e.getX() >= s.getx() && e.getX() <=s.getx()+s.getR())&&(e.getY() > s.gety() && e.getY() <= s.gety()+s.getR()))
       {
-        System.out.println("NAVE");
         return s;
       }
     }
@@ -285,5 +253,38 @@ class LevelEditor extends JPanel {
       }
     }
   }
+  public void readFromFile()
+  {
+    JFileChooser chooser = new JFileChooser();
+    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "gw", "gw");
+    chooser.setFileFilter(filter);
+    int returnVal = chooser.showOpenDialog(this);
+    if(returnVal == JFileChooser.APPROVE_OPTION) {
+      try{
+        File chosen = chooser.getSelectedFile();
+
+        FileInputStream file = new FileInputStream(chosen.getName());
+        ObjectInputStream in = new ObjectInputStream(file);
+        toSerialize  eh = (toSerialize)in.readObject();
+        in.close();
+        file.close();
+        _ships = eh.navi;
+        balle.clear();
+        for (Sfera i : eh.sfere)
+        {
+          balle.add(i);
+        }
+
+        repaint();
+      }catch(IOException e){
+        e.printStackTrace();
+      }catch (ClassNotFoundException c) {
+         c.printStackTrace();
+         return;
+      }
+  }
+
+}
 
 }
