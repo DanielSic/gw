@@ -138,18 +138,6 @@ class LevelEditor extends JPanel {
               }
             }
           });
-            // addKeyListener(new KeyAdapter(){
-            //   public void keyTyped(KeyEvent e)
-            //   {
-            //     System.out.println("Soffro");
-            //     System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
-            //     if (KeyEvent.getKeyText(e.getKeyCode()) == "l")
-            //     {
-            //       obiettivo.setR(obiettivo.getR()+10);
-            //       repaint();
-            //     }
-            //   }
-            // });
           }
         }
       }
@@ -188,6 +176,11 @@ class LevelEditor extends JPanel {
       }
     });
   }
+
+
+
+
+
 
   public Sfera addSfera(int x, int y)
   {
@@ -285,5 +278,38 @@ class LevelEditor extends JPanel {
       }
     }
   }
+  public void readFromFile()
+  {
+    JFileChooser chooser = new JFileChooser();
+    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "gw", "gw");
+    chooser.setFileFilter(filter);
+    int returnVal = chooser.showOpenDialog(this);
+    if(returnVal == JFileChooser.APPROVE_OPTION) {
+      try{
+        File chosen = chooser.getSelectedFile();
+
+        FileInputStream file = new FileInputStream(chosen.getName());
+        ObjectInputStream in = new ObjectInputStream(file);
+        toSerialize  eh = (toSerialize)in.readObject();
+        in.close();
+        file.close();
+        _ships = eh.navi;
+        balle.removeAll();
+        for (Sfera i : eh.sfere)
+        {
+          balle.add(i);
+
+        repaint();
+      }catch(IOException e){
+        e.printStackTrace();
+      }catch (ClassNotFoundException c) {
+         System.out.println("Employee class not found");
+         c.printStackTrace();
+         return;
+      }
+  }
+
+}
 
 }

@@ -103,7 +103,7 @@ public class testa extends JFrame implements ActionListener,WindowListener{
       load.addActionListener(new ActionListener(){
           public void actionPerformed(ActionEvent e)
           {
-
+            panne.readFromFile();
           }
         }
       );
