@@ -89,7 +89,6 @@ public class Abs extends JComponent implements java.io.Serializable{
       double distx = (_x + _r/2) - (altro.getx()+altro.getR()/2);
       double disty = (_y + _r/2) - (altro.gety()+altro.getR()/2);
       double dist = Math.sqrt(distx*distx + disty*disty);
-      System.out.println("ciao");
       if (dist <= ((_r/2f) + (altro.getR()/2f)))
       {
         return true;

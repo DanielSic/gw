@@ -459,8 +459,8 @@ class Pannello extends JPanel implements ActionListener,java.io.Serializable
         for(int j=gap; j<_set._H; j+=2*gap) {
           Shape arrow = createArrowShape(new Pair(i,j),_ForceMatrix[i][j]);
           frc = risultante(_ForceMatrix[i][j]);
-          frc_blue=(float)(1-(2*Math.atan(4*frc)/Math.PI));
-          frc_red=(float)(2*Math.atan(4*frc)/Math.PI);
+          frc_blue=(float)(1-(2*Math.atan(8*frc)/Math.PI));
+          frc_red=(float)(2*Math.atan(8*frc)/Math.PI);
           clr = new Color(frc_red,0f,frc_blue);
           g2d.setColor(clr);
           g2d.draw(arrow);
