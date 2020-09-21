@@ -295,7 +295,7 @@ class LevelEditor extends JPanel {
         in.close();
         file.close();
         _ships = eh.navi;
-        balle.removeAll();
+        balle.clear();
         for (Sfera i : eh.sfere)
         {
           balle.add(i);
