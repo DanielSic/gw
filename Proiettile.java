@@ -18,7 +18,7 @@ public class Proiettile extends Abs
   private double  _ax=0;
   private double  _ay=0;
   private boolean is = false;
-  private double _dt;
+  private double _dt, _dx, _dy;
   private double _vmod;
 
   Proiettile(double x, double y)
@@ -44,20 +44,20 @@ public class Proiettile extends Abs
   public void Update(Pair forze)
   {
     _dt=1;
-        _px = _x;
-        _py = _y;
-        _vx += forze.getx()*_dt;
-        _vy += forze.gety()*_dt;
-        // _vmod = Math.sqrt(Math.pow(_vx,2) + Math.pow(_vy,2));
+    _px = _x;
+    _py = _y;
+    _vx += forze.getx()*_dt;
+    _vy += forze.gety()*_dt;
+    _vmod = Math.sqrt(Math.pow(_vx,2) + Math.pow(_vy,2));
 
-        if(_vx > 5){
-          _dt = 5/_vx;
-        }else if(_vy > 5){
-          _dt = 5/_vy;
-        }
+    if( _vmod > 5){
+      _dt = 5/_vmod;
+      _dx += forze.getx()*_dt;
+      _dy += forze.gety()*_dt;
+    }
 
-        _x  += _vx*_dt;
-        _y  += _vy*_dt;
+    _x  += _vx*_dt;
+    _y  += _vy*_dt;
   }
 
   public double getPX()
